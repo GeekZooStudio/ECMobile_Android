@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/DetailInfoItemCanvas"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dip" >
+
+    <TextView
+        android:id="@+id/subject"
+        android:layout_width="70dip"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:textColor="@color/TextColorBlack"
+        tools:ignore="SelectableText" />
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="80dip"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:singleLine="true"
+        android:textColor="@color/TextColorBlack"
+        tools:ignore="SelectableText" />
+
+    <TextView
+        android:id="@+id/body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/price"
+        android:layout_toRightOf="@+id/subject"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"
+        android:textColor="@color/TextColorBlack"
+        tools:ignore="SelectableText" />
+
+</RelativeLayout>

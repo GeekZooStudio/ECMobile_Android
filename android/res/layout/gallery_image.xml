@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/backgroundLayout"
+    android:background="#000000"
+    android:orientation="vertical" >
+    <HorizontalScrollView android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:id="@+id/background_srcollview">
+        <LinearLayout android:layout_height="wrap_content"
+                      android:layout_width="wrap_content"
+                      android:orientation="horizontal"
+                >
+            <ImageView android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/back_image_one"
+                    android:src="@drawable/tuitional_bg"
+                    android:scaleType="centerCrop"
+                    android:layout_weight="1"/>
+            <ImageView android:layout_height="match_parent"
+                       android:layout_width="wrap_content"
+                       android:id="@+id/back_image_two"
+                       android:src="@drawable/tuitional_bg" android:scaleType="centerCrop"
+                       android:layout_weight="1"/>
+            <ImageView android:layout_height="match_parent"
+                       android:layout_width="wrap_content"
+                       android:id="@+id/back_image_three"
+                       android:src="@drawable/tuitional_bg" android:scaleType="centerCrop"
+                       android:layout_weight="1"/>
+            <ImageView android:layout_height="match_parent"
+                       android:layout_width="wrap_content"
+                       android:id="@+id/back_image_four"
+                       android:src="@drawable/tuitional_bg" android:scaleType="centerCrop"
+                       android:layout_weight="1"/>
+            <ImageView android:layout_height="match_parent"
+                       android:layout_width="wrap_content"
+                       android:id="@+id/back_image_five"
+                       android:src="@drawable/tuitional_bg" android:scaleType="centerCrop"
+                       android:layout_weight="1"/>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <HorizontalScrollView android:layout_height="match_parent"
+                          android:layout_width="wrap_content"
+                          android:id="@+id/layer_srcollview">
+        <LinearLayout android:layout_height="wrap_content"
+                      android:layout_width="wrap_content"
+                      android:orientation="horizontal"
+                >
+            <FrameLayout android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1">
+                <ImageView android:layout_height="match_parent"
+                           android:layout_width="wrap_content"
+                           android:id="@+id/layer_image_one"
+                           android:src="@drawable/tuitional_bg"
+                           android:visibility="invisible"
+                           android:scaleType="centerCrop"
+                           />
+            </FrameLayout>
+
+            <FrameLayout android:layout_height="match_parent"
+                         android:layout_width="wrap_content"
+                         android:layout_weight="1">
+                <ImageView android:layout_height="match_parent"
+                           android:layout_width="wrap_content"
+                           android:visibility="invisible"
+                           android:id="@+id/layer_image_two"
+                           android:src="@drawable/tuitional_bg"
+                           android:scaleType="centerCrop"
+                           />
+                <ImageView android:layout_height="121dp"
+                           android:layout_width="165dp"
+                           android:src="@drawable/tuitional_img_2_1"
+                           android:layout_marginTop="83dp" android:layout_gravity="center_horizontal"/>
+            </FrameLayout>
+
+            <FrameLayout android:layout_height="match_parent"
+                         android:layout_width="wrap_content"
+                         android:layout_weight="1">
+                <ImageView android:layout_height="match_parent"
+                           android:layout_width="wrap_content"
+                           android:id="@+id/layer_image_three"
+                           android:visibility="invisible"
+                           android:src="@drawable/tuitional_bg"
+                           android:scaleType="centerCrop"
+                           />
+                <ImageView android:layout_height="120dp"
+                           android:layout_width="155dp"
+                           android:src="@drawable/tuitional_img_3_1"
+                           android:visibility="visible" android:layout_marginTop="264dp" android:layout_gravity="right"
+                           android:layout_marginRight="27dp"/>
+                <ImageView android:layout_height="45dp"
+                           android:layout_width="45dp"
+                           android:src="@drawable/tuitional_img_3_3"
+                           android:visibility="visible" android:layout_marginRight="34dp" android:layout_gravity="right"
+                           android:layout_marginTop="325dp"/>
+            </FrameLayout>
+            <FrameLayout android:layout_height="match_parent"
+                         android:layout_width="wrap_content"
+                         android:layout_weight="1">
+                <ImageView android:layout_height="match_parent"
+                           android:layout_width="wrap_content"
+                           android:id="@+id/layer_image_four"
+                           android:visibility="invisible"
+                           android:src="@drawable/tuitional_bg"
+                           android:scaleType="centerCrop"
+                           />
+                <ImageView android:layout_height="190dp"
+                           android:layout_width="127dp"
+                           android:src="@drawable/tuitional_img_4_1"
+                           android:visibility="visible" android:layout_marginTop="140dp" android:layout_marginLeft="50dp"/>
+            </FrameLayout>
+            <FrameLayout android:layout_height="match_parent"
+                         android:layout_width="wrap_content"
+                         android:layout_weight="1">
+                <ImageView android:layout_height="match_parent"
+                           android:layout_width="wrap_content"
+                           android:id="@+id/layer_image_five"
+                           android:visibility="invisible"
+                           android:src="@drawable/tuitional_bg"
+                           android:scaleType="centerCrop"
+                           />
+                <ImageView android:layout_height="325dp"
+                           android:layout_width="160dp"
+                           android:src="@drawable/tuitional_img_5_1"
+                           android:layout_marginTop="110dp" android:layout_gravity="center_horizontal"/>
+            </FrameLayout>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <android.support.v4.view.ViewPager
+        android:background="#00000000"
+        android:id="@+id/image_pager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+            />
+
+</FrameLayout>

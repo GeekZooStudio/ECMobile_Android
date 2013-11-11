@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/good_list_bg"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@drawable/body" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/recomment_margin"
+            android:background="@drawable/body_cont_bg"
+            android:gravity="center" >
+
+            <com.insthub.BeeFramework.view.WebImageView
+                android:id="@+id/gooditem_photo"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_margin="1.5dp"
+                android:src="@drawable/default_image" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11dp"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/shop_price"
+                android:layout_width="60dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="1dp"
+                android:background="@drawable/item_price_red_bg"
+                android:gravity="center"
+                android:textColor="#ffffff"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/promote_price"
+                android:layout_width="50dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="1.5dp"
+                android:background="#c4f4f3f6"
+                android:gravity="center"
+                android:textColor="#777777"
+                android:textSize="9sp" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/good_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="2dp"
+        android:textColor="#000000" 
+        android:maxLines="1"
+        android:ellipsize="end"/>
+
+</LinearLayout>

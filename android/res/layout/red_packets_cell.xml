@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="60dp">
+
+    <ImageView android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/red_packet_check"
+            android:src="@drawable/shopping_invoice_right_icon"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:visibility="gone"/>
+    <TextView android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:id="@+id/red_code" android:gravity="center_vertical|left" android:layout_weight="1" android:textColor="#777777"
+            android:textSize="14dp" android:layout_gravity="left" android:layout_alignParentLeft="true"
+            android:layout_marginLeft="40dp"/>
+    <TextView android:layout_height="60dp"
+            android:layout_width="match_parent"
+            android:id="@+id/change_money" android:gravity="center_vertical|right" android:layout_weight="1"
+            android:textColor="#777777" android:textSize="14dp" android:layout_gravity="right"
+            android:layout_alignParentRight="true" android:layout_marginRight="40dp"/>
+
+</RelativeLayout>

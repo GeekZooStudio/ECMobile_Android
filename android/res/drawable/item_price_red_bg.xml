@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+        android:src = "@drawable/item_grid_body_price_bg_red"
+        android:tileMode="repeat"  >
+</bitmap>
+

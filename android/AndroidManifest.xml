@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.insthub.ecmobile"
+    android:versionCode="4"
+    android:versionName="2.2" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="17" />
+    
+    <uses-permission android:name="android.permission.CAMERA" /> 
+	<uses-feature android:name="android.hardware.camera.autofocus" />
+    
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER"/>
+    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />    
+
+
+    <application
+        android:name="com.insthub.ecmobile.EcmobileApp"
+        android:icon="@drawable/ecmobile_logo"
+        android:label="@string/app_name"
+        android:theme="@style/customTheme" android:logo="@drawable/icon"
+        android:screenOrientation="portrait"
+        android:allowBackup="false">
+        <meta-data
+            android:name="AA_DB_NAME"
+            android:value="ecmobile.db" />
+        <meta-data
+            android:name="AA_DB_VERSION"
+            android:value="3" />
+
+
+        <activity android:name="com.insthub.ecmobile.activity.EcmobileMainActivity"
+            android:screenOrientation="portrait" 
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            android:launchMode="singleTask">
+        </activity>
+
+        <activity android:name="com.insthub.BeeFramework.activity.StartActivity"
+                  android:screenOrientation="portrait"
+                  android:windowSoftInputMode="stateHidden|adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="com.insthub.ecmobile.activity.GalleryImageActivity"
+            android:screenOrientation="portrait" />
+
+        <activity android:name="com.insthub.ecmobile.activity.GoodsListActivity"
+                  android:windowSoftInputMode="stateHidden"
+                  android:screenOrientation="portrait" />
+        <activity android:name="com.insthub.ecmobile.activity.GoodDetailActivity"
+            android:screenOrientation="portrait" />
+
+        <activity android:name="com.insthub.ecmobile.activity.SettingActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.insthub.ecmobile.activity.AddAddressActivity"
+            android:screenOrientation="portrait" 
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name="com.insthub.ecmobile.activity.BalanceActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ContentOverlay"
+                />
+
+        <activity android:name="com.insthub.ecmobile.activity.AppOutActivity"
+            android:screenOrientation="portrait" />
+
+
+
+        <activity android:name="com.insthub.ecmobile.activity.LoginActivity"
+                  android:launchMode="singleTask"
+                  android:screenOrientation="portrait" />
+        
+        <activity android:name="com.insthub.ecmobile.activity.RegisterActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            android:screenOrientation="portrait" /> 
+        
+        <activity android:name="com.insthub.ecmobile.activity.InvoiceActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        
+        <activity android:name="com.insthub.ecmobile.activity.AddressActivity"
+            android:screenOrientation="portrait"/>
+        
+        <activity android:name="com.insthub.ecmobile.activity.Address2Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/dialog"/>
+        
+        <activity android:name="com.insthub.ecmobile.activity.AddressManageActivity"
+            android:screenOrientation="portrait" />
+        
+        <activity android:name="com.insthub.ecmobile.activity.AddressManage2Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        
+        <activity android:name="com.insthub.ecmobile.activity.RedPacketsActivity"
+            android:screenOrientation="portrait" />
+        
+        <activity android:name="com.insthub.ecmobile.activity.IntegralActivity"
+            android:screenOrientation="portrait" />
+        
+        <activity android:name="com.insthub.ecmobile.activity.CommentActivity"
+            android:screenOrientation="portrait" />
+        
+        <activity android:name="com.insthub.ecmobile.activity.TradeActivity"
+            android:screenOrientation="portrait" />
+        
+        <activity android:name="com.insthub.ecmobile.activity.ShopNotifyActivity"
+            android:screenOrientation="portrait" />
+        
+        <activity android:name="com.insthub.ecmobile.activity.PaymentActivity"
+            android:screenOrientation="portrait" />
+        
+        <activity android:name="com.insthub.ecmobile.activity.ShippingActivity"
+            android:screenOrientation="portrait" />
+        
+        <activity android:name="com.insthub.ecmobile.activity.PayWebActivity"
+            android:screenOrientation="portrait" />
+        
+        <activity android:name="com.insthub.ecmobile.activity.HelpActivity"
+            android:screenOrientation="portrait" />
+        
+        <activity android:name="com.insthub.ecmobile.activity.HelpWebActivity"
+            android:screenOrientation="portrait" />
+        
+        <activity android:name="com.insthub.ecmobile.activity.BannerWebActivity"
+            android:screenOrientation="portrait" />
+        
+        <activity android:name="com.insthub.ecmobile.activity.ShareWebActivity"
+            android:screenOrientation="portrait" />
+        
+        <activity android:name="com.insthub.ecmobile.activity.GoodsDescActivity"
+            android:screenOrientation="portrait" />
+
+        <activity android:name="com.insthub.ecmobile.activity.CollectActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.insthub.ecmobile.activity.SpecificationActivity"
+            android:screenOrientation="portrait" 
+            android:theme="@style/dialog"/>
+        <activity android:name="com.insthub.ecmobile.activity.GoodPropertyActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.insthub.BeeFramework.activity.FullScreenPhotoActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.insthub.ecmobile.activity.FullScreenViewPagerActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.insthub.ecmobile.activity.ShoppingCartActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.insthub.BeeFramework.activity.WebViewActivity"
+                android:screenOrientation="portrait"/>
+        <activity android:name="com.insthub.ecmobile.activity.AdvanceSearchActivity">
+        </activity>
+
+        <activity android:name="com.insthub.BeeFramework.activity.ActivityLifeCycleActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name="com.insthub.BeeFramework.activity.MemoryMessageActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name="com.insthub.BeeFramework.activity.DebugMessageListActivity"
+                  android:screenOrientation="portrait" />
+        <activity android:name="com.insthub.BeeFramework.activity.CrashLogActivity"
+                  android:screenOrientation="portrait" />
+        <activity android:name="com.insthub.BeeFramework.activity.CrashLogDetailActivity"
+                  android:screenOrientation="portrait" />
+        <activity android:name="com.insthub.BeeFramework.activity.DebugCancelDialogActivity"
+                  android:screenOrientation="portrait" />
+        <activity android:name="com.insthub.BeeFramework.activity.DebugDetailActivity" 
+                  android:screenOrientation="portrait" />
+        <activity android:name="com.insthub.BeeFramework.activity.DebugMessageListActivity"
+                  android:screenOrientation="portrait" />
+        <activity android:name="com.insthub.BeeFramework.activity.DebugTabActivity"
+                  android:screenOrientation="portrait" />
+        <activity android:name="com.insthub.BeeFramework.activity.FloatViewSettingActivity"
+                  android:screenOrientation="portrait" />
+        <activity android:name="com.insthub.BeeFramework.activity.FullScreenPhotoActivity"
+                  android:screenOrientation="portrait" />
+
+        <activity android:name="com.insthub.ecmobile.activity.HelpListActivity"
+                  android:screenOrientation="portrait"/>
+
+        <activity android:name="com.insthub.ecmobile.activity.CategoryChildActivity"
+                    android:windowSoftInputMode="stateHidden|adjustPan"
+                    android:screenOrientation="portrait"/>
+
+        <service android:name="com.insthub.BeeFramework.service.MemoryService" >
+            <intent-filter android:priority="1000" > 
+                <action android:name="com.insthub.BeeFramework.service.MemoryService" />
+            </intent-filter>
+        </service>
+        
+        <service android:name="com.insthub.BeeFramework.service.NetworkStateService" >
+            <intent-filter android:priority="1000" >
+                <action android:name="com.BeeFramework.NetworkStateService" />
+            </intent-filter>
+        </service>
+
+    </application>
+
+</manifest>

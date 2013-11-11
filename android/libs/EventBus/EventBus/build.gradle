@@ -1,0 +1,127 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+group = 'de.greenrobot'
+version = '2.0.2'
+sourceCompatibility = 1.6
+
+def isSnapshot = version.endsWith('-SNAPSHOT')
+def sonatypeRepositoryUrl
+if(isSnapshot) {
+	sonatypeRepositoryUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+} else {
+	sonatypeRepositoryUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+}
+
+repositories {
+    mavenCentral()
+}
+
+// provided is not supported in Gradle 1.4, see http://issues.gradle.org/browse/GRADLE-784
+// Like this, it won't appear at all in the POM
+configurations {
+    provided
+}
+
+dependencies {
+    provided 'com.google.android:android:4.1.1.4'
+    provided 'com.google.android:android-test:4.1.1.4'
+    provided 'com.google.android:annotations:4.1.1.4'
+    provided 'com.google.android:support-v4:r7'
+}
+
+sourceSets {
+    main {
+        compileClasspath += configurations.provided
+        java {
+            srcDir 'src'
+            exclude 'de/greenrobot/event/util/**'
+        }
+    }
+}
+
+javadoc {
+    classpath += configurations.provided
+    title = "EventBus ${version} API"
+	options.bottom = 'Available under the Apache License, Version 2.0 - <i>Copyright &#169; 2012-2013 <a href="http://greenrobot.de/">greenrobot.de</a>. All Rights Reserved.</i>'
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from 'build/docs/javadoc'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+artifacts {
+    archives jar
+    archives javadocJar
+    archives sourcesJar
+}
+
+signing {
+    if(project.hasProperty('signing.keyId') && project.hasProperty('signing.password') &&
+    project.hasProperty('signing.secretKeyRingFile')) {
+        sign configurations.archives
+    } else {
+        println "Signing information missing/incomplete for ${project.name}"
+    }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            // We must check if authentication info is available
+            if(project.hasProperty('sonatypeUsername') && project.hasProperty('sonatypePassword')) {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+                repository(url: sonatypeRepositoryUrl) {
+                    authentication(userName: sonatypeUsername, password: sonatypePassword)
+                }
+            } else {
+                println "Settings sonatypeUsername/sonatypePassword missing/incomplete for ${project.name}"
+            }
+
+            pom.project {
+               name 'EventBus'
+               packaging 'jar'
+               description 'EventBus is an Android optimized publish/subscribe event bus.'
+               url 'https://plus.google.com/b/114381455741141514652/communities/114594359857596138845/stream/2f784373-19d9-4a0d-840f-787794a410bc'
+
+               scm {
+                   url 'https://github.com/greenrobot/EventBus'
+                   connection 'scm:git@github.com:greenrobot/EventBus.git'
+                   developerConnection 'scm:git@github.com:greenrobot/EventBus.git'
+               }
+
+               licenses {
+                   license {
+                       name 'The Apache Software License, Version 2.0'
+                       url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                       distribution 'repo'
+                   }
+               }
+
+               developers {
+                   developer {
+                       id 'greenrobot'
+                       name 'greenrobot'
+                   }
+               }
+               
+               issueManagement {
+                   system 'GitHub Issues'
+                   url 'https://github.com/greenrobot/EventBus/issues'
+               }
+               
+               organization {
+                   name 'greenrobot'
+                   url 'http://greenrobot.de'
+               }
+           }
+        }
+    }
+}

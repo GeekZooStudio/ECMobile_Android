@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <TextView android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            />
+
+
+    <com.external.HorizontalVariableListView.widget.HorizontalVariableListView
+            android:id="@+id/good_detail_photo_list"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_below="@+id/text"
+            android:gravity="bottom|center_vertical"
+            android:paddingBottom="0dp"
+            android:paddingTop="0dp" />
+
+    <TextView android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/good_property"
+            />
+
+</LinearLayout>

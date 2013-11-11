@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.insthub.ecmobile.component.TwoGoodItemCell xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="horizontal" 
+    android:background="@drawable/body">
+
+    <include
+        android:id="@+id/good_item_one"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        layout="@layout/gooditem"  
+        android:layout_margin="3dp"/>
+
+    <include
+        android:id="@+id/good_item_two"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        layout="@layout/gooditem" 
+        android:layout_margin="3dp"/>
+
+</com.insthub.ecmobile.component.TwoGoodItemCell>
