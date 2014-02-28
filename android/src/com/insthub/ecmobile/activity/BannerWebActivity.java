@@ -1,30 +1,17 @@
 package com.insthub.ecmobile.activity;
-
-/*
- *
- *       _/_/_/                      _/        _/_/_/_/_/
- *    _/          _/_/      _/_/    _/  _/          _/      _/_/      _/_/
- *   _/  _/_/  _/_/_/_/  _/_/_/_/  _/_/          _/      _/    _/  _/    _/
- *  _/    _/  _/        _/        _/  _/      _/        _/    _/  _/    _/
- *   _/_/_/    _/_/_/    _/_/_/  _/    _/  _/_/_/_/_/    _/_/      _/_/
- *
- *
- *  Copyright 2013-2014, Geek Zoo Studio
- *  http://www.ecmobile.cn/license.html
- *
- *  HQ China:
- *    2319 Est.Tower Van Palace
- *    No.2 Guandongdian South Street
- *    Beijing , China
- *
- *  U.S. Office:
- *    One Park Place, Elmira College, NY, 14901, USA
- *
- *  QQ Group:   329673575
- *  BBS:        bbs.ecmobile.cn
- *  Fax:        +86-10-6561-5510
- *  Mail:       info@geek-zoo.com
- */
+//
+//                       __
+//                      /\ \   _
+//    ____    ____   ___\ \ \_/ \           _____    ___     ___
+//   / _  \  / __ \ / __ \ \    <     __   /\__  \  / __ \  / __ \
+//  /\ \_\ \/\  __//\  __/\ \ \\ \   /\_\  \/_/  / /\ \_\ \/\ \_\ \
+//  \ \____ \ \____\ \____\\ \_\\_\  \/_/   /\____\\ \____/\ \____/
+//   \/____\ \/____/\/____/ \/_//_/         \/____/ \/___/  \/___/
+//     /\____/
+//     \/___/
+//
+//  Powered by BeeFramework
+//
 
 import android.app.Activity;
 import android.content.Intent;
@@ -32,6 +19,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -40,15 +28,20 @@ import android.widget.TextView;
 
 import com.insthub.BeeFramework.activity.BaseActivity;
 import com.insthub.ecmobile.R;
+import com.umeng.analytics.MobclickAgent;
 
 public class BannerWebActivity extends BaseActivity {
 
 	private TextView title;
 	private ImageView back;
 	private WebView webView;
+	
+	private ImageView web_back;
+    private ImageView goForward;
+    private ImageView reload;
+	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+	protected void onCreate(Bundle savedInstanceState) {		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.pay_web);
 		
@@ -62,8 +55,7 @@ public class BannerWebActivity extends BaseActivity {
 		back.setOnClickListener(new OnClickListener() {
 			
 			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
+			public void onClick(View v) {				
 				finish();
 			}
 		});
@@ -72,8 +64,7 @@ public class BannerWebActivity extends BaseActivity {
 		webView.setWebViewClient(new WebViewClient() { // 通过webView打开链接，不调用系统浏览器
 
 			@Override
-			public boolean shouldOverrideUrlLoading(WebView view, String url) {
-				// TODO Auto-generated method stub
+			public boolean shouldOverrideUrlLoading(WebView view, String url) {				
 				view.loadUrl(url);
 				return true;
 			}
@@ -90,6 +81,48 @@ public class BannerWebActivity extends BaseActivity {
 
 		webView.loadUrl(url);
 		
+		WebChromeClient webChromeClient = new WebChromeClient() {
+
+			@Override
+			public void onReceivedTitle(WebView view, String str) {				
+				super.onReceivedTitle(view, str);
+				title.setText(str);
+			}
+		};
+		webView.setWebChromeClient(webChromeClient);
+		
+		web_back = (ImageView) findViewById(R.id.web_back);
+        web_back.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {                
+                if(webView.canGoBack()) {
+                    webView.goBack();
+                } else {
+
+                }
+            }
+        });
+
+
+        goForward = (ImageView) findViewById(R.id.goForward);
+        goForward.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {                
+                webView.goForward();
+
+            }
+        });
+
+        reload = (ImageView) findViewById(R.id.reload);
+        reload.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {                
+                webView.reload();
+            }
+        });
+		
 	}
-	
 }

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/invoice_type1"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/invoice_item_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:text="服务类型发票 6%"
+            android:textColor="#000000"
+            android:textSize="16dp" />
+
+        <ImageView
+            android:id="@+id/invoice_item_select"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/accsessory_check"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,35 +1,24 @@
 package com.insthub.ecmobile.model;
-
-/*
- *
- *       _/_/_/                      _/        _/_/_/_/_/
- *    _/          _/_/      _/_/    _/  _/          _/      _/_/      _/_/
- *   _/  _/_/  _/_/_/_/  _/_/_/_/  _/_/          _/      _/    _/  _/    _/
- *  _/    _/  _/        _/        _/  _/      _/        _/    _/  _/    _/
- *   _/_/_/    _/_/_/    _/_/_/  _/    _/  _/_/_/_/_/    _/_/      _/_/
- *
- *
- *  Copyright 2013-2014, Geek Zoo Studio
- *  http://www.ecmobile.cn/license.html
- *
- *  HQ China:
- *    2319 Est.Tower Van Palace
- *    No.2 Guandongdian South Street
- *    Beijing , China
- *
- *  U.S. Office:
- *    One Park Place, Elmira College, NY, 14901, USA
- *
- *  QQ Group:   329673575
- *  BBS:        bbs.ecmobile.cn
- *  Fax:        +86-10-6561-5510
- *  Mail:       info@geek-zoo.com
- */
+//
+//                       __
+//                      /\ \   _
+//    ____    ____   ___\ \ \_/ \           _____    ___     ___
+//   / _  \  / __ \ / __ \ \    <     __   /\__  \  / __ \  / __ \
+//  /\ \_\ \/\  __//\  __/\ \ \\ \   /\_\  \/_/  / /\ \_\ \/\ \_\ \
+//  \ \____ \ \____\ \____\\ \_\\_\  \/_/   /\____\\ \____/\ \____/
+//   \/____\ \/____/\/____/ \/_//_/         \/____/ \/___/  \/___/
+//     /\____/
+//     \/___/
+//
+//  Powered by BeeFramework
+//
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.insthub.ecmobile.EcmobileManager;
+import com.insthub.ecmobile.R;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,7 +46,7 @@ public class OrderModel extends BaseModel {
 	
 	public OrderModel(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
+		 
 	}
 	
 	public void getOrder(String type) {
@@ -93,7 +82,7 @@ public class OrderModel extends BaseModel {
 					OrderModel.this.OnMessageResponse(url, jo, status);
 					
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
+					 
 					e.printStackTrace();
 				}
 			
@@ -122,7 +111,7 @@ public class OrderModel extends BaseModel {
 		
 		cb.url(url).type(JSONObject.class).params(params);
 		ProgressDialog pd = new ProgressDialog(mContext);
-        pd.setMessage("请稍后...");
+        pd.setMessage(mContext.getResources().getString(R.string.hold_on));
 		aq.progress(pd).ajax(cb);
 		
 	}
@@ -161,7 +150,7 @@ public class OrderModel extends BaseModel {
 					OrderModel.this.OnMessageResponse(url, jo, status);
 					
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
+					 
 					e.printStackTrace();
 				}
 			
@@ -210,7 +199,7 @@ public class OrderModel extends BaseModel {
 					OrderModel.this.OnMessageResponse(url, jo, status);
 					
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
+					 
 					e.printStackTrace();
 				}
 			}
@@ -254,7 +243,7 @@ public class OrderModel extends BaseModel {
 					}
 					
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
+					 
 					e.printStackTrace();
 				}
 			
@@ -299,7 +288,7 @@ public class OrderModel extends BaseModel {
 						OrderModel.this.OnMessageResponse(url, jo, status);
 					}
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
+					 
 					e.printStackTrace();
 				}
 			}
@@ -324,4 +313,70 @@ public class OrderModel extends BaseModel {
 		aq.ajax(cb);
 		
 	}
+	
+	// 查看物流
+	public String shipping_name;
+	public void orderExpress(String order_id) {
+		
+		String url = ProtocolConst.EXPRESS;
+		BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
+
+			@Override
+			public void callback(String url, JSONObject jo, AjaxStatus status) {
+
+				OrderModel.this.callback(url, jo, status);
+				
+				try {
+					
+					STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
+					if(responseStatus.succeed == 1) {
+						
+						JSONObject dataJSON = jo.optJSONObject("data");
+						
+						shipping_name = dataJSON.getString("shipping_name").toString();
+						JSONArray dataJsonArray = dataJSON.optJSONArray("content");
+						express_list.clear();
+						if (null != dataJsonArray && dataJsonArray.length() > 0) {
+							express_list.clear();
+	                        for (int i = 0; i < dataJsonArray.length(); i++) {
+	                            JSONObject expressJsonObject = dataJsonArray.getJSONObject(i);
+	                            EXPRESS express_list_Item = EXPRESS.fromJson(expressJsonObject);
+	                            express_list.add(express_list_Item);
+	                        }
+	                    }
+					}
+					OrderModel.this.OnMessageResponse(url, jo, status);
+				} catch (JSONException e) {
+					 
+					e.printStackTrace();
+				}
+			}
+		};
+
+		SESSION session = SESSION.getInstance();
+		
+		JSONObject requestJsonObject = new JSONObject();
+
+		Map<String, String> params = new HashMap<String, String>();
+		try 
+		{
+            requestJsonObject.put("session",session.toJson());
+            requestJsonObject.put("order_id", order_id);
+            requestJsonObject.put("app_key", EcmobileManager.getKuaidiKey(mContext));
+		} catch (JSONException e) {
+			// TODO: handle exception
+		}
+
+        params.put("json",requestJsonObject.toString());
+		
+		cb.url(url).type(JSONObject.class).params(params);
+		aq.ajax(cb);
+		
+	}
+	
+	
+	
+	
+	
+
 }

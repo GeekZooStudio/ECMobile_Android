@@ -1,30 +1,17 @@
 package com.insthub.ecmobile.component;
-
-/*
- *
- *       _/_/_/                      _/        _/_/_/_/_/
- *    _/          _/_/      _/_/    _/  _/          _/      _/_/      _/_/
- *   _/  _/_/  _/_/_/_/  _/_/_/_/  _/_/          _/      _/    _/  _/    _/
- *  _/    _/  _/        _/        _/  _/      _/        _/    _/  _/    _/
- *   _/_/_/    _/_/_/    _/_/_/  _/    _/  _/_/_/_/_/    _/_/      _/_/
- *
- *
- *  Copyright 2013-2014, Geek Zoo Studio
- *  http://www.ecmobile.cn/license.html
- *
- *  HQ China:
- *    2319 Est.Tower Van Palace
- *    No.2 Guandongdian South Street
- *    Beijing , China
- *
- *  U.S. Office:
- *    One Park Place, Elmira College, NY, 14901, USA
- *
- *  QQ Group:   329673575
- *  BBS:        bbs.ecmobile.cn
- *  Fax:        +86-10-6561-5510
- *  Mail:       info@geek-zoo.com
- */
+//
+//                       __
+//                      /\ \   _
+//    ____    ____   ___\ \ \_/ \           _____    ___     ___
+//   / _  \  / __ \ / __ \ \    <     __   /\__  \  / __ \  / __ \
+//  /\ \_\ \/\  __//\  __/\ \ \\ \   /\_\  \/_/  / /\ \_\ \/\ \_\ \
+//  \ \____ \ \____\ \____\\ \_\\_\  \/_/   /\____\\ \____/\ \____/
+//   \/____\ \/____/\/____/ \/_//_/         \/____/ \/___/  \/___/
+//     /\____/
+//     \/___/
+//
+//  Powered by BeeFramework
+//
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -32,6 +19,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -49,6 +37,8 @@ public class AdvanceSearchValueCell extends LinearLayout{
     public TextView specTwo;
     public ImageView image1;
     public ImageView image2;
+    public FrameLayout specification_layout_two;
+
 
     public AdvanceSearchValueCell(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -73,6 +63,7 @@ public class AdvanceSearchValueCell extends LinearLayout{
         {
             image2 = (ImageView) findViewById(R.id.specification_value_img_two);
             specTwo = (TextView)findViewById(R.id.specification_value_text_two);
+            specification_layout_two = (FrameLayout)findViewById(R.id.specification_layout_two);
             specTwo.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {

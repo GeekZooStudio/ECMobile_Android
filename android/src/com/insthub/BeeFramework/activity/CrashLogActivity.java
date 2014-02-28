@@ -9,7 +9,7 @@ import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
-import com.insthub.BeeFramework.AppConst;
+import com.insthub.BeeFramework.BeeFrameworkConst;
 import com.insthub.BeeFramework.adapter.CrashLogAdapter;
 import com.insthub.BeeFramework.protocol.CrashMessage;
 import com.external.maxwin.view.XListView;
@@ -109,7 +109,7 @@ public class CrashLogActivity extends BaseActivity
         try
         {
 
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + AppConst.LOG_DIR_PATH;
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + BeeFrameworkConst.LOG_DIR_PATH;
 
             getFiles(logFilesList, path);
             for (int i = 0; i < logFilesList.size(); i++)

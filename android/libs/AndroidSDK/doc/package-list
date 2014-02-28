@@ -1,0 +1,6 @@
+com.tencent.weibo.sdk.android.api
+com.tencent.weibo.sdk.android.api.adapter
+com.tencent.weibo.sdk.android.api.util
+com.tencent.weibo.sdk.android.component
+com.tencent.weibo.sdk.android.model
+com.tencent.weibo.sdk.android.network

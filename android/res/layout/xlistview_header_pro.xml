@@ -18,7 +18,7 @@
             android:layout_height="30dp"
             android:layout_marginTop="5dp"
             android:gravity="center_vertical"
-            android:src="@drawable/profile_refresh_up_arrow_icon"
+            android:src="@drawable/gray_arrow"
             android:visibility="gone" />
 
         <ProgressBar

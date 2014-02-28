@@ -1,30 +1,17 @@
 package com.insthub.ecmobile.activity;
-
-/*
- *
- *       _/_/_/                      _/        _/_/_/_/_/
- *    _/          _/_/      _/_/    _/  _/          _/      _/_/      _/_/
- *   _/  _/_/  _/_/_/_/  _/_/_/_/  _/_/          _/      _/    _/  _/    _/
- *  _/    _/  _/        _/        _/  _/      _/        _/    _/  _/    _/
- *   _/_/_/    _/_/_/    _/_/_/  _/    _/  _/_/_/_/_/    _/_/      _/_/
- *
- *
- *  Copyright 2013-2014, Geek Zoo Studio
- *  http://www.ecmobile.cn/license.html
- *
- *  HQ China:
- *    2319 Est.Tower Van Palace
- *    No.2 Guandongdian South Street
- *    Beijing , China
- *
- *  U.S. Office:
- *    One Park Place, Elmira College, NY, 14901, USA
- *
- *  QQ Group:   329673575
- *  BBS:        bbs.ecmobile.cn
- *  Fax:        +86-10-6561-5510
- *  Mail:       info@geek-zoo.com
- */
+//
+//                       __
+//                      /\ \   _
+//    ____    ____   ___\ \ \_/ \           _____    ___     ___
+//   / _  \  / __ \ / __ \ \    <     __   /\__  \  / __ \  / __ \
+//  /\ \_\ \/\  __//\  __/\ \ \\ \   /\_\  \/_/  / /\ \_\ \/\ \_\ \
+//  \ \____ \ \____\ \____\\ \_\\_\  \/_/   /\____\\ \____/\ \____/
+//   \/____\ \/____/\/____/ \/_//_/         \/____/ \/___/  \/___/
+//     /\____/
+//     \/___/
+//
+//  Powered by BeeFramework
+//
 
 import android.content.res.Resources;
 import com.insthub.ecmobile.R;
@@ -39,6 +26,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.umeng.analytics.MobclickAgent;
 
 public class ShareWebActivity extends Activity {
 
@@ -46,8 +34,7 @@ public class ShareWebActivity extends Activity {
 	private ImageView back;
 	private WebView webView;
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+	protected void onCreate(Bundle savedInstanceState) {		
         Resources resource = (Resources) getBaseContext().getResources();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.pay_web);
@@ -63,9 +50,9 @@ public class ShareWebActivity extends Activity {
 		back.setOnClickListener(new OnClickListener() {
 			
 			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
+			public void onClick(View v) {				
 				finish();
+				 overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
 			}
 		});
 		
@@ -73,8 +60,7 @@ public class ShareWebActivity extends Activity {
 		webView.setWebViewClient(new WebViewClient() { // 通过webView打开链接，不调用系统浏览器
 
 			@Override
-			public boolean shouldOverrideUrlLoading(WebView view, String url) {
-				// TODO Auto-generated method stub
+			public boolean shouldOverrideUrlLoading(WebView view, String url) {				
 				view.loadUrl(url);
 				return true;
 			}

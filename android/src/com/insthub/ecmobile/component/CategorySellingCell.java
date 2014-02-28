@@ -1,30 +1,17 @@
 package com.insthub.ecmobile.component;
-
-/*
- *
- *       _/_/_/                      _/        _/_/_/_/_/
- *    _/          _/_/      _/_/    _/  _/          _/      _/_/      _/_/
- *   _/  _/_/  _/_/_/_/  _/_/_/_/  _/_/          _/      _/    _/  _/    _/
- *  _/    _/  _/        _/        _/  _/      _/        _/    _/  _/    _/
- *   _/_/_/    _/_/_/    _/_/_/  _/    _/  _/_/_/_/_/    _/_/      _/_/
- *
- *
- *  Copyright 2013-2014, Geek Zoo Studio
- *  http://www.ecmobile.cn/license.html
- *
- *  HQ China:
- *    2319 Est.Tower Van Palace
- *    No.2 Guandongdian South Street
- *    Beijing , China
- *
- *  U.S. Office:
- *    One Park Place, Elmira College, NY, 14901, USA
- *
- *  QQ Group:   329673575
- *  BBS:        bbs.ecmobile.cn
- *  Fax:        +86-10-6561-5510
- *  Mail:       info@geek-zoo.com
- */
+//
+//                       __
+//                      /\ \   _
+//    ____    ____   ___\ \ \_/ \           _____    ___     ___
+//   / _  \  / __ \ / __ \ \    <     __   /\__  \  / __ \  / __ \
+//  /\ \_\ \/\  __//\  __/\ \ \\ \   /\_\  \/_/  / /\ \_\ \/\ \_\ \
+//  \ \____ \ \____\ \____\\ \_\\_\  \/_/   /\____\\ \____/\ \____/
+//   \/____\ \/____/\/____/ \/_//_/         \/____/ \/___/  \/___/
+//     /\____/
+//     \/___/
+//
+//  Powered by BeeFramework
+//
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,24 +26,27 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.insthub.BeeFramework.view.WebImageView;
+import com.insthub.ecmobile.EcmobileApp;
 import com.insthub.ecmobile.R;
 import com.insthub.ecmobile.activity.EcmobileMainActivity;
-import com.insthub.ecmobile.activity.GoodDetailActivity;
-import com.insthub.ecmobile.activity.GoodsListActivity;
+import com.insthub.ecmobile.activity.B2_ProductDetailActivity;
+import com.insthub.ecmobile.activity.B1_ProductListActivity;
 import com.insthub.ecmobile.protocol.CATEGORYGOODS;
 import com.insthub.ecmobile.protocol.FILTER;
 import com.insthub.ecmobile.protocol.SIMPLEGOODS;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import org.json.JSONException;
 
 public class CategorySellingCell extends LinearLayout 
 {
 	Context mContext;
-    private WebImageView good_cell_photo_one;
-    private WebImageView good_cell_photo_two;
-    private WebImageView good_cell_photo_three;
+    private ImageView good_cell_photo_one;
+    private ImageView good_cell_photo_two;
+    private ImageView good_cell_photo_three;
     private TextView good_cell_name_one;
     private TextView     good_cell_name_two;
     private TextView     good_cell_name_three;
@@ -71,6 +61,7 @@ public class CategorySellingCell extends LinearLayout
     
     private SharedPreferences shared;
 	private SharedPreferences.Editor editor;
+    protected ImageLoader imageLoader = ImageLoader.getInstance();
 
 	public CategorySellingCell(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -103,17 +94,17 @@ public class CategorySellingCell extends LinearLayout
 
         if (null == good_cell_photo_one)
         {
-            good_cell_photo_one = (WebImageView)findViewById(R.id.good_cell_photo_one);
+            good_cell_photo_one = (ImageView)findViewById(R.id.good_cell_photo_one);
         }
 
         if (null == good_cell_photo_two)
         {
-            good_cell_photo_two = (WebImageView)findViewById(R.id.good_cell_photo_two);
+            good_cell_photo_two = (ImageView)findViewById(R.id.good_cell_photo_two);
         }
 
         if (null == good_cell_photo_three)
         {
-            good_cell_photo_three = (WebImageView)findViewById(R.id.good_cell_photo_three);
+            good_cell_photo_three = (ImageView)findViewById(R.id.good_cell_photo_three);
         }
 
         if (null == good_cell_name_one)
@@ -162,13 +153,13 @@ public class CategorySellingCell extends LinearLayout
     			
     			@Override
     			public void onClick(View v) {
-    				// TODO Auto-generated method stub
-    				Intent it = new Intent(mContext, GoodsListActivity.class);
+    				 
+    				Intent it = new Intent(mContext, B1_ProductListActivity.class);
                     FILTER filter = new FILTER();
                     filter.category_id = String.valueOf(categorygoods.id);
                     try
                     {
-                        it.putExtra(GoodsListActivity.FILTER,filter.toJson().toString());
+                        it.putExtra(B1_ProductListActivity.FILTER,filter.toJson().toString());
                     }
                     catch (JSONException e)
                     {
@@ -188,15 +179,19 @@ public class CategorySellingCell extends LinearLayout
             good_cell_photo_one.setVisibility(View.VISIBLE);
             
             if(imageType.equals("high")) {
-            	good_cell_photo_one.setImageWithURL(mContext,goodOne.img.thumb,R.drawable.default_image);
+//            	good_cell_photo_one.setImageWithURL(mContext,goodOne.img.thumb,R.drawable.default_image);
+                imageLoader.displayImage(goodOne.img.thumb,good_cell_photo_one, EcmobileApp.options);
     		} else if(imageType.equals("low")) {
-    			good_cell_photo_one.setImageWithURL(mContext,goodOne.img.small,R.drawable.default_image);
+//    			good_cell_photo_one.setImageWithURL(mContext,goodOne.img.small,R.drawable.default_image);
+                imageLoader.displayImage(goodOne.img.small,good_cell_photo_one, EcmobileApp.options);
     		} else {
     			String netType = shared.getString("netType", "wifi");
     			if(netType.equals("wifi")) {
-    				good_cell_photo_one.setImageWithURL(mContext,goodOne.img.thumb,R.drawable.default_image);
+//    				good_cell_photo_one.setImageWithURL(mContext,goodOne.img.thumb,R.drawable.default_image);
+                    imageLoader.displayImage(goodOne.img.thumb,good_cell_photo_one, EcmobileApp.options);
     			} else {
-    				good_cell_photo_one.setImageWithURL(mContext,goodOne.img.small,R.drawable.default_image);
+//    				good_cell_photo_one.setImageWithURL(mContext,goodOne.img.small,R.drawable.default_image);
+                    imageLoader.displayImage(goodOne.img.small,good_cell_photo_one, EcmobileApp.options);
     			}
     		}
             
@@ -214,15 +209,19 @@ public class CategorySellingCell extends LinearLayout
                 if (null != goodTwo && null != goodTwo.img && null != goodTwo.img.thumb && null != goodTwo.img.small)
                 {
                 	if(imageType.equals("high")) {
-                		good_cell_photo_two.setImageWithURL(mContext,goodTwo.img.thumb,R.drawable.default_image);
+//                		good_cell_photo_two.setImageWithURL(mContext,goodTwo.img.thumb,R.drawable.default_image);
+                        imageLoader.displayImage(goodTwo.img.thumb,good_cell_photo_two, EcmobileApp.options);
             		} else if(imageType.equals("low")) {
-            			good_cell_photo_two.setImageWithURL(mContext,goodTwo.img.small,R.drawable.default_image);
+//            			good_cell_photo_two.setImageWithURL(mContext,goodTwo.img.small,R.drawable.default_image);
+                        imageLoader.displayImage(goodTwo.img.small,good_cell_photo_two, EcmobileApp.options);
             		} else {
             			String netType = shared.getString("netType", "wifi");
             			if(netType.equals("wifi")) {
-            				good_cell_photo_two.setImageWithURL(mContext,goodTwo.img.thumb,R.drawable.default_image);
+//            				good_cell_photo_two.setImageWithURL(mContext,goodTwo.img.thumb,R.drawable.default_image);
+                            imageLoader.displayImage(goodTwo.img.thumb,good_cell_photo_two, EcmobileApp.options);
             			} else {
-            				good_cell_photo_two.setImageWithURL(mContext,goodTwo.img.small,R.drawable.default_image);
+//            				good_cell_photo_two.setImageWithURL(mContext,goodTwo.img.small,R.drawable.default_image);
+                            imageLoader.displayImage(goodTwo.img.small,good_cell_photo_two, EcmobileApp.options);
             			}
             		}
                 	
@@ -232,8 +231,8 @@ public class CategorySellingCell extends LinearLayout
 						
 						@Override
 						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							 Intent it = new Intent(mContext, GoodDetailActivity.class);
+							 
+							 Intent it = new Intent(mContext, B2_ProductDetailActivity.class);
 			                 it.putExtra("good_id",goodTwo.id);
 			                 mContext.startActivity(it);
 			                 ((EcmobileMainActivity)mContext).overridePendingTransition(R.anim.push_right_in,R.anim.push_right_out);
@@ -252,15 +251,19 @@ public class CategorySellingCell extends LinearLayout
                     {
                     	
                     	if(imageType.equals("high")) {
-                    		good_cell_photo_three.setImageWithURL(mContext,goodThree.img.thumb,R.drawable.default_image);
+//                    		good_cell_photo_three.setImageWithURL(mContext,goodThree.img.thumb,R.drawable.default_image);
+                            imageLoader.displayImage(goodThree.img.thumb,good_cell_photo_three, EcmobileApp.options);
                 		} else if(imageType.equals("low")) {
-                			good_cell_photo_three.setImageWithURL(mContext,goodThree.img.small,R.drawable.default_image);
+//                			good_cell_photo_three.setImageWithURL(mContext,goodThree.img.small,R.drawable.default_image);
+                            imageLoader.displayImage(goodThree.img.small,good_cell_photo_three, EcmobileApp.options);
                 		} else {
                 			String netType = shared.getString("netType", "wifi");
                 			if(netType.equals("wifi")) {
-                				good_cell_photo_three.setImageWithURL(mContext,goodThree.img.thumb,R.drawable.default_image);
+//                				good_cell_photo_three.setImageWithURL(mContext,goodThree.img.thumb,R.drawable.default_image);
+                                imageLoader.displayImage(goodThree.img.thumb,good_cell_photo_three, EcmobileApp.options);
                 			} else {
-                				good_cell_photo_three.setImageWithURL(mContext,goodThree.img.small,R.drawable.default_image);
+//                				good_cell_photo_three.setImageWithURL(mContext,goodThree.img.small,R.drawable.default_image);
+                                imageLoader.displayImage(goodThree.img.small,good_cell_photo_three, EcmobileApp.options);
                 			}
                 		}
                     	
@@ -270,8 +273,8 @@ public class CategorySellingCell extends LinearLayout
 							
 							@Override
 							public void onClick(View v) {
-								// TODO Auto-generated method stub
-								 Intent it = new Intent(mContext, GoodDetailActivity.class);
+								 
+								 Intent it = new Intent(mContext, B2_ProductDetailActivity.class);
 			                     it.putExtra("good_id",goodThree.id);
 			                     mContext.startActivity(it);
 			                     ((EcmobileMainActivity)mContext).overridePendingTransition(R.anim.push_right_in,R.anim.push_right_out);

@@ -57,17 +57,18 @@
         android:textSize="16dp" />
 
     <TextView
-            android:id="@+id/network_usage"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#000000"
-            android:textSize="16dp" />
+        android:id="@+id/network_usage"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="16dp" />
+
     <TextView
-            android:id="@+id/network_wakeuptime"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#000000"
-            android:textSize="16dp" />
+        android:id="@+id/network_wakeuptime"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="16dp" />
 
     <FrameLayout
         android:layout_width="fill_parent"
@@ -82,5 +83,5 @@
             android:orientation="vertical" >
         </LinearLayout>
     </FrameLayout>
-    
+
 </LinearLayout>

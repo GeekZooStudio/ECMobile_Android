@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">AndroidSDKDemo</string>
+    <string name="authorize">授权</string>
+    <string name="add">发表</string>
+    <string name="readd">一键转播</string>
+     <string name="common">常用接口</string>
+      <string name="delauthorize">注销</string>
+</resources>

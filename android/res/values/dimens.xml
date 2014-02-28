@@ -15,7 +15,7 @@
     <dimen name="recomment_height">30dp</dimen>
 
     <dimen name="price_textsize">11sp</dimen>
-    <dimen name="price_margin">10dp</dimen>
+    <dimen name="price_margin">18dp</dimen>
     <dimen name="price_width">60dp</dimen>
     <dimen name="price_height">20dp</dimen>
 

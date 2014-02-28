@@ -18,13 +18,13 @@
             android:layout_marginLeft="15dp"
             android:gravity="center_vertical"
             android:text="@string/dialog_title"
-            android:textColor="#000000"
-            android:textSize="22dp" />
+            android:textColor="#333333"
+            android:textSize="20dp" />
 
         <View
             android:layout_width="fill_parent"
-            android:layout_height="1.5dp"
-            android:background="#4c000000" />
+            android:layout_height="1dp"
+            android:background="#c4cccccc" />
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -39,14 +39,14 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:text="@string/dialog_message"
-                android:textColor="#000000"
-                android:textSize="20dp" />
+                android:textColor="#333333"
+                android:textSize="18dp" />
         </LinearLayout>
 
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:background="#777777" />
+            android:background="#c4cccccc" />
 
         <LinearLayout
             android:id="@+id/update_cancel"
@@ -64,13 +64,13 @@
                 android:background="@drawable/textbg_select"
                 android:gravity="center"
                 android:text="@string/dialog_ensure"
-                android:textColor="#000000"
-                android:textSize="18dp" />
+                android:textColor="#333333"
+                android:textSize="16dp" />
 
             <View
-                android:layout_width="0.1dp"
+                android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="#777777" />
+                android:background="#c4cccccc" />
 
             <TextView
                 android:id="@+id/no"
@@ -80,8 +80,8 @@
                 android:background="@drawable/textbg_select"
                 android:gravity="center"
                 android:text="@string/dialog_cancel"
-                android:textColor="#000000"
-                android:textSize="18dp" />
+                android:textColor="#333333"
+                android:textSize="16dp" />
         </LinearLayout>
     </LinearLayout>
 

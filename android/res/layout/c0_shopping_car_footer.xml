@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f5f5f5"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3.6dp"
+        android:layout_marginRight="3.6dp"
+        android:background="@drawable/shopping_cart_body_bg_02"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="-20dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/shopcarfooter_total"
+                android:textColor="#939393"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/shop_car_footer_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ff0000"
+                android:textSize="20dp" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/shop_car_footer_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="-10dp"
+            android:background="@drawable/button_red" >
+
+            <ImageView
+                android:id="@+id/shop_car_footer_balance_cart_icon"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/shopping_cart_acc_cart_icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="50dp"
+                android:text="@string/shopcarfooter_settleaccounts"
+                android:textColor="#f3f3f3"
+                android:textSize="18dp" />
+        </FrameLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -33,9 +33,9 @@
                 android:textSize="12sp" />
 
             <ImageView
+                android:id="@+id/filter_order_tabone"
                 android:layout_width="12dp"
                 android:layout_height="13dp"
-                android:id="@+id/filter_order_tabone"
                 android:layout_alignParentLeft="true"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="3dp"
@@ -87,11 +87,10 @@
                 android:textColor="@color/filter_text_color"
                 android:textSize="12sp" />
 
-
             <ImageView
+                android:id="@+id/filter_order_tabtwo"
                 android:layout_width="12dp"
                 android:layout_height="13dp"
-                android:id="@+id/filter_order_tabtwo"
                 android:layout_alignParentLeft="true"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="5dp"
@@ -143,11 +142,10 @@
                 android:textColor="@color/filter_text_color"
                 android:textSize="12sp" />
 
-
             <ImageView
+                android:id="@+id/filter_order_tabthree"
                 android:layout_width="12dp"
                 android:layout_height="13dp"
-                android:id="@+id/filter_order_tabthree"
                 android:layout_alignParentLeft="true"
                 android:layout_gravity="center_vertical"
                 android:layout_marginBottom="1.5dp"

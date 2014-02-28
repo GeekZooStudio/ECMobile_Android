@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/body"
+    android:orientation="vertical" >
+
+    <include layout="@layout/top_view" />
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <com.external.maxwin.view.XListView
+            android:id="@+id/trade_list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#00000000"
+            android:divider="#00000000"
+            android:dividerHeight="0.1dp"
+            android:footerDividersEnabled="false"
+            android:headerDividersEnabled="false"
+            android:listSelector="@android:color/transparent" >
+        </com.external.maxwin.view.XListView>
+        
+        <include 
+            layout="@layout/null_pager"
+            android:id="@+id/null_pager"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="gone"/>
+
+        <!-- <ImageView
+            android:id="@+id/trade_list_bg"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#ffffff"
+            android:visibility="gone" /> -->
+    </FrameLayout>
+
+</LinearLayout>

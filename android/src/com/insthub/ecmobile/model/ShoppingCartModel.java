@@ -1,30 +1,17 @@
 package com.insthub.ecmobile.model;
-
-/*
- *
- *       _/_/_/                      _/        _/_/_/_/_/
- *    _/          _/_/      _/_/    _/  _/          _/      _/_/      _/_/
- *   _/  _/_/  _/_/_/_/  _/_/_/_/  _/_/          _/      _/    _/  _/    _/
- *  _/    _/  _/        _/        _/  _/      _/        _/    _/  _/    _/
- *   _/_/_/    _/_/_/    _/_/_/  _/    _/  _/_/_/_/_/    _/_/      _/_/
- *
- *
- *  Copyright 2013-2014, Geek Zoo Studio
- *  http://www.ecmobile.cn/license.html
- *
- *  HQ China:
- *    2319 Est.Tower Van Palace
- *    No.2 Guandongdian South Street
- *    Beijing , China
- *
- *  U.S. Office:
- *    One Park Place, Elmira College, NY, 14901, USA
- *
- *  QQ Group:   329673575
- *  BBS:        bbs.ecmobile.cn
- *  Fax:        +86-10-6561-5510
- *  Mail:       info@geek-zoo.com
- */
+//
+//                       __
+//                      /\ \   _
+//    ____    ____   ___\ \ \_/ \           _____    ___     ___
+//   / _  \  / __ \ / __ \ \    <     __   /\__  \  / __ \  / __ \
+//  /\ \_\ \/\  __//\  __/\ \ \\ \   /\_\  \/_/  / /\ \_\ \/\ \_\ \
+//  \ \____ \ \____\ \____\\ \_\\_\  \/_/   /\____\\ \____/\ \____/
+//   \/____\ \/____/\/____/ \/_//_/         \/____/ \/___/  \/___/
+//     /\____/
+//     \/___/
+//
+//  Powered by BeeFramework
+//
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -117,7 +104,7 @@ public class ShoppingCartModel extends BaseModel {
 					}
 					
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
+					 
 					e.printStackTrace();
 				}
 			}
@@ -140,7 +127,7 @@ public class ShoppingCartModel extends BaseModel {
 		
 		cb.url(url).type(JSONObject.class).params(params);
 		ProgressDialog pd = new ProgressDialog(mContext);
-        pd.setMessage("请稍后...");
+        pd.setMessage(mContext.getResources().getString(R.string.hold_on));
 		aq.progress(pd).ajax(cb);
 		
 	}
@@ -181,7 +168,7 @@ public class ShoppingCartModel extends BaseModel {
 					ShoppingCartModel.this.OnMessageResponse(url, jo, status);
 					
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
+					 
 					e.printStackTrace();
 				}
 			}
@@ -226,7 +213,7 @@ public class ShoppingCartModel extends BaseModel {
 					}
 					
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
+					 
 					e.printStackTrace();
 				}
 			}
@@ -266,12 +253,12 @@ public class ShoppingCartModel extends BaseModel {
 					STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
 					if(responseStatus.succeed == 1) {
 						
-						ShoppingCartModel.this.OnMessageResponse(url, jo, status);
-						
 					}
 					
+					ShoppingCartModel.this.OnMessageResponse(url, jo, status);
+					
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
+					 
 					e.printStackTrace();
 				}
 			}
@@ -357,7 +344,7 @@ public class ShoppingCartModel extends BaseModel {
 					ShoppingCartModel.this.OnMessageResponse(url, jo, status);
 					
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
+					 
 					e.printStackTrace();
 				}
 			}
@@ -380,14 +367,14 @@ public class ShoppingCartModel extends BaseModel {
 		
 		cb.url(url).type(JSONObject.class).params(params);
 		ProgressDialog pd = new ProgressDialog(mContext);
-        pd.setMessage("请稍后...");
+        pd.setMessage(mContext.getResources().getString(R.string.hold_on));
 		aq.progress(pd).ajax(cb);
 		
 	}
 	
 	// 订单生成
 	public String order_id;
-	public void flowDone(String pay_id, String shipping_id,String bonus, String integral, String inv_type,String inv_payee, String inv_content) {
+	public void flowDone(String pay_id, String shipping_id,String bonus, String score, String inv_type,String inv_payee, String inv_content) {
 		String url = ProtocolConst.FLOW_DOWN;
 		
 		BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
@@ -406,7 +393,7 @@ public class ShoppingCartModel extends BaseModel {
 					}
 					
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
+					 
 					e.printStackTrace();
 				}
 			}
@@ -428,9 +415,9 @@ public class ShoppingCartModel extends BaseModel {
                 requestJsonObject.put("bonus",bonus);
             }
 
-            if (null != integral)
+            if (null != score)
             {
-                requestJsonObject.put("integral",integral);
+                requestJsonObject.put("integral",score);
             }
 
             if (null != inv_type)
@@ -457,12 +444,12 @@ public class ShoppingCartModel extends BaseModel {
 		
 		cb.url(url).type(JSONObject.class).params(params);
 		ProgressDialog pd = new ProgressDialog(mContext);
-        pd.setMessage("请稍后...");
+        pd.setMessage(mContext.getResources().getString(R.string.hold_on));
 		aq.progress(pd).ajax(cb);
 		
 	}
 
-	public void integral(String integral) {
+	public void score(String score) {
 		String url = ProtocolConst.VALIDATE_INTEGRAL;
 		
 		BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
@@ -482,7 +469,7 @@ public class ShoppingCartModel extends BaseModel {
 					}
 					
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
+					 
 					e.printStackTrace();
 				}
 			}
@@ -497,7 +484,7 @@ public class ShoppingCartModel extends BaseModel {
 		try 
 		{
             requestJsonObject.put("session",session.toJson());
-            requestJsonObject.put("integral",integral);
+            requestJsonObject.put("integral",score);
 		} catch (JSONException e) {
 			// TODO: handle exception
 		}
@@ -537,7 +524,7 @@ public class ShoppingCartModel extends BaseModel {
 					}
 					
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
+					 
 					e.printStackTrace();
 				}
 			}
@@ -598,7 +585,7 @@ public class ShoppingCartModel extends BaseModel {
                 }
                 catch (JSONException e)
                 {
-                    // TODO Auto-generated catch block
+                     
                     e.printStackTrace();
                 }
             }

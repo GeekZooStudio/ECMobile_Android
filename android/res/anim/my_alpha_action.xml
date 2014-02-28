@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- android:duration="@android:integer/config_mediumAnimTime" -->
 <set xmlns:android="http://schemas.android.com/apk/res/android" >
-<alpha android:fromAlpha="1" android:toAlpha="0" android:duration="400"/> 
+<alpha android:fromAlpha="1" android:toAlpha="0" android:duration="300"/> 
 <!-- 透明度控制动画效果 alpha
         浮点型值：
         fromAlpha 属性为动画起始时透明度

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:minWidth="300dp"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:drawablePadding="10dp"
+        android:gravity="center"
+        android:textColor="@color/dialog_tiltle_blue"
+        android:textSize="18sp"
+        tools:ignore="SelectableText" />
+
+    <ImageView
+        android:id="@+id/dialog_divider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:scaleType="fitXY"
+       	android:src="@drawable/dialog_cut_line"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/dialog_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="10dp"
+        android:maxWidth="225dp"
+        android:minHeight="30dp"
+        android:textColor="#666666"
+        android:textSize="16sp"
+        tools:ignore="SelectableText" />
+
+    <FrameLayout
+        android:id="@+id/dialog_content_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/dialog_button_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="22dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/dialog_split_h"
+            tools:ignore="ContentDescription" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp" >
+
+            <Button
+                android:id="@+id/left_button"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/dialog_button_submit"
+                android:textColor="@drawable/dialog_button_colorlist"
+                android:textSize="18sp"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/dialog_split_v"
+                android:layout_width="1dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center_horizontal"
+                android:scaleType="fitXY"
+                android:src="@drawable/dialog_split_v"
+                android:visibility="gone"
+                tools:ignore="ContentDescription" />
+
+            <Button
+                android:id="@+id/right_button"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/dialog_button_submit"
+                android:textColor="@drawable/dialog_button_colorlist"
+                android:textSize="18sp"
+                android:visibility="gone" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

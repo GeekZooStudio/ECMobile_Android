@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.insthub.ecmobile.component.ShopHelpCell xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/shophelp_item"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="#ffffff"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/shophelp_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:textColor="#000000"
+            android:textSize="18dp" />
+
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/accsessory_arrow_right" />
+    </LinearLayout>
+
+</com.insthub.ecmobile.component.ShopHelpCell>

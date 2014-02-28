@@ -48,6 +48,7 @@ import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
 
+import com.baidu.frontia.FrontiaApplication;
 import com.external.activeandroid.app.Application;
 import com.insthub.BeeFramework.Utils.CustomExceptionHandler;
 import com.insthub.BeeFramework.activity.DebugCancelDialogActivity;
@@ -77,8 +78,9 @@ public class BeeFrameworkApp extends Application implements OnClickListener{
     public void onCreate() {
         instance = this;
         super.onCreate();
+        FrontiaApplication.initFrontiaApplication(this);
         initConfig();
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + AppConst.LOG_DIR_PATH;
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + BeeFrameworkConst.LOG_DIR_PATH;
         File storePath = new File(path);
         storePath.mkdirs();
         Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(
@@ -114,6 +116,7 @@ public class BeeFrameworkApp extends Application implements OnClickListener{
         
         bugImage = new ImageView(context);
         bugImage.setImageResource(R.drawable.bug);
+        
         wManager.addView(bugImage, wmParams);
         bugImage.setOnClickListener(this);
         
@@ -121,7 +124,7 @@ public class BeeFrameworkApp extends Application implements OnClickListener{
 			
 			@Override
 			public boolean onLongClick(View v) {
-				// TODO Auto-generated method stub
+				 
 				DebugCancelDialogActivity.parentHandler = messageHandler;
 				Intent intent = new Intent(BeeFrameworkApp.getInstance().currContext,DebugCancelDialogActivity.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

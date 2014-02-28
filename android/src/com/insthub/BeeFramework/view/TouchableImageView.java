@@ -9,7 +9,7 @@ import android.util.FloatMath;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import com.insthub.BeeFramework.AppConst;
+import com.insthub.BeeFramework.BeeFrameworkConst;
 
 /*
  *	 ______    ______    ______
@@ -44,7 +44,7 @@ import com.insthub.BeeFramework.AppConst;
 
 
 public class TouchableImageView extends WebImageView implements View.OnTouchListener{
-    private static boolean DEBUG = AppConst.DEBUG;
+    private static boolean DEBUG = BeeFrameworkConst.DEBUG;
     private static String TAG = "image";
 
     private static final int TOUCH_MODE_NONE = 0;

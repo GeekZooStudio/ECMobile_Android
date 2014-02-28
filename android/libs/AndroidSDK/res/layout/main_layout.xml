@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center"
+    android:orientation="vertical" >
+    
+    <Button android:id="@+id/authorize"
+        		 android:layout_width="100dp"
+        		 android:layout_height="wrap_content"
+        		 android:text="@string/authorize"
+        		 />
+    
+    <Button
+        android:id="@+id/add"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/add" />
+
+    <Button
+        android:id="@+id/readd"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/readd" />
+
+     <Button
+         android:id="@+id/commoninterface"
+         android:layout_width="100dp"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="15dp"
+         android:text="@string/common" />
+
+    <Button
+        android:id="@+id/exit"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/delauthorize" />
+
+</LinearLayout>

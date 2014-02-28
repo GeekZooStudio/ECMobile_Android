@@ -36,7 +36,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import android.app.Activity;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -49,7 +49,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import com.insthub.BeeFramework.AppConst;
+import com.insthub.BeeFramework.BeeFrameworkConst;
 import com.insthub.BeeFramework.view.TouchableImageView;
 import com.insthub.ecmobile.R;
 
@@ -70,7 +70,7 @@ public class FullScreenPhotoActivity extends BaseActivity implements OnClickList
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
+         
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.fullscreen_photo);
@@ -117,7 +117,7 @@ public class FullScreenPhotoActivity extends BaseActivity implements OnClickList
     }
 
     private String getRootPath(){
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + AppConst.PIC_DIR_PATH;
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + BeeFrameworkConst.PIC_DIR_PATH;
         File storePath = new File(path);
         storePath.mkdirs();
         return path;

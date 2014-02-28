@@ -14,15 +14,15 @@
 
     <FrameLayout
         android:id="@+id/full_screen_view_layout"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/goodslist_navbar"
         android:background="#ffffff" >
 
         <android.support.v4.view.ViewPager
             android:id="@+id/fullscreen_viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -72,7 +72,7 @@
                         android:id="@+id/full_screen_add_to_cart"
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
-                        android:background="@drawable/item_info_add_cart_btn_red"
+                        android:background="@drawable/button_red"
                         android:gravity="center"
                         android:text="@string/add_to_cart"
                         android:textAlignment="center"

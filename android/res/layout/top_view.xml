@@ -16,7 +16,7 @@
         <ImageView
             android:layout_width="fill_parent"
             android:layout_height="48dp"
-            android:background="@drawable/searcher_new_header_bg" />
+            android:background="@drawable/nav_bg" />
 
         <ImageView
             android:id="@+id/top_view_back"
@@ -54,14 +54,14 @@
             android:layout_height="30dp"
             android:layout_gravity="center|right"
             android:layout_marginRight="10dp"
-            android:background="@drawable/searcher_new_btn_blue"
+            android:background="@drawable/filter_blue_btn"
             android:gravity="center"
             android:visibility="gone" >
 
             <TextView
+                android:id="@+id/top_right_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/top_right_text"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"

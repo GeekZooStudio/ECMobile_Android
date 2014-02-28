@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.insthub.ecmobile.component.GoodItemLargeCell xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/good_list_bg"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/body_cont" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="6dp"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/gooditem_photo"
+                android:layout_width="fill_parent"
+                android:layout_height="300dp"
+                android:src="@drawable/default_image" />
+
+            <TextView
+                android:id="@+id/brief"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="adsfdasf"
+                android:textColor="#333333" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/price_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="adsfdas"
+                    android:textColor="#ff0000" />
+
+                <TextView
+                    android:id="@+id/market_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="adsfdas" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</com.insthub.ecmobile.component.GoodItemLargeCell>

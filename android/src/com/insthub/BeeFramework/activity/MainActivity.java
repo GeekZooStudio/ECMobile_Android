@@ -40,10 +40,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
 import android.widget.Toast;
-import com.insthub.BeeFramework.AppConst;
+import com.insthub.BeeFramework.BeeFrameworkConst;
 import com.insthub.BeeFramework.BeeFrameworkApp;
 import com.insthub.BeeFramework.Utils.CustomExceptionHandler;
-import com.insthub.BeeFramework.model.BeeQuery;
+import com.insthub.BeeFramework.model.BeeQuery;   import com.baidu.android.pushservice.PushConstants;
+import com.baidu.android.pushservice.PushManager;
 import com.insthub.ecmobile.R;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -74,7 +75,7 @@ public class MainActivity extends BaseActivity{
         shared = this.getSharedPreferences("userInfo", 0);
         editor = shared.edit();
 
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + AppConst.LOG_DIR_PATH;
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + BeeFrameworkConst.LOG_DIR_PATH;
         File storePath = new File(path);
         storePath.mkdirs();
         Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(
@@ -85,13 +86,18 @@ public class MainActivity extends BaseActivity{
     protected void onStart()
     {
         super.onStart();
+
+
+        PushManager.startWork(getApplicationContext(),
+                PushConstants.LOGIN_TYPE_API_KEY, API_KEY);
+
     }
 
     private boolean isExit = false;
     //退出操作
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // TODO Auto-generated method stub
+         
         if(keyCode == KeyEvent.KEYCODE_BACK){
             if(isExit==false){
                 isExit=true;
@@ -138,8 +144,68 @@ public class MainActivity extends BaseActivity{
      * @param intent
      *            intent
      */
-    private void handleIntent(Intent intent)
-    {
+    private void handleIntent(Intent intent) {
+        String action = intent.getAction();
 
+        if (ACTION_RESPONSE.equals(action))
+        {
+
+            String method = intent.getStringExtra(RESPONSE_METHOD);
+
+            if (PushConstants.METHOD_BIND.equals(method))
+            {
+                int errorCode = intent.getIntExtra(RESPONSE_ERRCODE, 0);
+                if (errorCode == 0) {
+                    String content = intent.getStringExtra(RESPONSE_CONTENT);
+                    String appid = "";
+                    String channelid = "";
+                    String userid = "";
+
+
+
+                    try {
+                        JSONObject jsonContent = new JSONObject(content);
+                        JSONObject params = jsonContent
+                                .getJSONObject("response_params");
+                        appid = params.getString("appid");
+                        channelid = params.getString("channel_id");
+                        userid = params.getString("user_id");
+                        editor.putString("UUID",userid);
+                        editor.commit();
+
+                    } catch (JSONException e) {
+
+                    }
+                }
+                else
+                {
+
+                }
+
+
+            }
+        } else if (ACTION_LOGIN.equals(action)) {
+            String accessToken = intent.getStringExtra(EXTRA_ACCESS_TOKEN);
+            PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_ACCESS_TOKEN, accessToken);
+
+        }
+        else if (ACTION_MESSAGE.equals(action))
+        {
+            String message = intent.getStringExtra(EXTRA_MESSAGE);
+            String summary = "Receive message from server:\n\t";
+            JSONObject contentJson = null;
+            String contentStr = message;
+            try {
+                contentJson = new JSONObject(message);
+                contentStr = contentJson.toString(4);
+            } catch (JSONException e) {
+
+            }
+            summary += contentStr;
+        }
+        else if (ACTION_PUSHCLICK.equals(action))
+        {
+            String message = intent.getStringExtra(CUSTOM_CONTENT);
+        }
     }
 }

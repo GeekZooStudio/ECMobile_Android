@@ -1,4 +1,17 @@
 package com.insthub.ecmobile.adapter;
+//
+//                       __
+//                      /\ \   _
+//    ____    ____   ___\ \ \_/ \           _____    ___     ___
+//   / _  \  / __ \ / __ \ \    <     __   /\__  \  / __ \  / __ \
+//  /\ \_\ \/\  __//\  __/\ \ \\ \   /\_\  \/_/  / /\ \_\ \/\ \_\ \
+//  \ \____ \ \____\ \____\\ \_\\_\  \/_/   /\____\\ \____/\ \____/
+//   \/____\ \/____/\/____/ \/_//_/         \/____/ \/___/  \/___/
+//     /\____/
+//     \/___/
+//
+//  Powered by BeeFramework
+//
 
 import android.content.Context;
 import android.view.View;
@@ -10,41 +23,11 @@ import com.insthub.ecmobile.protocol.SIMPLEGOODS;
 
 import java.util.ArrayList;
 
-/*
- *	 ______    ______    ______
- *	/\  __ \  /\  ___\  /\  ___\
- *	\ \  __<  \ \  __\_ \ \  __\_
- *	 \ \_____\ \ \_____\ \ \_____\
- *	  \/_____/  \/_____/  \/_____/
- *
- *
- *	Copyright (c) 2013-2014, {Bee} open source community
- *	http://www.bee-framework.com
- *
- *
- *	Permission is hereby granted, free of charge, to any person obtaining a
- *	copy of this software and associated documentation files (the "Software"),
- *	to deal in the Software without restriction, including without limitation
- *	the rights to use, copy, modify, merge, publish, distribute, sublicense,
- *	and/or sell copies of the Software, and to permit persons to whom the
- *	Software is furnished to do so, subject to the following conditions:
- *
- *	The above copyright notice and this permission notice shall be included in
- *	all copies or substantial portions of the Software.
- *
- *	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- *	FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
- *	IN THE SOFTWARE.
- */
 public class GoodListLargeListActivityAdapter extends BeeBaseAdapter {
 
     public GoodListLargeListActivityAdapter(Context c, ArrayList dataList) {
         super(c, dataList);
-        // TODO Auto-generated constructor stub
+         
     }
 
     /* (non-Javadoc)
@@ -52,7 +35,7 @@ public class GoodListLargeListActivityAdapter extends BeeBaseAdapter {
      */
     @Override
     public int getCount() {
-        // TODO Auto-generated method stub
+         
         return dataList.size();
     }
 
@@ -61,7 +44,7 @@ public class GoodListLargeListActivityAdapter extends BeeBaseAdapter {
      */
     @Override
     public Object getItem(int position) {
-        // TODO Auto-generated method stub
+         
         return null;
     }
 
@@ -70,7 +53,7 @@ public class GoodListLargeListActivityAdapter extends BeeBaseAdapter {
      */
     @Override
     public long getItemId(int position) {
-        // TODO Auto-generated method stub
+         
         return 0;
     }
 
@@ -84,13 +67,13 @@ public class GoodListLargeListActivityAdapter extends BeeBaseAdapter {
 
     @Override
     public View createCellView() {
-        // TODO Auto-generated method stub
-        return mInflater.inflate(R.layout.gooditemlarge, null);
+         
+        return mInflater.inflate(R.layout.b2_product_detail_cell, null);
     }
 
     @Override
     protected BeeCellHolder createCellHolder(View cellView) {
-        // TODO Auto-generated method stub
+         
         return null;
     }
 }

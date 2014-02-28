@@ -111,13 +111,13 @@ public class MemoryService extends Service {
 	
 	@Override
 	public IBinder onBind(Intent intent) {
-		// TODO Auto-generated method stub
+		 
 		return null;
 	}
 	
 	@Override
 	public void onCreate() {
-		// TODO Auto-generated method stub
+		 
 		super.onCreate();
 		
 		mPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
@@ -163,7 +163,7 @@ public class MemoryService extends Service {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				 
 				Intent intent = new Intent();
 				intent.setAction(MemoryService.MEMORYSERVICENAME);
 				stopService(intent);
@@ -176,7 +176,7 @@ public class MemoryService extends Service {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
+				 
 				int ea=event.getAction();
 
 				switch(ea){
@@ -203,7 +203,7 @@ public class MemoryService extends Service {
 		TimerTask timerTask = new TimerTask() {
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
+				 
 				Message msg = new Message(); 
                 msg.what = 1;
                 handler.sendMessage(msg);
@@ -233,7 +233,7 @@ public class MemoryService extends Service {
 
 		@Override
 		public void handleMessage(Message msg) {
-			// TODO Auto-generated method stub
+			 
 			super.handleMessage(msg);
 			switch(msg.what) {
 			case 1:
@@ -310,7 +310,7 @@ public class MemoryService extends Service {
 			    new Thread() {
 					@Override
 					public void run() {
-						// TODO Auto-generated method stub
+						 
 						super.run();
 						LinuxUtils linux = new LinuxUtils();
 						f = linux.syncGetProcessCpuUsage(_pid);
@@ -328,7 +328,7 @@ public class MemoryService extends Service {
 	
 	@Override
 	public void onDestroy() {
-		// TODO Auto-generated method stub
+		 
 		super.onDestroy();
 		timer.cancel();
 		wManager.removeView(view);

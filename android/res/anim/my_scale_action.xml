@@ -4,6 +4,6 @@
 	<scale android:interpolator="@android:anim/accelerate_decelerate_interpolator"
 		android:fromXScale="0.0" android:toXScale="1" android:fromYScale="0.0"
 		android:toYScale="1" android:pivotX="50%" android:pivotY="50%"
-		android:fillAfter="false" android:duration="400" />
+		android:fillAfter="false" android:duration="300" />
 </set>
 

@@ -1,0 +1,17 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.tencent.weibo.sdk.android.component"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="15" />
+
+
+    <application
+        android:icon="@drawable/ic_launcher"
+        android:theme="@style/AppTheme" >
+        
+    </application>
+
+</manifest>

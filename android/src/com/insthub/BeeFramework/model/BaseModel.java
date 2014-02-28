@@ -47,7 +47,7 @@ import android.widget.Toast;
 import com.external.androidquery.callback.AjaxStatus;
 import com.insthub.BeeFramework.view.ToastView;
 import com.insthub.ecmobile.R;
-import com.insthub.ecmobile.activity.LoginActivity;
+import com.insthub.ecmobile.activity.A0_SigninActivity;
 import com.insthub.ecmobile.protocol.SESSION;
 import com.insthub.ecmobile.protocol.STATUS;
 
@@ -106,7 +106,7 @@ public class BaseModel implements BusinessResponse{
                     ToastView toast = new ToastView(mContext, mContext.getString(R.string.session_expires_tips));
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
-                    Intent intent = new Intent(mContext, LoginActivity.class);
+                    Intent intent = new Intent(mContext, A0_SigninActivity.class);
                     mContext.startActivity(intent);
                     
                     shared = mContext.getSharedPreferences("userInfo", 0); 

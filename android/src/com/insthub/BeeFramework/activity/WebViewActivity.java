@@ -77,7 +77,7 @@ public class WebViewActivity extends BaseActivity{
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				 
 				finish();
 			}
 		});
@@ -90,15 +90,20 @@ public class WebViewActivity extends BaseActivity{
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                // TODO Auto-generated method stub
+                 
                 view.loadUrl(url);
                 return true;
             }
         });
 
-        WebSettings webSettings = webView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setBuiltInZoomControls(true);
+        webView.setInitialScale(25);
+		WebSettings webSettings = webView.getSettings();  
+		webSettings.setJavaScriptEnabled(true); 
+		webSettings.setBuiltInZoomControls(true);
+		webSettings.setSupportZoom(true);
+		
+		webView.getSettings().setUseWideViewPort(true);
+		webView.getSettings().setLoadWithOverviewMode(true);
         
 
         if (null != url)
@@ -111,7 +116,7 @@ public class WebViewActivity extends BaseActivity{
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
+                 
                 if(webView.canGoBack()) {
                     webView.goBack();
                 } else {
@@ -126,7 +131,7 @@ public class WebViewActivity extends BaseActivity{
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
+                 
                 webView.goForward();
 
             }
@@ -137,7 +142,7 @@ public class WebViewActivity extends BaseActivity{
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
+                 
                 webView.reload();
             }
         });
@@ -148,7 +153,7 @@ public class WebViewActivity extends BaseActivity{
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
-        // TODO Auto-generated method stub
+         
         if(keyCode == KeyEvent.KEYCODE_BACK){
             finish();
         }

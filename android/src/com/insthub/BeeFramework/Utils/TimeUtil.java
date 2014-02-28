@@ -57,7 +57,7 @@ public class TimeUtil {
         }
         else if ( minutes < 120 )
         {
-            return "一小时前";
+            return "1小时前";
         }
         else if ( hours < 24 )
         {
@@ -65,7 +65,7 @@ public class TimeUtil {
         }
         else if ( hours < 24 * 2 )
         {
-            return "一天前";
+            return "1天前";
         }
         else if ( days < 30 )
         {

@@ -1,30 +1,17 @@
 package com.insthub.ecmobile.model;
-
-/*
- *
- *       _/_/_/                      _/        _/_/_/_/_/
- *    _/          _/_/      _/_/    _/  _/          _/      _/_/      _/_/
- *   _/  _/_/  _/_/_/_/  _/_/_/_/  _/_/          _/      _/    _/  _/    _/
- *  _/    _/  _/        _/        _/  _/      _/        _/    _/  _/    _/
- *   _/_/_/    _/_/_/    _/_/_/  _/    _/  _/_/_/_/_/    _/_/      _/_/
- *
- *
- *  Copyright 2013-2014, Geek Zoo Studio
- *  http://www.ecmobile.cn/license.html
- *
- *  HQ China:
- *    2319 Est.Tower Van Palace
- *    No.2 Guandongdian South Street
- *    Beijing , China
- *
- *  U.S. Office:
- *    One Park Place, Elmira College, NY, 14901, USA
- *
- *  QQ Group:   329673575
- *  BBS:        bbs.ecmobile.cn
- *  Fax:        +86-10-6561-5510
- *  Mail:       info@geek-zoo.com
- */
+//
+//                       __
+//                      /\ \   _
+//    ____    ____   ___\ \ \_/ \           _____    ___     ___
+//   / _  \  / __ \ / __ \ \    <     __   /\__  \  / __ \  / __ \
+//  /\ \_\ \/\  __//\  __/\ \ \\ \   /\_\  \/_/  / /\ \_\ \/\ \_\ \
+//  \ \____ \ \____\ \____\\ \_\\_\  \/_/   /\____\\ \____/\ \____/
+//   \/____\ \/____/\/____/ \/_//_/         \/____/ \/___/  \/___/
+//     /\____/
+//     \/___/
+//
+//  Powered by BeeFramework
+//
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -109,7 +96,7 @@ public class GoodDetailModel extends BaseModel
 
         cb.url(url).type(JSONObject.class).params(params);
         ProgressDialog pd = new ProgressDialog(mContext);
-        pd.setMessage("请稍后...");
+        pd.setMessage(mContext.getResources().getString(R.string.hold_on));
 		aq.progress(pd).ajax(cb);
     }
 
@@ -172,7 +159,7 @@ public class GoodDetailModel extends BaseModel
 
         cb.url(url).type(JSONObject.class).params(params);
         ProgressDialog pd = new ProgressDialog(mContext);
-        pd.setMessage("请稍后...");
+        pd.setMessage(mContext.getResources().getString(R.string.hold_on));
 		aq.progress(pd).ajax(cb);
     }
 
@@ -232,7 +219,7 @@ public class GoodDetailModel extends BaseModel
 
        cb.url(url).type(JSONObject.class).params(params);
        ProgressDialog pd = new ProgressDialog(mContext);
-       pd.setMessage("请稍后...");
+       pd.setMessage(mContext.getResources().getString(R.string.hold_on));
        aq.progress(pd).ajax(cb);
    }
    
@@ -285,7 +272,7 @@ public class GoodDetailModel extends BaseModel
 
        cb.url(url).type(JSONObject.class).params(params);
        ProgressDialog pd = new ProgressDialog(mContext);
-       pd.setMessage("请稍后...");
+       pd.setMessage(mContext.getResources().getString(R.string.hold_on));
        aq.progress(pd).ajax(cb);
    }
 

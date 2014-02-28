@@ -1,36 +1,25 @@
 package com.insthub.ecmobile.model;
+//
+//                       __
+//                      /\ \   _
+//    ____    ____   ___\ \ \_/ \           _____    ___     ___
+//   / _  \  / __ \ / __ \ \    <     __   /\__  \  / __ \  / __ \
+//  /\ \_\ \/\  __//\  __/\ \ \\ \   /\_\  \/_/  / /\ \_\ \/\ \_\ \
+//  \ \____ \ \____\ \____\\ \_\\_\  \/_/   /\____\\ \____/\ \____/
+//   \/____\ \/____/\/____/ \/_//_/         \/____/ \/___/  \/___/
+//     /\____/
+//     \/___/
+//
+//  Powered by BeeFramework
+//
 
-/*
- *
- *       _/_/_/                      _/        _/_/_/_/_/
- *    _/          _/_/      _/_/    _/  _/          _/      _/_/      _/_/
- *   _/  _/_/  _/_/_/_/  _/_/_/_/  _/_/          _/      _/    _/  _/    _/
- *  _/    _/  _/        _/        _/  _/      _/        _/    _/  _/    _/
- *   _/_/_/    _/_/_/    _/_/_/  _/    _/  _/_/_/_/_/    _/_/      _/_/
- *
- *
- *  Copyright 2013-2014, Geek Zoo Studio
- *  http://www.ecmobile.cn/license.html
- *
- *  HQ China:
- *    2319 Est.Tower Van Palace
- *    No.2 Guandongdian South Street
- *    Beijing , China
- *
- *  U.S. Office:
- *    One Park Place, Elmira College, NY, 14901, USA
- *
- *  QQ Group:   329673575
- *  BBS:        bbs.ecmobile.cn
- *  Fax:        +86-10-6561-5510
- *  Mail:       info@geek-zoo.com
- */
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import com.external.androidquery.callback.AjaxStatus;
 import com.insthub.BeeFramework.model.BaseModel;
 import com.insthub.BeeFramework.model.BeeCallback;
+import com.insthub.ecmobile.R;
 import com.insthub.ecmobile.protocol.SHOPHELP;
 import com.insthub.ecmobile.protocol.STATUS;
 import org.json.JSONArray;
@@ -39,7 +28,6 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.util.ArrayList;
-
 
 public class HelpModel extends BaseModel
 {
@@ -70,13 +58,13 @@ public class HelpModel extends BaseModel
             is.close();
 
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
+             
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
+             
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+             
             e.printStackTrace();
         }
     }
@@ -106,7 +94,7 @@ public class HelpModel extends BaseModel
             }
 
         } catch (Exception e) {
-            // TODO Auto-generated catch block
+             
             e.printStackTrace();
         }
 
@@ -180,7 +168,7 @@ public class HelpModel extends BaseModel
 
         cb.url(url).type(JSONObject.class);
         ProgressDialog pd = new ProgressDialog(mContext);
-        pd.setMessage("正在拉取...");
+        pd.setMessage(mContext.getString(R.string.hold_on));
         aq.progress(pd).ajax(cb);
 
     }

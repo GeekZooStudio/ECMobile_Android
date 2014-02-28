@@ -1,35 +1,24 @@
 package com.insthub.ecmobile.model;
 
-/*
- *
- *       _/_/_/                      _/        _/_/_/_/_/
- *    _/          _/_/      _/_/    _/  _/          _/      _/_/      _/_/
- *   _/  _/_/  _/_/_/_/  _/_/_/_/  _/_/          _/      _/    _/  _/    _/
- *  _/    _/  _/        _/        _/  _/      _/        _/    _/  _/    _/
- *   _/_/_/    _/_/_/    _/_/_/  _/    _/  _/_/_/_/_/    _/_/      _/_/
- *
- *
- *  Copyright 2013-2014, Geek Zoo Studio
- *  http://www.ecmobile.cn/license.html
- *
- *  HQ China:
- *    2319 Est.Tower Van Palace
- *    No.2 Guandongdian South Street
- *    Beijing , China
- *
- *  U.S. Office:
- *    One Park Place, Elmira College, NY, 14901, USA
- *
- *  QQ Group:   329673575
- *  BBS:        bbs.ecmobile.cn
- *  Fax:        +86-10-6561-5510
- *  Mail:       info@geek-zoo.com
- */
+//
+//                       __
+//                      /\ \   _
+//    ____    ____   ___\ \ \_/ \           _____    ___     ___
+//   / _  \  / __ \ / __ \ \    <     __   /\__  \  / __ \  / __ \
+//  /\ \_\ \/\  __//\  __/\ \ \\ \   /\_\  \/_/  / /\ \_\ \/\ \_\ \
+//  \ \____ \ \____\ \____\\ \_\\_\  \/_/   /\____\\ \____/\ \____/
+//   \/____\ \/____/\/____/ \/_//_/         \/____/ \/___/  \/___/
+//     /\____/
+//     \/___/
+//
+//  Powered by BeeFramework
+//
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.insthub.ecmobile.R;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,7 +42,7 @@ public class CollectListModel extends BaseModel {
 	public PAGINATED paginated;
 	public CollectListModel(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
+		 
 	}
 	
 	public void getCollectList() {
@@ -85,7 +74,7 @@ public class CollectListModel extends BaseModel {
 					}
 					
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
+					 
 					e.printStackTrace();
 				}
 				
@@ -114,7 +103,7 @@ public class CollectListModel extends BaseModel {
 		
 		cb.url(url).type(JSONObject.class).params(params);
 		ProgressDialog pd = new ProgressDialog(mContext);
-        pd.setMessage("请稍后...");
+        pd.setMessage(mContext.getResources().getString(R.string.hold_on));
 		aq.progress(pd).ajax(cb);
 		
 	}
@@ -147,7 +136,7 @@ public class CollectListModel extends BaseModel {
 					}
 					
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
+					 
 					e.printStackTrace();
 				}
 				
@@ -198,7 +187,7 @@ public class CollectListModel extends BaseModel {
 					}
 						
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
+					 
 					e.printStackTrace();
 				}
 			}
@@ -221,7 +210,7 @@ public class CollectListModel extends BaseModel {
 	    params.put("json",requestJsonObject.toString());
 	    cb.url(url).type(JSONObject.class).params(params);
 	    ProgressDialog pd = new ProgressDialog(mContext);
-        pd.setMessage("请稍后...");
+        pd.setMessage(mContext.getResources().getString(R.string.hold_on));
 		aq.progress(pd).ajax(cb);
 			
 	}

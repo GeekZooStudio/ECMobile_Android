@@ -1,30 +1,17 @@
 package com.insthub.ecmobile.component;
-
-/*
- *
- *       _/_/_/                      _/        _/_/_/_/_/
- *    _/          _/_/      _/_/    _/  _/          _/      _/_/      _/_/
- *   _/  _/_/  _/_/_/_/  _/_/_/_/  _/_/          _/      _/    _/  _/    _/
- *  _/    _/  _/        _/        _/  _/      _/        _/    _/  _/    _/
- *   _/_/_/    _/_/_/    _/_/_/  _/    _/  _/_/_/_/_/    _/_/      _/_/
- *
- *
- *  Copyright 2013-2014, Geek Zoo Studio
- *  http://www.ecmobile.cn/license.html
- *
- *  HQ China:
- *    2319 Est.Tower Van Palace
- *    No.2 Guandongdian South Street
- *    Beijing , China
- *
- *  U.S. Office:
- *    One Park Place, Elmira College, NY, 14901, USA
- *
- *  QQ Group:   329673575
- *  BBS:        bbs.ecmobile.cn
- *  Fax:        +86-10-6561-5510
- *  Mail:       info@geek-zoo.com
- */
+//
+//                       __
+//                      /\ \   _
+//    ____    ____   ___\ \ \_/ \           _____    ___     ___
+//   / _  \  / __ \ / __ \ \    <     __   /\__  \  / __ \  / __ \
+//  /\ \_\ \/\  __//\  __/\ \ \\ \   /\_\  \/_/  / /\ \_\ \/\ \_\ \
+//  \ \____ \ \____\ \____\\ \_\\_\  \/_/   /\____\\ \____/\ \____/
+//   \/____\ \/____/\/____/ \/_//_/         \/____/ \/___/  \/___/
+//     /\____/
+//     \/___/
+//
+//  Powered by BeeFramework
+//
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,22 +24,24 @@ import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.insthub.BeeFramework.view.WebImageView;
+import com.insthub.ecmobile.EcmobileApp;
 import com.insthub.ecmobile.R;
 import com.insthub.ecmobile.activity.EcmobileMainActivity;
-import com.insthub.ecmobile.activity.GoodDetailActivity;
-import com.insthub.ecmobile.activity.GoodsListActivity;
+import com.insthub.ecmobile.activity.B2_ProductDetailActivity;
+import com.insthub.ecmobile.activity.B1_ProductListActivity;
 import com.insthub.ecmobile.protocol.SIMPLEGOODS;
-
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class HotSellingCell extends LinearLayout
 {
 	Context mContext;
-    private WebImageView good_cell_photo_one;
-    private WebImageView good_cell_photo_two;
+    private ImageView good_cell_photo_one;
+    private ImageView good_cell_photo_two;
     private TextView     good_cell_price_one;
     private TextView     good_cell_price_two;
     private FrameLayout  good_cell_one;
@@ -60,6 +49,7 @@ public class HotSellingCell extends LinearLayout
     
     private SharedPreferences shared;
 	private SharedPreferences.Editor editor;
+    protected ImageLoader imageLoader = ImageLoader.getInstance();
     
     ArrayList<SIMPLEGOODS> cellData = new ArrayList<SIMPLEGOODS>();
     Handler mHandler;
@@ -87,7 +77,7 @@ public class HotSellingCell extends LinearLayout
                 public void onClick(View v)
                 {
                     SIMPLEGOODS simplegoods = cellData.get(0);
-                    Intent it = new Intent(mContext, GoodDetailActivity.class);
+                    Intent it = new Intent(mContext, B2_ProductDetailActivity.class);
                     it.putExtra("good_id",simplegoods.id);
                     mContext.startActivity(it);
                     ((EcmobileMainActivity)mContext).overridePendingTransition(R.anim.push_right_in,R.anim.push_right_out);
@@ -103,7 +93,7 @@ public class HotSellingCell extends LinearLayout
                 public void onClick(View v)
                 {
                     SIMPLEGOODS simplegoods = cellData.get(1);
-                    Intent it = new Intent(mContext, GoodDetailActivity.class);
+                    Intent it = new Intent(mContext, B2_ProductDetailActivity.class);
                     it.putExtra("good_id",simplegoods.id);
                     mContext.startActivity(it);
                     ((EcmobileMainActivity)mContext).overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
@@ -113,12 +103,12 @@ public class HotSellingCell extends LinearLayout
 
         if (null == good_cell_photo_one)
         {
-            good_cell_photo_one = (WebImageView)findViewById(R.id.good_cell_photo_one);
+            good_cell_photo_one = (ImageView)findViewById(R.id.good_cell_photo_one);
         }
 
         if (null == good_cell_photo_two)
         {
-            good_cell_photo_two = (WebImageView)findViewById(R.id.good_cell_photo_two);
+            good_cell_photo_two = (ImageView)findViewById(R.id.good_cell_photo_two);
         }
 
         if (null == good_cell_price_one)
@@ -145,22 +135,18 @@ public class HotSellingCell extends LinearLayout
     		String imageType = shared.getString("imageType", "mind");
     		
     		if(imageType.equals("high")) {
-    			good_cell_photo_one.setImageWithURL(mContext,goodOne.img.thumb,R.drawable.default_image);
+                imageLoader.displayImage(goodOne.img.thumb,good_cell_photo_one, EcmobileApp.options);
+
     		} else if(imageType.equals("low")) {
-    			good_cell_photo_one.setImageWithURL(mContext,goodOne.img.small,R.drawable.default_image);
+                imageLoader.displayImage(goodOne.img.small,good_cell_photo_one, EcmobileApp.options);
     		} else {
     			String netType = shared.getString("netType", "wifi");
     			if(netType.equals("wifi")) {
-    				good_cell_photo_one.setImageWithURL(mContext,goodOne.img.thumb,R.drawable.default_image);
+                    imageLoader.displayImage(goodOne.img.thumb,good_cell_photo_one, EcmobileApp.options);
     			} else {
-    				good_cell_photo_one.setImageWithURL(mContext,goodOne.img.small,R.drawable.default_image);
+                    imageLoader.displayImage(goodOne.img.small,good_cell_photo_one, EcmobileApp.options);
     			}
     		}
-            
-//            if (null != goodOne && null != goodOne.img && null != goodOne.img.url)
-//            {
-//                good_cell_photo_one.setImageWithURL(mContext,goodOne.img.url,R.drawable.default_image);
-//            }
 
             good_cell_price_one.setText(goodOne.promote_price);
 
@@ -169,27 +155,19 @@ public class HotSellingCell extends LinearLayout
                 good_cell_two.setVisibility(View.VISIBLE);
                 SIMPLEGOODS goodTwo = cellData.get(1);
                 
-        		if(imageType.equals("high")) {
-        			//System.out.println("high--wifi");
-        			good_cell_photo_two.setImageWithURL(mContext,goodTwo.img.thumb,R.drawable.default_image);
-        		} else if(imageType.equals("low")) {
-        			//System.out.println("low--3g");
-        			good_cell_photo_two.setImageWithURL(mContext,goodTwo.img.small,R.drawable.default_image);
+        		if(imageType.equals("high")) {        			
+                    imageLoader.displayImage(goodTwo.img.thumb,good_cell_photo_two, EcmobileApp.options);
+        		} else if(imageType.equals("low")) {        			
+                    imageLoader.displayImage(goodTwo.img.small,good_cell_photo_two, EcmobileApp.options);
         		} else {
         			String netType = shared.getString("netType", "wifi");
-        			if(netType.equals("wifi")) {
-        				//System.out.println("mind--wifi");
-        				good_cell_photo_two.setImageWithURL(mContext,goodTwo.img.thumb,R.drawable.default_image);
-        			} else {
-        				//System.out.println("mind--3g");
-        				good_cell_photo_two.setImageWithURL(mContext,goodTwo.img.small,R.drawable.default_image);
+        			if(netType.equals("wifi")) {        				
+                        imageLoader.displayImage(goodTwo.img.thumb,good_cell_photo_two, EcmobileApp.options);
+        			} else {        				
+                        imageLoader.displayImage(goodTwo.img.small,good_cell_photo_two, EcmobileApp.options);
         			}
         		}
-                
-//                if (null != goodTwo && null != goodTwo.img && null != goodTwo.img.url)
-//                {
-//                    good_cell_photo_two.setImageWithURL(mContext,goodTwo.img.url,R.drawable.default_image);
-//                }
+
                 good_cell_price_two.setText(goodTwo.promote_price);
             }
             else

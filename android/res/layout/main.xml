@@ -2,25 +2,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:background="#000000">
+    android:background="#000000"
+    android:orientation="vertical" >
 
-    <fragment android:layout_width="match_parent"
-              android:layout_height="45dp"
-              android:name="com.insthub.ecmobile.fragment.TabsFragment" android:id="@+id/tabs_fragment"
-              android:layout_alignParentBottom="true"
-              />
+    <fragment
+        android:id="@+id/tabs_fragment"
+        android:name="com.insthub.ecmobile.fragment.TabsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true" />
 
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/tabs_fragment"
-        android:background="@drawable/good_list_bg"
-        android:layout_alignParentTop="true">
-
+        android:layout_alignParentTop="true"
+        android:background="@drawable/good_list_bg" >
     </FrameLayout>
-
-
 
 </RelativeLayout>

@@ -1,8 +1,8 @@
 
 package com.insthub.ecmobile.protocol;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import com.external.activeandroid.Model;
 import com.external.activeandroid.annotation.Column;
 import com.external.activeandroid.annotation.Table;
@@ -24,6 +24,12 @@ public class MESSAGE extends Model
 
      @Column(name = "time")
      public String time;
+     
+     @Column(name = "custom_data")
+     public String custom_data;
+     
+     @Column(name = "created_at")
+     public String created_at;
 
  public static MESSAGE fromJson(JSONObject jsonObject)  throws JSONException
  {
@@ -32,8 +38,6 @@ public class MESSAGE extends Model
       }
 
      MESSAGE localItem = new MESSAGE();
-
-     JSONArray subItemArray;
 
      localItem.content = jsonObject.optString("content");
 
@@ -44,6 +48,9 @@ public class MESSAGE extends Model
      localItem.time = jsonObject.optString("time");
 
      localItem.id = jsonObject.optInt("id");
+     
+     localItem.custom_data = jsonObject.optString("custom_data");
+     localItem.created_at = jsonObject.optString("created_at");
 
      return localItem;
  }
@@ -52,12 +59,13 @@ public class MESSAGE extends Model
  {
      JSONObject localItemObject = new JSONObject();
 
-     JSONArray itemJSONArray = new JSONArray();
      localItemObject.put("content", content);
      localItemObject.put("action", action);
      localItemObject.put("parameter",parameter);
      localItemObject.put("time", time);
      localItemObject.put("id",id);
+     localItemObject.put("custom_data", custom_data);
+     localItemObject.put("created_at", created_at);
 
      return localItemObject;
  }

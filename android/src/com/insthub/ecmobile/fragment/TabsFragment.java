@@ -1,30 +1,18 @@
 package com.insthub.ecmobile.fragment;
 
-/*
- *
- *       _/_/_/                      _/        _/_/_/_/_/
- *    _/          _/_/      _/_/    _/  _/          _/      _/_/      _/_/
- *   _/  _/_/  _/_/_/_/  _/_/_/_/  _/_/          _/      _/    _/  _/    _/
- *  _/    _/  _/        _/        _/  _/      _/        _/    _/  _/    _/
- *   _/_/_/    _/_/_/    _/_/_/  _/    _/  _/_/_/_/_/    _/_/      _/_/
- *
- *
- *  Copyright 2013-2014, Geek Zoo Studio
- *  http://www.ecmobile.cn/license.html
- *
- *  HQ China:
- *    2319 Est.Tower Van Palace
- *    No.2 Guandongdian South Street
- *    Beijing , China
- *
- *  U.S. Office:
- *    One Park Place, Elmira College, NY, 14901, USA
- *
- *  QQ Group:   329673575
- *  BBS:        bbs.ecmobile.cn
- *  Fax:        +86-10-6561-5510
- *  Mail:       info@geek-zoo.com
- */
+//
+//                       __
+//                      /\ \   _
+//    ____    ____   ___\ \ \_/ \           _____    ___     ___
+//   / _  \  / __ \ / __ \ \    <     __   /\__  \  / __ \  / __ \
+//  /\ \_\ \/\  __//\  __/\ \ \\ \   /\_\  \/_/  / /\ \_\ \/\ \_\ \
+//  \ \____ \ \____\ \____\\ \_\\_\  \/_/   /\____\\ \____/\ \____/
+//   \/____\ \/____/\/____/ \/_//_/         \/____/ \/___/  \/___/
+//     /\____/
+//     \/___/
+//
+//  Powered by BeeFramework
+//
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -43,7 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.insthub.ecmobile.R;
-import com.insthub.ecmobile.activity.LoginActivity;
+import com.insthub.ecmobile.activity.A0_SigninActivity;
 import com.insthub.ecmobile.model.ShoppingCartModel;
 
 public class TabsFragment extends Fragment
@@ -64,10 +52,10 @@ public class TabsFragment extends Fragment
     
 	private SharedPreferences shared;
 	private SharedPreferences.Editor editor;
-    HomeFragment homeFragment;
-    SearchFragment searchFragment;
-    ShoppingCartFragment shoppingCartFragment;
-    ProfileFragment profileFragment;
+    B0_IndexFragment homeFragment;
+    D0_CategoryFragment searchFragment;
+    C0_ShoppingCartFragment shoppingCartFragment;
+    E0_ProfileFragment profileFragment;
 
     public TabsFragment() {
     }
@@ -144,7 +132,7 @@ public class TabsFragment extends Fragment
 
             if (null == homeFragment)
             {
-                homeFragment = new HomeFragment();
+                homeFragment = new B0_IndexFragment();
             }
 
             FragmentTransaction localFragmentTransaction = getFragmentManager().beginTransaction();
@@ -165,7 +153,7 @@ public class TabsFragment extends Fragment
         else if (tabName == "tab_two")
         {
             
-                searchFragment = new SearchFragment();
+                searchFragment = new D0_CategoryFragment();
             
 
             FragmentTransaction localFragmentTransaction = getFragmentManager().beginTransaction();
@@ -196,7 +184,7 @@ public class TabsFragment extends Fragment
 //            {
 
                 
-                    shoppingCartFragment = new ShoppingCartFragment();
+                    shoppingCartFragment = new C0_ShoppingCartFragment();
                 
 
                 FragmentTransaction localFragmentTransaction = getFragmentManager().beginTransaction();
@@ -205,7 +193,7 @@ public class TabsFragment extends Fragment
 
                 this.tab_one.setImageResource(R.drawable.footer_home_icon);
                 this.tab_two.setImageResource(R.drawable.footer_search_icon);
-                this.tab_three.setImageResource(R.drawable.footer_shoppingcart_active_icon);
+                this.tab_three.setImageResource(R.drawable.footer_shopping_cart_active_icon);
                 this.tab_four.setImageResource(R.drawable.footer_user_icon);
 
                 this.tab_onebg.setVisibility(View.INVISIBLE);
@@ -225,7 +213,7 @@ public class TabsFragment extends Fragment
 //        	} else {
 
                 
-                    profileFragment = new ProfileFragment();
+                    profileFragment = new E0_ProfileFragment();
                 
 
 
@@ -249,7 +237,7 @@ public class TabsFragment extends Fragment
     
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    	// TODO Auto-generated method stub
+    	 
     	super.onActivityResult(requestCode, resultCode, data);
     	
     	//登录成功返回到个人主页
@@ -257,7 +245,7 @@ public class TabsFragment extends Fragment
 			if (data != null) {
                 if (null == profileFragment)
                 {
-                    profileFragment = new ProfileFragment();
+                    profileFragment = new E0_ProfileFragment();
                 }
 
 				FragmentTransaction localFragmentTransaction = getFragmentManager().beginTransaction();
@@ -281,7 +269,7 @@ public class TabsFragment extends Fragment
             {
                 if (null == shoppingCartFragment)
                 {
-                    shoppingCartFragment = new ShoppingCartFragment();
+                    shoppingCartFragment = new C0_ShoppingCartFragment();
                 }
 
                 FragmentTransaction localFragmentTransaction = getFragmentManager().beginTransaction();
@@ -290,7 +278,7 @@ public class TabsFragment extends Fragment
 
                 this.tab_one.setImageResource(R.drawable.footer_home_icon);
                 this.tab_two.setImageResource(R.drawable.footer_search_icon);
-                this.tab_three.setImageResource(R.drawable.footer_shoppingcart_active_icon);
+                this.tab_three.setImageResource(R.drawable.footer_shopping_cart_active_icon);
                 this.tab_four.setImageResource(R.drawable.footer_user_icon);
 
                 this.tab_onebg.setVisibility(View.INVISIBLE);
@@ -304,7 +292,7 @@ public class TabsFragment extends Fragment
     
     @Override
     public void onResume() {
-    	// TODO Auto-generated method stub
+    	 
     	super.onResume();
     	setShoppingcartNum();
     }

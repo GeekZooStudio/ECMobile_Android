@@ -12,7 +12,7 @@
         android:paddingBottom="5dp"
         android:paddingTop="5dp" >
 
-        <com.insthub.BeeFramework.view.WebImageView
+        <ImageView
             android:id="@+id/trade_body_image"
             android:layout_width="60dp"
             android:layout_height="60dp"

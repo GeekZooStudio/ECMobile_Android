@@ -1,30 +1,18 @@
 package com.insthub.ecmobile.model;
 
-/*
- *
- *       _/_/_/                      _/        _/_/_/_/_/
- *    _/          _/_/      _/_/    _/  _/          _/      _/_/      _/_/
- *   _/  _/_/  _/_/_/_/  _/_/_/_/  _/_/          _/      _/    _/  _/    _/
- *  _/    _/  _/        _/        _/  _/      _/        _/    _/  _/    _/
- *   _/_/_/    _/_/_/    _/_/_/  _/    _/  _/_/_/_/_/    _/_/      _/_/
- *
- *
- *  Copyright 2013-2014, Geek Zoo Studio
- *  http://www.ecmobile.cn/license.html
- *
- *  HQ China:
- *    2319 Est.Tower Van Palace
- *    No.2 Guandongdian South Street
- *    Beijing , China
- *
- *  U.S. Office:
- *    One Park Place, Elmira College, NY, 14901, USA
- *
- *  QQ Group:   329673575
- *  BBS:        bbs.ecmobile.cn
- *  Fax:        +86-10-6561-5510
- *  Mail:       info@geek-zoo.com
- */
+//
+//                       __
+//                      /\ \   _
+//    ____    ____   ___\ \ \_/ \           _____    ___     ___
+//   / _  \  / __ \ / __ \ \    <     __   /\__  \  / __ \  / __ \
+//  /\ \_\ \/\  __//\  __/\ \ \\ \   /\_\  \/_/  / /\ \_\ \/\ \_\ \
+//  \ \____ \ \____\ \____\\ \_\\_\  \/_/   /\____\\ \____/\ \____/
+//   \/____\ \/____/\/____/ \/_//_/         \/____/ \/___/  \/___/
+//     /\____/
+//     \/___/
+//
+//  Powered by BeeFramework
+//
 
 import android.app.ProgressDialog;
 import com.insthub.BeeFramework.model.BeeQuery;
@@ -97,13 +85,13 @@ public class HomeModel extends BaseModel
 				is.close();
 				
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
+				 
 				e.printStackTrace();
 			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
+				 
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				 
 				e.printStackTrace();
 			}
 		}
@@ -127,13 +115,13 @@ public class HomeModel extends BaseModel
 				is.close();
 				
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
+				 
 				e.printStackTrace();
 			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
+				 
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				 
 				e.printStackTrace();
 			}
 		}
@@ -157,13 +145,13 @@ public class HomeModel extends BaseModel
 				is.close();
 				
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
+				 
 				e.printStackTrace();
 			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
+				 
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				 
 				e.printStackTrace();
 			}
 		}
@@ -216,7 +204,7 @@ public class HomeModel extends BaseModel
 			}
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			 
 			e.printStackTrace();
 		}
     	
@@ -247,7 +235,7 @@ public class HomeModel extends BaseModel
 			}
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			 
 			e.printStackTrace();
 		}
     	
@@ -264,8 +252,7 @@ public class HomeModel extends BaseModel
 			
 			@Override
 			public void callback(String url, JSONObject jo, AjaxStatus status) {
-
-				//System.out.println("jo----"+jo);
+				
 				try 
 				{
 					STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
@@ -307,13 +294,10 @@ public class HomeModel extends BaseModel
 							
 							HomeModel.this.OnMessageResponse(url, jo, status);
 							
-						}
-						
-						
+						}												
 					}
 					
-				} catch (JSONException e) {
-					// TODO: handle exception
+				} catch (JSONException e) {					
 				}
 				
 			}
@@ -334,8 +318,7 @@ public class HomeModel extends BaseModel
 			
 			@Override
 			public void callback(String url, JSONObject jo, AjaxStatus status) {
-				done(url, jo, status);
-				//System.out.println("jo----"+jo);
+				done(url, jo, status);				
 				try 
 				{
 					STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
@@ -362,8 +345,7 @@ public class HomeModel extends BaseModel
 						
 					}
 					
-				} catch (JSONException e) {
-					// TODO: handle exception
+				} catch (JSONException e) {					
 				}
 				
 			}
@@ -402,7 +384,7 @@ public class HomeModel extends BaseModel
 					HomeModel.this.OnMessageResponse(url, jo, status);
 					
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
+					 
 					e.printStackTrace();
 				}
 			

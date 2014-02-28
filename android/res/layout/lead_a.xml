@@ -1,29 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
-    <ImageView android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:src="@drawable/tuitional_bg"
-            android:visibility="invisible"/>
+    android:layout_height="match_parent" >
 
-    <ImageView android:layout_height="325dp"
-               android:layout_width="155dp"
-               android:src="@drawable/tuitional_img_1"
-               android:visibility="visible" android:layout_gravity="center"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/tuitional_bg"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:layout_width="155dp"
+        android:layout_height="325dp"
+        android:layout_gravity="center"
+        android:src="@drawable/tuitional_img_1"
+        android:visibility="visible" />
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:gravity="center"
+        android:shadowColor="#000000"
+        android:shadowDy="1"
+        android:shadowRadius="5"
         android:text="@string/easily_get_ecmobile"
         android:textColor="#ffffff"
-        android:textSize="28dp"
-        android:shadowColor="#000000"
-        android:shadowRadius="5"
-        android:shadowDy="1" />
+        android:textSize="28dp" />
 
     <TextView
         android:layout_width="fill_parent"
@@ -32,12 +35,12 @@
         android:layout_marginBottom="60dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
+        android:shadowColor="#000000"
+        android:shadowDy="1"
+        android:shadowRadius="5"
         android:text="@string/no_need_to_change_code"
         android:textColor="#ffffff"
-        android:textSize="16dp" 
-        android:shadowColor="#000000"
-        android:shadowRadius="5"
-        android:shadowDy="1"/>
+        android:textSize="16dp" />
 
     <LinearLayout
         android:layout_width="fill_parent"

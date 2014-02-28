@@ -52,25 +52,25 @@ public class DebugListAdapter extends BaseAdapter {
 	
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
+		 
 		return DebugMessageModel.messageList.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		// TODO Auto-generated method stub
+		 
 		return DebugMessageModel.messageList.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		// TODO Auto-generated method stub
+		 
 		return position;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
+		 
 		final ViewHolder holder;
 		if(convertView == null) {
 			holder = new ViewHolder();

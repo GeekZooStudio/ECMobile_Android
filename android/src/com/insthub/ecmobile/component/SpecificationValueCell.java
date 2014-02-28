@@ -1,33 +1,21 @@
 package com.insthub.ecmobile.component;
-
-/*
- *
- *       _/_/_/                      _/        _/_/_/_/_/
- *    _/          _/_/      _/_/    _/  _/          _/      _/_/      _/_/
- *   _/  _/_/  _/_/_/_/  _/_/_/_/  _/_/          _/      _/    _/  _/    _/
- *  _/    _/  _/        _/        _/  _/      _/        _/    _/  _/    _/
- *   _/_/_/    _/_/_/    _/_/_/  _/    _/  _/_/_/_/_/    _/_/      _/_/
- *
- *
- *  Copyright 2013-2014, Geek Zoo Studio
- *  http://www.ecmobile.cn/license.html
- *
- *  HQ China:
- *    2319 Est.Tower Van Palace
- *    No.2 Guandongdian South Street
- *    Beijing , China
- *
- *  U.S. Office:
- *    One Park Place, Elmira College, NY, 14901, USA
- *
- *  QQ Group:   329673575
- *  BBS:        bbs.ecmobile.cn
- *  Fax:        +86-10-6561-5510
- *  Mail:       info@geek-zoo.com
- */
+//
+//                       __
+//                      /\ \   _
+//    ____    ____   ___\ \ \_/ \           _____    ___     ___
+//   / _  \  / __ \ / __ \ \    <     __   /\__  \  / __ \  / __ \
+//  /\ \_\ \/\  __//\  __/\ \ \\ \   /\_\  \/_/  / /\ \_\ \/\ \_\ \
+//  \ \____ \ \____\ \____\\ \_\\_\  \/_/   /\____\\ \____/\ \____/
+//   \/____\ \/____/\/____/ \/_//_/         \/____/ \/___/  \/___/
+//     /\____/
+//     \/___/
+//
+//  Powered by BeeFramework
+//
 
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -39,12 +27,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.external.eventbus.EventBus;
-import com.insthub.BeeFramework.activity.BaseActivity;
 import com.insthub.ecmobile.R;
 import com.insthub.ecmobile.model.GoodDetailDraft;
 import com.insthub.ecmobile.protocol.SPECIFICATION;
 import com.insthub.ecmobile.protocol.SPECIFICATION_VALUE;
-
 
 public class SpecificationValueCell extends LinearLayout{
 
@@ -79,7 +65,7 @@ public class SpecificationValueCell extends LinearLayout{
                     {
                         if (GoodDetailDraft.getInstance().isHasSpecId(specification_value_one.id))
                         {
-                            Resources resource = (Resources) ((BaseActivity)mContext).getBaseContext().getResources();
+                            Resources resource = (Resources) ((Activity)mContext).getBaseContext().getResources();
                             ColorStateList normalTextColor = (ColorStateList) resource.getColorStateList(R.color.spec_text_color);
                             GoodDetailDraft.getInstance().removeSpecId(specification_value_one.id);
                             specOne.setTextColor(normalTextColor);
@@ -100,7 +86,7 @@ public class SpecificationValueCell extends LinearLayout{
                     {
                         if (GoodDetailDraft.getInstance().isHasSpecId(specification_value_one.id))
                         {
-                            Resources resource = (Resources) ((BaseActivity)mContext).getBaseContext().getResources();
+                            Resources resource = (Resources) ((Activity)mContext).getBaseContext().getResources();
                             ColorStateList normalTextColor = (ColorStateList) resource.getColorStateList(R.color.spec_text_color);
                             GoodDetailDraft.getInstance().removeSpecId(specification_value_one.id);
                             specOne.setTextColor(normalTextColor);
@@ -140,7 +126,7 @@ public class SpecificationValueCell extends LinearLayout{
                     {
                         if (GoodDetailDraft.getInstance().isHasSpecId(specification_value_two.id))
                         {
-                            Resources resource = (Resources) ((BaseActivity)mContext).getBaseContext().getResources();
+                            Resources resource = (Resources) ((Activity)mContext).getBaseContext().getResources();
                             ColorStateList normalTextColor = (ColorStateList) resource.getColorStateList(R.color.spec_text_color);
                             GoodDetailDraft.getInstance().removeSpecId(specification_value_two.id);
                             specTwo.setTextColor(normalTextColor);
@@ -161,7 +147,7 @@ public class SpecificationValueCell extends LinearLayout{
                     {
                         if (GoodDetailDraft.getInstance().isHasSpecId(specification_value_two.id))
                         {
-                            Resources resource = (Resources) ((BaseActivity)mContext).getBaseContext().getResources();
+                            Resources resource = (Resources) ((Activity)mContext).getBaseContext().getResources();
                             ColorStateList normalTextColor = (ColorStateList) resource.getColorStateList(R.color.spec_text_color);
                             GoodDetailDraft.getInstance().removeSpecId(specification_value_two.id);
                             specTwo.setTextColor(normalTextColor);
@@ -254,7 +240,7 @@ public class SpecificationValueCell extends LinearLayout{
     {
         if (event.getClass() == SPECIFICATION_VALUE.class)
         {
-            Resources resource = (Resources) ((BaseActivity)mContext).getBaseContext().getResources();
+            Resources resource = (Resources) ((Activity)mContext).getBaseContext().getResources();
             ColorStateList normalTextColor = (ColorStateList) resource.getColorStateList(R.color.spec_text_color);
 
             if ( 0 == ((SPECIFICATION_VALUE) event).specification.attr_type.compareTo(SPECIFICATION.MULTIPLE_SELECT))

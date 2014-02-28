@@ -1,35 +1,24 @@
 package com.insthub.ecmobile.model;
 
-/*
- *
- *       _/_/_/                      _/        _/_/_/_/_/
- *    _/          _/_/      _/_/    _/  _/          _/      _/_/      _/_/
- *   _/  _/_/  _/_/_/_/  _/_/_/_/  _/_/          _/      _/    _/  _/    _/
- *  _/    _/  _/        _/        _/  _/      _/        _/    _/  _/    _/
- *   _/_/_/    _/_/_/    _/_/_/  _/    _/  _/_/_/_/_/    _/_/      _/_/
- *
- *
- *  Copyright 2013-2014, Geek Zoo Studio
- *  http://www.ecmobile.cn/license.html
- *
- *  HQ China:
- *    2319 Est.Tower Van Palace
- *    No.2 Guandongdian South Street
- *    Beijing , China
- *
- *  U.S. Office:
- *    One Park Place, Elmira College, NY, 14901, USA
- *
- *  QQ Group:   329673575
- *  BBS:        bbs.ecmobile.cn
- *  Fax:        +86-10-6561-5510
- *  Mail:       info@geek-zoo.com
- */
+//
+//                       __
+//                      /\ \   _
+//    ____    ____   ___\ \ \_/ \           _____    ___     ___
+//   / _  \  / __ \ / __ \ \    <     __   /\__  \  / __ \  / __ \
+//  /\ \_\ \/\  __//\  __/\ \ \\ \   /\_\  \/_/  / /\ \_\ \/\ \_\ \
+//  \ \____ \ \____\ \____\\ \_\\_\  \/_/   /\____\\ \____/\ \____/
+//   \/____\ \/____/\/____/ \/_//_/         \/____/ \/___/  \/___/
+//     /\____/
+//     \/___/
+//
+//  Powered by BeeFramework
+//
 
 import java.util.HashMap;
 import java.util.Map;
 
 import android.content.res.Resources;
+import com.insthub.BeeFramework.BeeFrameworkConst;
 import com.insthub.ecmobile.ErrorCodeConst;
 import com.insthub.ecmobile.R;
 import org.json.JSONException;
@@ -39,10 +28,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Gravity;
-import android.widget.Toast;
 
 import com.external.androidquery.callback.AjaxStatus;
-import com.insthub.BeeFramework.AppConst;
 import com.insthub.BeeFramework.Utils.Utils;
 import com.insthub.BeeFramework.model.BaseModel;
 import com.insthub.BeeFramework.model.BeeCallback;
@@ -105,7 +92,7 @@ public class LoginModel extends BaseModel {
 					LoginModel.this.OnMessageResponse(url, jo, status);
 					
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
+					 
 					e.printStackTrace();
 				}
 			}

@@ -1,30 +1,18 @@
 package com.insthub.ecmobile.component;
 
-/*
- *
- *       _/_/_/                      _/        _/_/_/_/_/
- *    _/          _/_/      _/_/    _/  _/          _/      _/_/      _/_/
- *   _/  _/_/  _/_/_/_/  _/_/_/_/  _/_/          _/      _/    _/  _/    _/
- *  _/    _/  _/        _/        _/  _/      _/        _/    _/  _/    _/
- *   _/_/_/    _/_/_/    _/_/_/  _/    _/  _/_/_/_/_/    _/_/      _/_/
- *
- *
- *  Copyright 2013-2014, Geek Zoo Studio
- *  http://www.ecmobile.cn/license.html
- *
- *  HQ China:
- *    2319 Est.Tower Van Palace
- *    No.2 Guandongdian South Street
- *    Beijing , China
- *
- *  U.S. Office:
- *    One Park Place, Elmira College, NY, 14901, USA
- *
- *  QQ Group:   329673575
- *  BBS:        bbs.ecmobile.cn
- *  Fax:        +86-10-6561-5510
- *  Mail:       info@geek-zoo.com
- */
+//
+//                       __
+//                      /\ \   _
+//    ____    ____   ___\ \ \_/ \           _____    ___     ___
+//   / _  \  / __ \ / __ \ \    <     __   /\__  \  / __ \  / __ \
+//  /\ \_\ \/\  __//\  __/\ \ \\ \   /\_\  \/_/  / /\ \_\ \/\ \_\ \
+//  \ \____ \ \____\ \____\\ \_\\_\  \/_/   /\____\\ \____/\ \____/
+//   \/____\ \/____/\/____/ \/_//_/         \/____/ \/___/  \/___/
+//     /\____/
+//     \/___/
+//
+//  Powered by BeeFramework
+//
 
 import android.app.Activity;
 import android.content.Context;
@@ -33,19 +21,22 @@ import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.insthub.BeeFramework.view.WebImageView;
+import com.insthub.ecmobile.EcmobileApp;
 import com.insthub.ecmobile.R;
-import com.insthub.ecmobile.activity.GoodDetailActivity;
-import com.insthub.ecmobile.activity.GoodsListActivity;
+import com.insthub.ecmobile.activity.B2_ProductDetailActivity;
+import com.insthub.ecmobile.activity.B1_ProductListActivity;
 import com.insthub.ecmobile.protocol.SIMPLEGOODS;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class GoodItemLargeCell extends LinearLayout
 {
-    private WebImageView item_photo;
+    private ImageView item_photo;
     private TextView    briefTextView;
     private TextView    priceContent;
     private TextView marketContent;
@@ -53,6 +44,7 @@ public class GoodItemLargeCell extends LinearLayout
     
     private SharedPreferences shared;
 	private SharedPreferences.Editor editor;
+    protected ImageLoader imageLoader = ImageLoader.getInstance();
 
     public GoodItemLargeCell(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -63,7 +55,7 @@ public class GoodItemLargeCell extends LinearLayout
     {
          if (null == item_photo)
          {
-             item_photo = (WebImageView)findViewById(R.id.gooditem_photo);
+             item_photo = (ImageView)findViewById(R.id.gooditem_photo);
          }
 
         if (null == briefTextView)
@@ -95,15 +87,21 @@ public class GoodItemLargeCell extends LinearLayout
 		String imageType = shared.getString("imageType", "mind");
 		
 		if(imageType.equals("high")) {
-			item_photo.setImageWithURL(mContext,simplegoods.img.url,R.drawable.default_image);
+//			item_photo.setImageWithURL(mContext,simplegoods.img.url,R.drawable.default_image);
+            imageLoader.displayImage(simplegoods.img.url,item_photo, EcmobileApp.options);
+
 		} else if(imageType.equals("low")) {
-			item_photo.setImageWithURL(mContext,simplegoods.img.thumb,R.drawable.default_image);
+//			item_photo.setImageWithURL(mContext,simplegoods.img.thumb,R.drawable.default_image);
+            imageLoader.displayImage(simplegoods.img.thumb,item_photo, EcmobileApp.options);
 		} else {
 			String netType = shared.getString("netType", "wifi");
 			if(netType.equals("wifi")) {
-				item_photo.setImageWithURL(mContext,simplegoods.img.url,R.drawable.default_image);
+//				item_photo.setImageWithURL(mContext,simplegoods.img.url,R.drawable.default_image);
+                imageLoader.displayImage(simplegoods.img.url,item_photo, EcmobileApp.options);
+
 			} else {
-				item_photo.setImageWithURL(mContext,simplegoods.img.thumb,R.drawable.default_image);
+//				item_photo.setImageWithURL(mContext,simplegoods.img.thumb,R.drawable.default_image);
+                imageLoader.displayImage(simplegoods.img.thumb,item_photo, EcmobileApp.options);
 			}
 		}
 
@@ -128,8 +126,8 @@ public class GoodItemLargeCell extends LinearLayout
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-	        	Intent it = new Intent(mContext,GoodDetailActivity.class);
+				 
+	        	Intent it = new Intent(mContext,B2_ProductDetailActivity.class);
 	        	it.putExtra("good_id", simplegoods.goods_id);
 	            mContext.startActivity(it);
 			

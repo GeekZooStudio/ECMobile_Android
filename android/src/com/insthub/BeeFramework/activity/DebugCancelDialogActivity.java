@@ -22,7 +22,7 @@ public class DebugCancelDialogActivity extends Activity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+		 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.dialog_layout);
 		
@@ -40,7 +40,7 @@ public class DebugCancelDialogActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				 
 				Message msg = new Message();
                 msg.what = 1;
                 parentHandler.handleMessage(msg);
@@ -52,7 +52,7 @@ public class DebugCancelDialogActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				 
 				finish();
 			}
 		});

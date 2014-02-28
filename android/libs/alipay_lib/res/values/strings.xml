@@ -1,0 +1,17 @@
+<resources>
+
+    <string name="confirm_title">提示</string>
+    <string name="ensure">确定</string>
+    <string name="cancel">取消</string>
+    <string name="content_description_icon">icon</string>
+    <string name="refresh">刷新</string>
+    <string name="processing">加载中</string>
+    <string name="download">下载</string>
+    <string name="download_fail">下载安装包失败</string>
+    <string name="cancel_install_msp">你已取消安装移动快捷支付服务</string>
+    <string name="cancel_install_alipay">你已取消安装支付宝钱包</string>
+    <string name="redo">重试</string>
+    <string name="install_msp">你尚未安装支付宝移动快捷支付服务，请立即安装</string>
+    <string name="install_alipay">你尚未安装支付宝钱包，请立即安装</string>
+
+</resources>

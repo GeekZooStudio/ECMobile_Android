@@ -1,33 +1,19 @@
 package com.insthub.ecmobile.model;
-
-/*
- *
- *       _/_/_/                      _/        _/_/_/_/_/
- *    _/          _/_/      _/_/    _/  _/          _/      _/_/      _/_/
- *   _/  _/_/  _/_/_/_/  _/_/_/_/  _/_/          _/      _/    _/  _/    _/
- *  _/    _/  _/        _/        _/  _/      _/        _/    _/  _/    _/
- *   _/_/_/    _/_/_/    _/_/_/  _/    _/  _/_/_/_/_/    _/_/      _/_/
- *
- *
- *  Copyright 2013-2014, Geek Zoo Studio
- *  http://www.ecmobile.cn/license.html
- *
- *  HQ China:
- *    2319 Est.Tower Van Palace
- *    No.2 Guandongdian South Street
- *    Beijing , China
- *
- *  U.S. Office:
- *    One Park Place, Elmira College, NY, 14901, USA
- *
- *  QQ Group:   329673575
- *  BBS:        bbs.ecmobile.cn
- *  Fax:        +86-10-6561-5510
- *  Mail:       info@geek-zoo.com
- */
+//
+//                       __
+//                      /\ \   _
+//    ____    ____   ___\ \ \_/ \           _____    ___     ___
+//   / _  \  / __ \ / __ \ \    <     __   /\__  \  / __ \  / __ \
+//  /\ \_\ \/\  __//\  __/\ \ \\ \   /\_\  \/_/  / /\ \_\ \/\ \_\ \
+//  \ \____ \ \____\ \____\\ \_\\_\  \/_/   /\____\\ \____/\ \____/
+//   \/____\ \/____/\/____/ \/_//_/         \/____/ \/___/  \/___/
+//     /\____/
+//     \/___/
+//
+//  Powered by BeeFramework
+//
 
 import android.os.Environment;
-
 
 public class ProtocolConst {
 	
@@ -92,9 +78,11 @@ public class ProtocolConst {
     public static String ORDER_PAY = "order/pay";					// 在线支付
     
     public static String ORDER_CANCLE = "order/cancel";				// 取消订单
-
+    
     public static String AFFIRMRECEIVED = "order/affirmReceived";	// 确认收货
-
+    
+    public static String EXPRESS = "order/express";					// 查看物流
+    
     public static String ARTICLE = "article";						// 获取文章内容
     
     public static String COMMENTS = "comments";						// 获取评论列表
@@ -102,4 +90,6 @@ public class ProtocolConst {
     public static String CATEGORY = "category";                  //获取所有分类
     public static String BRAND = "brand";                       //获取所有品牌
     public static String PRICE_RANGE = "price_range";           //根据分类获取价格区间
+
+    
 }

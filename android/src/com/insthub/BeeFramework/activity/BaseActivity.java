@@ -54,7 +54,7 @@ public class BaseActivity extends Activity implements Handler.Callback
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
+         
         super.onCreate(savedInstanceState);
         mHandler = new Handler(this);
         ActivityManagerModel.addLiveActivity(this);

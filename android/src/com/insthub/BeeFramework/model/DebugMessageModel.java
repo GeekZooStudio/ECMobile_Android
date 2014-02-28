@@ -50,7 +50,7 @@ public class DebugMessageModel extends BaseModel {
     
 	public DebugMessageModel(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
+		 
 	}
 	
 	public static void addMessage(BeeCallback msg)

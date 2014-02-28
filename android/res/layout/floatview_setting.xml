@@ -31,17 +31,18 @@
             android:text="@string/floatView_floatingwindowclose" />
 
         <Button
-                android:id="@+id/third_genaration_network"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/floatView_3g" />
+            android:id="@+id/third_genaration_network"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/floatView_3g" />
+
         <Button
-                android:id="@+id/second_genaration_network"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/floatView_2g" />
+            android:id="@+id/second_genaration_network"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/floatView_2g" />
     </LinearLayout>
 
 </LinearLayout>

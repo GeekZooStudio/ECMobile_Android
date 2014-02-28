@@ -108,7 +108,7 @@ public class MemoryMessageActivity extends BaseActivity {
 		TimerTask timerTask = new TimerTask() {
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
+				 
 				Message msg = new Message(); 
                 msg.what = 1;
                 handler.sendMessage(msg);
@@ -126,7 +126,7 @@ public class MemoryMessageActivity extends BaseActivity {
 
 		@Override
 		public void handleMessage(Message msg) {
-			// TODO Auto-generated method stub
+			 
 			super.handleMessage(msg);
 			switch(msg.what) {
 			case 1:
@@ -209,7 +209,7 @@ public class MemoryMessageActivity extends BaseActivity {
     
     @Override
 	public void onDestroy() {
-		// TODO Auto-generated method stub
+		 
 		super.onDestroy();
 		timer.cancel();
 	}

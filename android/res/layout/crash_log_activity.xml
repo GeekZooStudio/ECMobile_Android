@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
-    <include android:layout_width="match_parent"
-             android:layout_height="45dp"
-             android:id="@+id/crashlog_title"
-             layout="@layout/navigationbar"/>
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-    <com.external.maxwin.view.XListView android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:id="@+id/log_list_view" android:layout_below="@+id/crashlog_title"/>
+    <include
+        android:id="@+id/crashlog_title"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        layout="@layout/navigationbar" />
+
+    <com.external.maxwin.view.XListView
+        android:id="@+id/log_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/crashlog_title" />
+
 </RelativeLayout>

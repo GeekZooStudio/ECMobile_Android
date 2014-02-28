@@ -1,34 +1,22 @@
 package com.insthub.ecmobile.model;
-
-/*
- *
- *       _/_/_/                      _/        _/_/_/_/_/
- *    _/          _/_/      _/_/    _/  _/          _/      _/_/      _/_/
- *   _/  _/_/  _/_/_/_/  _/_/_/_/  _/_/          _/      _/    _/  _/    _/
- *  _/    _/  _/        _/        _/  _/      _/        _/    _/  _/    _/
- *   _/_/_/    _/_/_/    _/_/_/  _/    _/  _/_/_/_/_/    _/_/      _/_/
- *
- *
- *  Copyright 2013-2014, Geek Zoo Studio
- *  http://www.ecmobile.cn/license.html
- *
- *  HQ China:
- *    2319 Est.Tower Van Palace
- *    No.2 Guandongdian South Street
- *    Beijing , China
- *
- *  U.S. Office:
- *    One Park Place, Elmira College, NY, 14901, USA
- *
- *  QQ Group:   329673575
- *  BBS:        bbs.ecmobile.cn
- *  Fax:        +86-10-6561-5510
- *  Mail:       info@geek-zoo.com
- */
+//
+//                       __
+//                      /\ \   _
+//    ____    ____   ___\ \ \_/ \           _____    ___     ___
+//   / _  \  / __ \ / __ \ \    <     __   /\__  \  / __ \  / __ \
+//  /\ \_\ \/\  __//\  __/\ \ \\ \   /\_\  \/_/  / /\ \_\ \/\ \_\ \
+//  \ \____ \ \____\ \____\\ \_\\_\  \/_/   /\____\\ \____/\ \____/
+//   \/____\ \/____/\/____/ \/_//_/         \/____/ \/___/  \/___/
+//     /\____/
+//     \/___/
+//
+//  Powered by BeeFramework
+//
 
 import java.util.HashMap;
 import java.util.Map;
 
+import com.insthub.ecmobile.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,7 +31,6 @@ import com.insthub.ecmobile.protocol.STATUS;
 import com.insthub.ecmobile.protocol.USER;
 
 public class UserInfoModel extends BaseModel {
-
 	public USER user;
 
     public static final  int RANK_LEVEL_NORMAL = 0;
@@ -51,7 +38,7 @@ public class UserInfoModel extends BaseModel {
 	
 	public UserInfoModel(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
+		 
 	}
 	
 	public void getUserInfo() {
@@ -75,7 +62,7 @@ public class UserInfoModel extends BaseModel {
 					}
 					
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
+					 
 					e.printStackTrace();
 				}
 			
@@ -92,14 +79,14 @@ public class UserInfoModel extends BaseModel {
 		{
             requestJsonObject.put("session",session.toJson());
 		} catch (JSONException e) {
-			// TODO: handle exception
+			
 		}
 
         params.put("json",requestJsonObject.toString());
 		
 		cb.url(url).type(JSONObject.class).params(params);
 		ProgressDialog pd = new ProgressDialog(mContext);
-        pd.setMessage("请稍后...");
+        pd.setMessage(mContext.getResources().getString(R.string.hold_on));
 		aq.progress(pd).ajax(cb);
 		
 	}

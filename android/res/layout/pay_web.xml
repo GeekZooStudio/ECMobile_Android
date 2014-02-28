@@ -2,15 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/body" >
-    
-    <include layout="@layout/top_view"/>
-    
-    <WebView 
+    android:background="@drawable/body"
+    android:orientation="vertical" >
+
+    <include layout="@layout/top_view" />
+
+    <WebView
         android:id="@+id/pay_web"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"/>
-    
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+    <include layout="@layout/web_tools" />
 
 </LinearLayout>

@@ -1,36 +1,24 @@
 package com.insthub.ecmobile.model;
-
-/*
- *
- *       _/_/_/                      _/        _/_/_/_/_/
- *    _/          _/_/      _/_/    _/  _/          _/      _/_/      _/_/
- *   _/  _/_/  _/_/_/_/  _/_/_/_/  _/_/          _/      _/    _/  _/    _/
- *  _/    _/  _/        _/        _/  _/      _/        _/    _/  _/    _/
- *   _/_/_/    _/_/_/    _/_/_/  _/    _/  _/_/_/_/_/    _/_/      _/_/
- *
- *
- *  Copyright 2013-2014, Geek Zoo Studio
- *  http://www.ecmobile.cn/license.html
- *
- *  HQ China:
- *    2319 Est.Tower Van Palace
- *    No.2 Guandongdian South Street
- *    Beijing , China
- *
- *  U.S. Office:
- *    One Park Place, Elmira College, NY, 14901, USA
- *
- *  QQ Group:   329673575
- *  BBS:        bbs.ecmobile.cn
- *  Fax:        +86-10-6561-5510
- *  Mail:       info@geek-zoo.com
- */
+//
+//                       __
+//                      /\ \   _
+//    ____    ____   ___\ \ \_/ \           _____    ___     ___
+//   / _  \  / __ \ / __ \ \    <     __   /\__  \  / __ \  / __ \
+//  /\ \_\ \/\  __//\  __/\ \ \\ \   /\_\  \/_/  / /\ \_\ \/\ \_\ \
+//  \ \____ \ \____\ \____\\ \_\\_\  \/_/   /\____\\ \____/\ \____/
+//   \/____\ \/____/\/____/ \/_//_/         \/____/ \/___/  \/___/
+//     /\____/
+//     \/___/
+//
+//  Powered by BeeFramework
+//
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import com.external.androidquery.callback.AjaxStatus;
 import com.insthub.BeeFramework.model.BaseModel;
 import com.insthub.BeeFramework.model.BeeCallback;
+import com.insthub.ecmobile.R;
 import com.insthub.ecmobile.protocol.*;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,7 +55,12 @@ public class AdvanceSearchModel extends BaseModel{
                     if(responseStatus.succeed == 1) {
                         JSONArray dataJsonArray = jo.optJSONArray("data");
                         if (null != dataJsonArray && dataJsonArray.length() > 0) {
+
                             brandList.clear();
+                            BRAND allBrand = new BRAND();
+                            allBrand.brand_id = 0;
+                            allBrand.brand_name = mContext.getResources().getString(R.string.all_brand);
+                            brandList.add(allBrand);
                             for (int i = 0; i < dataJsonArray.length(); i++)
                             {
                                 JSONObject brandJsonObject = dataJsonArray.getJSONObject(i);
@@ -79,7 +72,7 @@ public class AdvanceSearchModel extends BaseModel{
                     }
 
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
+                     
                     e.printStackTrace();
                 }
 
@@ -108,7 +101,7 @@ public class AdvanceSearchModel extends BaseModel{
 
         cb.url(url).type(JSONObject.class).params(params);
         ProgressDialog pd = new ProgressDialog(mContext);
-        pd.setMessage("请稍后...");
+        pd.setMessage(mContext.getResources().getString(R.string.hold_on));
         aq.progress(pd).ajax(cb);
     }
 
@@ -129,6 +122,11 @@ public class AdvanceSearchModel extends BaseModel{
                         JSONArray dataJsonArray = jo.optJSONArray("data");
                         if (null != dataJsonArray && dataJsonArray.length() > 0) {
                             priceRangeArrayList.clear();
+
+                            PRICE_RANGE allPrice = new PRICE_RANGE();
+                            allPrice.price_min = -1;
+                            allPrice.price_max = -1;
+                            priceRangeArrayList.add(allPrice);
                             for (int i = 0; i < dataJsonArray.length(); i++)
                             {
                                 JSONObject priceJsonObject = dataJsonArray.getJSONObject(i);
@@ -140,7 +138,7 @@ public class AdvanceSearchModel extends BaseModel{
                     }
 
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
+                     
                     e.printStackTrace();
                 }
 
@@ -167,7 +165,7 @@ public class AdvanceSearchModel extends BaseModel{
 
         cb.url(url).type(JSONObject.class).params(params);
         ProgressDialog pd = new ProgressDialog(mContext);
-        pd.setMessage("请稍后...");
+        pd.setMessage(mContext.getResources().getString(R.string.hold_on));
         aq.progress(pd).ajax(cb);
         priceRangeArrayList.clear();
     }
@@ -184,9 +182,15 @@ public class AdvanceSearchModel extends BaseModel{
                 AdvanceSearchModel.this.callback(url, jo, status);
                 try {
                     STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
-                    categoryArrayList.clear();
                     if(responseStatus.succeed == 1)
                     {
+                        categoryArrayList.clear();
+                        CATEGORY allCategory = new CATEGORY();
+                        allCategory.id = 0;
+                        allCategory.name = mContext.getString(R.string.all_category);
+
+                        categoryArrayList.add(allCategory);
+
                         JSONArray categoryJSONArray = jo.optJSONArray("data");
 
                         if (null != categoryJSONArray && categoryJSONArray.length() > 0)
@@ -204,7 +208,7 @@ public class AdvanceSearchModel extends BaseModel{
                     }
 
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
+                     
                     e.printStackTrace();
                 }
             }

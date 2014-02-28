@@ -20,7 +20,7 @@
     <ImageView
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/searcher_new_header_bg" />
+            android:background="@drawable/nav_bg" />
 
 
     <LinearLayout android:layout_height="wrap_content"
@@ -58,6 +58,15 @@
                     android:layout_gravity="center_vertical"
                     android:padding="10dp"
                     android:src="@drawable/searcher_new_search_icon" />
+
+            <ImageView
+                    android:id="@+id/search_voice"
+                    android:layout_width="40dp"
+                    android:layout_height="20dp"
+                    android:paddingRight="20dp"
+                    android:layout_gravity="center_vertical|right"
+                    android:src="@drawable/searcher_new_voice_disabled" />
+
         </FrameLayout>
     </LinearLayout>
 
@@ -68,6 +77,6 @@
             android:layout_gravity="center_vertical|right"
             android:layout_marginRight="5dp"
             android:text="@string/filter"
-            android:background="@drawable/searcher_new_btn_blue"
+            android:background="@drawable/filter_blue_btn"
             android:gravity="center" android:textSize="16dp" android:textColor="#FFFFFF"/>
 </FrameLayout>

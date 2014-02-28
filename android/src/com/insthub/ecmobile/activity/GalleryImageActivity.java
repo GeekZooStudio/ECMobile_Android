@@ -1,30 +1,17 @@
 package com.insthub.ecmobile.activity;
-
-/*
- *
- *       _/_/_/                      _/        _/_/_/_/_/
- *    _/          _/_/      _/_/    _/  _/          _/      _/_/      _/_/
- *   _/  _/_/  _/_/_/_/  _/_/_/_/  _/_/          _/      _/    _/  _/    _/
- *  _/    _/  _/        _/        _/  _/      _/        _/    _/  _/    _/
- *   _/_/_/    _/_/_/    _/_/_/  _/    _/  _/_/_/_/_/    _/_/      _/_/
- *
- *
- *  Copyright 2013-2014, Geek Zoo Studio
- *  http://www.ecmobile.cn/license.html
- *
- *  HQ China:
- *    2319 Est.Tower Van Palace
- *    No.2 Guandongdian South Street
- *    Beijing , China
- *
- *  U.S. Office:
- *    One Park Place, Elmira College, NY, 14901, USA
- *
- *  QQ Group:   329673575
- *  BBS:        bbs.ecmobile.cn
- *  Fax:        +86-10-6561-5510
- *  Mail:       info@geek-zoo.com
- */
+//
+//                       __
+//                      /\ \   _
+//    ____    ____   ___\ \ \_/ \           _____    ___     ___
+//   / _  \  / __ \ / __ \ \    <     __   /\__  \  / __ \  / __ \
+//  /\ \_\ \/\  __//\  __/\ \ \\ \   /\_\  \/_/  / /\ \_\ \/\ \_\ \
+//  \ \____ \ \____\ \____\\ \_\\_\  \/_/   /\____\\ \____/\ \____/
+//   \/____\ \/____/\/____/ \/_//_/         \/____/ \/___/  \/___/
+//     /\____/
+//     \/___/
+//
+//  Powered by BeeFramework
+//
 
 import android.app.Activity;
 import android.content.Intent;
@@ -54,6 +41,7 @@ import com.insthub.BeeFramework.Utils.Utils;
 import com.insthub.BeeFramework.activity.BaseActivity;
 import com.insthub.ecmobile.R;
 import com.insthub.ecmobile.adapter.GalleryImageAdapter;
+import com.umeng.analytics.MobclickAgent;
 
 public class GalleryImageActivity extends BaseActivity implements OnGestureListener, OnTouchListener {
 	
@@ -71,8 +59,7 @@ public class GalleryImageActivity extends BaseActivity implements OnGestureListe
     int  backgoundWidth;
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+	protected void onCreate(Bundle savedInstanceState) {		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.gallery_image);
 		
@@ -94,16 +81,14 @@ public class GalleryImageActivity extends BaseActivity implements OnGestureListe
         layer_srcollview = (HorizontalScrollView)findViewById(R.id.layer_srcollview);
         layer_srcollview.setHorizontalScrollBarEnabled(false);
 
-		imagePager = (ViewPager) findViewById(R.id.image_pager);
-        //imagePager.setAlpha((float) 0.5);
+		imagePager = (ViewPager) findViewById(R.id.image_pager);        
 		
 		galleryImageAdapter = new GalleryImageAdapter(this);
 		imagePager.setAdapter(galleryImageAdapter);
 		imagePager.setOnPageChangeListener(new OnPageChangeListener() {
 			
 			@Override
-			public void onPageSelected(int position) {
-				// TODO Auto-generated method stub
+			public void onPageSelected(int position) {				
 				pager_num = position + 1;
 			}
 			
@@ -115,8 +100,7 @@ public class GalleryImageActivity extends BaseActivity implements OnGestureListe
 
                 total_page = galleryImageAdapter.getCount();
                 float offset = (float) ((float)(position + realOffset)*1.0/total_page);
-                int offsetPositon = (int)(backgoundWidth*offset);
-              //  background_srcollview.scrollTo(offsetPositon,0);
+                int offsetPositon = (int)(backgoundWidth*offset);              
 
                 float layerRealOffset = Sine.easeIn(positionOffset, 0, 1, 1);
                 float layerOffset = (float) ((float)(position + layerRealOffset)*1.0/total_page);
@@ -125,8 +109,7 @@ public class GalleryImageActivity extends BaseActivity implements OnGestureListe
             }
 			
 			@Override
-			public void onPageScrollStateChanged(int state) {
-				// TODO Auto-generated method stub
+			public void onPageScrollStateChanged(int state) {				
 			}
 		});
 		
@@ -139,14 +122,12 @@ public class GalleryImageActivity extends BaseActivity implements OnGestureListe
         return mygesture.onTouchEvent(event);  
     }
 	@Override
-	public boolean onDown(MotionEvent e) {
-		// TODO Auto-generated method stub
+	public boolean onDown(MotionEvent e) {		
 		return false;
 	}
 	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-			float velocityY) {
-		// TODO Auto-generated method stub
+			float velocityY) {		
 		if (e1.getX() - e2.getX() > 120) {      
 			if(pager_num == 5) {
 				Intent intent = new Intent(GalleryImageActivity.this,EcmobileMainActivity.class);
@@ -159,22 +140,18 @@ public class GalleryImageActivity extends BaseActivity implements OnGestureListe
 		return false;
 	}
 	@Override
-	public void onLongPress(MotionEvent e) {
-		// TODO Auto-generated method stub
+	public void onLongPress(MotionEvent e) {		
 	}
 	@Override
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
-			float distanceY) {
-		// TODO Auto-generated method stub
+			float distanceY) {		
 		return false;
 	}
 	@Override
-	public void onShowPress(MotionEvent e) {
-		// TODO Auto-generated method stub
+	public void onShowPress(MotionEvent e) {		
 	}
 	@Override
-	public boolean onSingleTapUp(MotionEvent e) {
-		// TODO Auto-generated method stub
+	public boolean onSingleTapUp(MotionEvent e) {		
 		return false;
 	}
 
@@ -248,6 +225,4 @@ public class GalleryImageActivity extends BaseActivity implements OnGestureListe
         frameLayoutParams.width = dm.widthPixels;
         layer_image_five.setLayoutParams( frameLayoutParams);
     }
-
-
 }

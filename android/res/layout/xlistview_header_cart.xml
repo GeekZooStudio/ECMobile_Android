@@ -72,21 +72,6 @@
                 android:visibility="invisible" />
         </RelativeLayout>
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="60dp"
-            android:layout_marginLeft="2.5dp"
-            android:layout_marginRight="2.5dp"
-            android:gravity="center"
-            android:orientation="horizontal" >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/shopping_cart_act_logo_a" />
- 
-        </LinearLayout>
-
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"

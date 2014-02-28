@@ -62,7 +62,7 @@ public class ToastView {
         timer.schedule(new TimerTask(){
         	@Override
         	public void run() {
-        		// TODO Auto-generated method stub
+        		 
         		if(time-1000 >= 0) {
         			show();
         			time= time - 1000;

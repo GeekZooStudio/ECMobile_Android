@@ -45,7 +45,7 @@ public class DebugTabActivity extends TabActivity {
 	private TabHost tabHost;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+		 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.debug_home_tab);
 		
@@ -74,7 +74,7 @@ public class DebugTabActivity extends TabActivity {
 			
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
-				// TODO Auto-generated method stub
+				 
 				switch(checkedId) {
 				case R.id.tab_one:
 					tabHost.setCurrentTabByTag("spec_tab1");

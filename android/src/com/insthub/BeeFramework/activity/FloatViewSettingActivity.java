@@ -23,7 +23,7 @@ public class FloatViewSettingActivity extends BaseActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+		 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.floatview_setting);
 		
@@ -97,7 +97,7 @@ public class FloatViewSettingActivity extends BaseActivity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				 
 				if(!isServiceRunning()) {
 					Intent intent = new Intent();
 					intent.setAction(MemoryService.MEMORYSERVICENAME);
@@ -111,7 +111,7 @@ public class FloatViewSettingActivity extends BaseActivity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				 
 				if(isServiceRunning()) {
 					Intent intent = new Intent();
 					intent.setAction(MemoryService.MEMORYSERVICENAME);

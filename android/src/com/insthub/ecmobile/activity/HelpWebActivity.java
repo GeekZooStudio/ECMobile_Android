@@ -1,32 +1,20 @@
 package com.insthub.ecmobile.activity;
-
-/*
- *
- *       _/_/_/                      _/        _/_/_/_/_/
- *    _/          _/_/      _/_/    _/  _/          _/      _/_/      _/_/
- *   _/  _/_/  _/_/_/_/  _/_/_/_/  _/_/          _/      _/    _/  _/    _/
- *  _/    _/  _/        _/        _/  _/      _/        _/    _/  _/    _/
- *   _/_/_/    _/_/_/    _/_/_/  _/    _/  _/_/_/_/_/    _/_/      _/_/
- *
- *
- *  Copyright 2013-2014, Geek Zoo Studio
- *  http://www.ecmobile.cn/license.html
- *
- *  HQ China:
- *    2319 Est.Tower Van Palace
- *    No.2 Guandongdian South Street
- *    Beijing , China
- *
- *  U.S. Office:
- *    One Park Place, Elmira College, NY, 14901, USA
- *
- *  QQ Group:   329673575
- *  BBS:        bbs.ecmobile.cn
- *  Fax:        +86-10-6561-5510
- *  Mail:       info@geek-zoo.com
- */
+//
+//                       __
+//                      /\ \   _
+//    ____    ____   ___\ \ \_/ \           _____    ___     ___
+//   / _  \  / __ \ / __ \ \    <     __   /\__  \  / __ \  / __ \
+//  /\ \_\ \/\  __//\  __/\ \ \\ \   /\_\  \/_/  / /\ \_\ \/\ \_\ \
+//  \ \____ \ \____\ \____\\ \_\\_\  \/_/   /\____\\ \____/\ \____/
+//   \/____\ \/____/\/____/ \/_//_/         \/____/ \/___/  \/___/
+//     /\____/
+//     \/___/
+//
+//  Powered by BeeFramework
+//
 
 import com.insthub.BeeFramework.activity.BaseActivity;
+import com.umeng.analytics.MobclickAgent;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -47,19 +35,16 @@ import com.insthub.BeeFramework.model.BusinessResponse;
 import com.insthub.ecmobile.R;
 import com.insthub.ecmobile.model.HomeModel;
 import com.insthub.ecmobile.model.ProtocolConst;
-public class HelpWebActivity extends BaseActivity implements BusinessResponse {
-
-	
+public class HelpWebActivity extends BaseActivity implements BusinessResponse {	
 	private TextView title;
 	private ImageView back;
 	private HomeModel homeModel;
 	private WebView webView;
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+	protected void onCreate(Bundle savedInstanceState) {		
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.helpweb);
+		setContentView(R.layout.b6_product_desc);
 		
 		Intent intent = getIntent();
 		int id = intent.getIntExtra("id", 0);
@@ -72,8 +57,7 @@ public class HelpWebActivity extends BaseActivity implements BusinessResponse {
 		back.setOnClickListener(new OnClickListener() {
 			
 			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
+			public void onClick(View v) {				
 				finish();
 			}
 		});
@@ -83,8 +67,7 @@ public class HelpWebActivity extends BaseActivity implements BusinessResponse {
 		webView.setWebViewClient(new WebViewClient() { // 通过webView打开链接，不调用系统浏览器
 
 			@Override
-			public boolean shouldOverrideUrlLoading(WebView view, String url) {
-				// TODO Auto-generated method stub
+			public boolean shouldOverrideUrlLoading(WebView view, String url) {				
 				view.loadUrl(url);
 				return true;
 			}
@@ -95,8 +78,7 @@ public class HelpWebActivity extends BaseActivity implements BusinessResponse {
 		
 		WebSettings webSettings = webView.getSettings();  
 		webSettings.setJavaScriptEnabled(true); 
-		webSettings.setBuiltInZoomControls(true);
-		//webSettings.setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+		webSettings.setBuiltInZoomControls(true);		
 		webSettings.setSupportZoom(true);
 		
 		webView.getSettings().setUseWideViewPort(true);
@@ -110,15 +92,10 @@ public class HelpWebActivity extends BaseActivity implements BusinessResponse {
 
 	@Override
 	public void OnMessageResponse(String url, JSONObject jo, AjaxStatus status)
-			throws JSONException {
-		// TODO Auto-generated method stub
-		
-		if(url.endsWith(ProtocolConst.ARTICLE)) {
-			
-			webView.loadDataWithBaseURL(null,homeModel.web,"text/html","utf-8",null);
-			
+			throws JSONException {				
+		if(url.endsWith(ProtocolConst.ARTICLE)) {			
+			webView.loadDataWithBaseURL(null,homeModel.web,"text/html","utf-8",null);			
 		}
 		
 	}
-	
 }

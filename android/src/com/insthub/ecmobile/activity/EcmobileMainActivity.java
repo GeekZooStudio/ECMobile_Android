@@ -1,30 +1,23 @@
 package com.insthub.ecmobile.activity;
+//
+//                       __
+//                      /\ \   _
+//    ____    ____   ___\ \ \_/ \           _____    ___     ___
+//   / _  \  / __ \ / __ \ \    <     __   /\__  \  / __ \  / __ \
+//  /\ \_\ \/\  __//\  __/\ \ \\ \   /\_\  \/_/  / /\ \_\ \/\ \_\ \
+//  \ \____ \ \____\ \____\\ \_\\_\  \/_/   /\____\\ \____/\ \____/
+//   \/____\ \/____/\/____/ \/_//_/         \/____/ \/___/  \/___/
+//     /\____/
+//     \/___/
+//
+//  Powered by BeeFramework
+//
 
-/*
- *
- *       _/_/_/                      _/        _/_/_/_/_/
- *    _/          _/_/      _/_/    _/  _/          _/      _/_/      _/_/
- *   _/  _/_/  _/_/_/_/  _/_/_/_/  _/_/          _/      _/    _/  _/    _/
- *  _/    _/  _/        _/        _/  _/      _/        _/    _/  _/    _/
- *   _/_/_/    _/_/_/    _/_/_/  _/    _/  _/_/_/_/_/    _/_/      _/_/
- *
- *
- *  Copyright 2013-2014, Geek Zoo Studio
- *  http://www.ecmobile.cn/license.html
- *
- *  HQ China:
- *    2319 Est.Tower Van Palace
- *    No.2 Guandongdian South Street
- *    Beijing , China
- *
- *  U.S. Office:
- *    One Park Place, Elmira College, NY, 14901, USA
- *
- *  QQ Group:   329673575
- *  BBS:        bbs.ecmobile.cn
- *  Fax:        +86-10-6561-5510
- *  Mail:       info@geek-zoo.com
- */
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.content.Intent;
 import android.content.res.Resources;
@@ -34,19 +27,18 @@ import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.widget.Toast;
+
+import com.baidu.android.pushservice.PushConstants;
+import com.baidu.android.pushservice.PushManager;
 import com.insthub.BeeFramework.BeeFrameworkApp;
 import com.insthub.BeeFramework.model.BeeQuery;
 import com.insthub.BeeFramework.view.ToastView;
+import com.insthub.ecmobile.EcmobileManager;
 import com.insthub.ecmobile.R;
-import com.insthub.BeeFramework.activity.MainActivity;
 import com.insthub.ecmobile.protocol.FILTER;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.umeng.analytics.MobclickAgent;
 
-import java.io.File;
-
-public class EcmobileMainActivity extends FragmentActivity
+public class EcmobileMainActivity extends FragmentActivity 
 {
 
     public static final String RESPONSE_METHOD = "method";
@@ -62,7 +54,7 @@ public class EcmobileMainActivity extends FragmentActivity
     public static final String CUSTOM_CONTENT ="CustomContent";
 
     // 在百度开发者中心查询应用的API Key
-    public static final String API_KEY = "hMDGZvmA2RvMFVmOHewdT3Iq";
+    public static String API_KEY ;
 
     public void onCreate(Bundle savedInstanceState)
     {
@@ -72,17 +64,18 @@ public class EcmobileMainActivity extends FragmentActivity
 	    Intent intent = new Intent();
 		intent.setAction("com.BeeFramework.NetworkStateService");
 		startService(intent);
+		
+		if(getIntent().getStringExtra(CUSTOM_CONTENT) != null) {
+			pushIntent(getIntent().getStringExtra(CUSTOM_CONTENT));
+		}
 	    
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         // 如果要统计Push引起的用户使用应用情况，请实现本方法，且加上这一个语句
-
         setIntent(intent);
-
         handleIntent(intent);
-
     }
 
     private void handleIntent(Intent intent) {
@@ -102,58 +95,84 @@ public class EcmobileMainActivity extends FragmentActivity
         else if (ACTION_PUSHCLICK.equals(action))
         {
             String message = intent.getStringExtra(CUSTOM_CONTENT);
-
-            try
+            pushIntent(message);
+        }
+    }
+    
+    public void pushIntent(String message) {
+    	if(message != null) {
+        	try
             {
                 JSONObject jsonObject = new JSONObject(message);
-                String actionString = jsonObject.optString("action");
-                if (0 == actionString.compareTo("search"))
-                {
-                    String parameter = jsonObject.optString("parameter");
-                    if (null != parameter && parameter.length() > 0)
-                    {
-                        Intent it = new Intent(this, GoodsListActivity.class);
+                String actionString = jsonObject.optString("a");
+                if (0 == actionString.compareTo("s")) {
+                    String parameter = jsonObject.optString("k");
+                    if (null != parameter && parameter.length() > 0) {
+                    	try {
+							parameter = URLDecoder.decode(parameter,"UTF-8");
+						} catch (UnsupportedEncodingException e1) {
+							 
+							e1.printStackTrace();
+						} 
+                        Intent it = new Intent(this, B1_ProductListActivity.class);
                         it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         FILTER filter = new FILTER();
                         filter.keywords =parameter;
-                        try
-                        {
-                            it.putExtra(GoodsListActivity.FILTER,filter.toJson().toString());
+                        try {
+                            it.putExtra(B1_ProductListActivity.FILTER,filter.toJson().toString());
+                        } catch (JSONException e) {
+                        	e.printStackTrace();
                         }
-                        catch (JSONException e)
-                        {
-
-                        }
-
                         startActivity(it);
                     }
-
+                } else if(0 == actionString.compareTo("w")) {
+                	String parameter = jsonObject.optString("u");
+                	if (null != parameter && parameter.length() > 0) {
+                		try {
+							parameter = URLDecoder.decode(parameter,"UTF-8");
+						} catch (UnsupportedEncodingException e1) {
+							 
+							e1.printStackTrace();
+						}
+                        Intent it = new Intent(this, BannerWebActivity.class);
+                        it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        it.putExtra("url",parameter);
+                        startActivity(it);
+                    }
                 }
-            }
-            catch (JSONException e)
-            {
+            } catch (JSONException e) {
 
             }
-
         }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        API_KEY = EcmobileManager.getPushKey(this);
+        PushManager.activityStarted(this);
+        PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY, API_KEY);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(EcmobileManager.getUmengKey(this)!=null){
+            MobclickAgent.onResume(this, EcmobileManager.getUmengKey(this), "");
+        }
+
     }
 
     private boolean isExit = false;
     //退出操作
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // TODO Auto-generated method stub
+    public boolean onKeyDown(int keyCode, KeyEvent event) {        
         if(keyCode == KeyEvent.KEYCODE_BACK){
             if(isExit==false){
                 isExit=true;
                 Resources resource = (Resources) getBaseContext().getResources();
-                String exit=resource.getString(R.string.again_exit);
-                //Toast.makeText(getApplicationContext(), exit, Toast.LENGTH_SHORT).show();
+                String exit=resource.getString(R.string.again_exit);                
                 ToastView toast = new ToastView(getApplicationContext(), exit);
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
@@ -188,6 +207,16 @@ public class EcmobileMainActivity extends FragmentActivity
     @Override
     protected void onStop() {
         super.onStop();
+        PushManager.activityStoped(this);
     }
-    
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(EcmobileManager.getUmengKey(this)!=null){
+            MobclickAgent.onPause(this);
+        }
+    }
+
+   
 }
