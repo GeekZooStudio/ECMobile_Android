@@ -13,9 +13,9 @@
         android:background="@drawable/body" >
 
         <LinearLayout
+            android:padding="10dp"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_margin="12dp"
             android:orientation="vertical" >
 
             <TextView
