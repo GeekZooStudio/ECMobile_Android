@@ -30,27 +30,29 @@ public class ORDER_GOODS_LIST  extends Model
      @Column(name = "subtotal")
      public String subtotal;
 
- public static ORDER_GOODS_LIST fromJson(JSONObject jsonObject)  throws JSONException
+ public void  fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return null;
+       return ;
       }
 
-     ORDER_GOODS_LIST   localItem = new ORDER_GOODS_LIST();
+
 
      JSONArray subItemArray;
 
-     localItem.goods_number = jsonObject.optString("goods_number");
+     this.goods_number = jsonObject.optString("goods_number");
 
-     localItem.goods_id = jsonObject.optString("goods_id");
+     this.goods_id = jsonObject.optString("goods_id");
 
-     localItem.name = jsonObject.optString("name");
-     localItem.img = PHOTO.fromJson(jsonObject.optJSONObject("img"));
+     this.name = jsonObject.optString("name");
+     PHOTO photo=new PHOTO();
+     photo.fromJson(jsonObject.optJSONObject("img"));
+     this.img = photo;
 
-     localItem.formated_shop_price = jsonObject.optString("formated_shop_price");
+     this.formated_shop_price = jsonObject.optString("formated_shop_price");
 
-     localItem.subtotal = jsonObject.optString("subtotal");
-     return localItem;
+     this.subtotal = jsonObject.optString("subtotal");
+     return ;
  }
 
  public JSONObject  toJson() throws JSONException 

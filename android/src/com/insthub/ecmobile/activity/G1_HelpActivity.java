@@ -17,12 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.insthub.BeeFramework.activity.BaseActivity;
-import com.umeng.analytics.MobclickAgent;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -45,7 +43,7 @@ public class G1_HelpActivity extends BaseActivity {
 	private G1_HelpAdapter helpAdapter;
 	private List<SHOPHELP> list_help = new ArrayList<SHOPHELP>();
 	private List<ARTICLE> list_article = new ArrayList<ARTICLE>();
-	private int p;
+	private int position;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {		
 		super.onCreate(savedInstanceState);
@@ -65,7 +63,7 @@ public class G1_HelpActivity extends BaseActivity {
 		
 		Intent intent = getIntent();
 		String s = intent.getStringExtra("data");
-		p = intent.getIntExtra("position", 0);
+		position = intent.getIntExtra("position", 0);
 
         if (null != s && s.length() > 0)
         {
@@ -79,7 +77,8 @@ public class G1_HelpActivity extends BaseActivity {
                     for (int i = 0; i < contentArray.length(); i++)
                     {
                         JSONObject contentJsonObject = contentArray.getJSONObject(i);
-                        SHOPHELP help_Item = SHOPHELP.fromJson(contentJsonObject);
+                        SHOPHELP help_Item = new SHOPHELP();
+                        help_Item.fromJson(contentJsonObject);
                         list_help.add(help_Item);
                     }
                 }
@@ -89,8 +88,8 @@ public class G1_HelpActivity extends BaseActivity {
             }
         }
 		
-		list_article = list_help.get(p).article;
-		title.setText(list_help.get(p).name);
+		list_article = list_help.get(position).article;
+		title.setText(list_help.get(position).name);
 		
 		listView = (ListView) findViewById(R.id.help_list);
 		helpAdapter = new G1_HelpAdapter(this,list_article);
@@ -106,7 +105,7 @@ public class G1_HelpActivity extends BaseActivity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {				
 				Intent intent = new Intent(G1_HelpActivity.this, HelpWebActivity.class);
-				intent.putExtra("id", list_article.get(position).id);
+				intent.putExtra("id", Integer.parseInt(list_article.get(position).id));
 				intent.putExtra("title", list_article.get(position).title);
 				startActivity(intent);
 				

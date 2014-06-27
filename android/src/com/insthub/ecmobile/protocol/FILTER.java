@@ -27,25 +27,26 @@ public class FILTER  extends Model
      @Column(name = "price_range")
      public PRICE_RANGE price_range;
 
- public static FILTER fromJson(JSONObject jsonObject)  throws JSONException
+ public void fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return null;
+       return ;
       }
 
-     FILTER   localItem = new FILTER();
 
      JSONArray subItemArray;
 
-     localItem.keywords = jsonObject.optString("keywords");
+     this.keywords = jsonObject.optString("keywords");
 
-     localItem.sort_by = jsonObject.optString("sort_by");
+     this.sort_by = jsonObject.optString("sort_by");
 
-     localItem.brand_id = jsonObject.optString("brand_id");
+     this.brand_id = jsonObject.optString("brand_id");
 
-     localItem.category_id = jsonObject.optString("category_id");
-     localItem.price_range = PRICE_RANGE.fromJson(jsonObject.optJSONObject("price_range"));
-     return localItem;
+     this.category_id = jsonObject.optString("category_id");
+     PRICE_RANGE price_range=new PRICE_RANGE();
+     price_range.fromJson(jsonObject.optJSONObject("price_range"));
+     this.price_range = price_range;
+     return ;
  }
 
  public JSONObject  toJson() throws JSONException 

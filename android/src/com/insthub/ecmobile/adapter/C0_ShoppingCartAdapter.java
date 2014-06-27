@@ -202,7 +202,7 @@ public class C0_ShoppingCartAdapter extends BaseAdapter {
 					holder.view2.setVisibility(View.GONE);
 					holder.change.setText(resource.getString(R.string.modify));
 					
-					if(goods.goods_number != Integer.valueOf(holder.editNum.getText().toString())) {
+					if(Integer.valueOf(goods.goods_number) != Integer.valueOf(holder.editNum.getText().toString())) {
 						Message msg = new Message();
 		                msg.what = CART_CHANGE_MODIFY;
 		                msg.arg1 = Integer.valueOf(goods.rec_id);

@@ -127,18 +127,14 @@ public class E4_HistoryAdapter extends BaseAdapter {
 				String imageType = shared.getString("imageType", "mind");
 				
 				if(imageType.equals("high")) {
-//					image.setImageWithURL(context, goods_list.get(i).img.thumb, R.drawable.default_image);
                     imageLoader.displayImage(goods_list.get(i).img.thumb,image, EcmobileApp.options);
 				} else if(imageType.equals("low")) {
-//					image.setImageWithURL(context, goods_list.get(i).img.small, R.drawable.default_image);
                     imageLoader.displayImage(goods_list.get(i).img.small,image, EcmobileApp.options);
 				} else {
 					String netType = shared.getString("netType", "wifi");
 					if(netType.equals("wifi")) {
-//						image.setImageWithURL(context, goods_list.get(i).img.thumb, R.drawable.default_image);
                         imageLoader.displayImage(goods_list.get(i).img.thumb,image, EcmobileApp.options);
 					} else {
-//						image.setImageWithURL(context, goods_list.get(i).img.small, R.drawable.default_image);
                         imageLoader.displayImage(goods_list.get(i).img.small,image, EcmobileApp.options);
 					}
 				}
@@ -148,12 +144,7 @@ public class E4_HistoryAdapter extends BaseAdapter {
 				num.setText("X "+goods_list.get(i).goods_number);
 				
 			}
-			
-//			convertView.setTag(holder);
-//		} else {
-//			holder = (ViewHolder) convertView.getTag();
-//		}
-//		
+
 		final GOODORDER order = list.get(position);
 		
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

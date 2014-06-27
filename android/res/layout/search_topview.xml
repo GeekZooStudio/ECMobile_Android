@@ -51,11 +51,13 @@
                 android:background="@drawable/searcher_new_search_box"
                 android:gravity="center_vertical"
                 android:hint="@string/search_input"
-                android:imeOptions="actionSearch"
                 android:paddingLeft="35dp"
                 android:paddingRight="10dp"
                 android:singleLine="true"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                android:imeActionId="@+id/search_input_actionid"
+                android:inputType="text"
+                android:imeOptions="actionSearch"/>
 
             <ImageView
                 android:id="@+id/search_search"

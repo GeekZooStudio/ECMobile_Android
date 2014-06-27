@@ -13,25 +13,24 @@ public class INV_LIST  extends Model
 {
 
      @Column(name = "INV_LIST_id",unique = true)
-     public String id;
+     public int id;
 
      @Column(name = "value")
      public String value;
 
- public static INV_LIST fromJson(JSONObject jsonObject)  throws JSONException
+ public void fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return null;
+       return ;
       }
 
-     INV_LIST   localItem = new INV_LIST();
 
      JSONArray subItemArray;
 
-     localItem.id = jsonObject.optString("id");
+     this.id = jsonObject.optInt("id");
 
-     localItem.value = jsonObject.optString("value");
-     return localItem;
+     this.value = jsonObject.optString("value");
+     return ;
  }
 
  public JSONObject  toJson() throws JSONException 

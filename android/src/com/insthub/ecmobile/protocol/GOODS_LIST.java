@@ -25,7 +25,7 @@ public class GOODS_LIST  extends Model
      public String is_gift;
 
      @Column(name = "goods_number")
-     public int goods_number;
+     public String goods_number;
 
      @Column(name = "is_real")
      public String is_real;
@@ -63,7 +63,7 @@ public class GOODS_LIST  extends Model
      public String rec_type;
 
      @Column(name = "goods_id")
-     public int goods_id;
+     public String goods_id;
 
      @Column(name = "extension_code")
      public String extension_code;
@@ -72,74 +72,81 @@ public class GOODS_LIST  extends Model
      public String formated_market_price;
 
      @Column(name = "rec_id")
-     public int rec_id;
+     public String rec_id;
 
      @Column(name = "parent_id")
      public String parent_id;
 
- public static GOODS_LIST fromJson(JSONObject jsonObject)  throws JSONException
+    @Column(name = "user_id")
+    public String user_id;
+
+ public void fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return null;
+       return ;
       }
 
-     GOODS_LIST   localItem = new GOODS_LIST();
 
      JSONArray subItemArray;
 
-     localItem.can_handsel = jsonObject.optString("can_handsel");
+     this.can_handsel = jsonObject.optString("can_handsel");
 
-     localItem.goods_sn = jsonObject.optString("goods_sn");
+     this.goods_sn = jsonObject.optString("goods_sn");
 
-     localItem.formated_subtotal = jsonObject.optString("formated_subtotal");
+     this.formated_subtotal = jsonObject.optString("formated_subtotal");
 
-     localItem.is_gift = jsonObject.optString("is_gift");
+     this.is_gift = jsonObject.optString("is_gift");
 
-     localItem.goods_number = jsonObject.optInt("goods_number");
+     this.goods_number = jsonObject.optString("goods_number");
 
-     localItem.is_real = jsonObject.optString("is_real");
-     localItem.img = PHOTO.fromJson(jsonObject.optJSONObject("img"));
+     this.is_real = jsonObject.optString("is_real");
+     PHOTO photo=new PHOTO();
+     photo.fromJson(jsonObject.optJSONObject("img"));
+     this.img =photo;
 
-     localItem.goods_name = jsonObject.optString("goods_name");
+     this.goods_name = jsonObject.optString("goods_name");
 
-     localItem.pid = jsonObject.optString("pid");
+     this.pid = jsonObject.optString("pid");
 
-     localItem.subtotal = jsonObject.optString("subtotal");
+     this.subtotal = jsonObject.optString("subtotal");
 
-     localItem.is_shipping = jsonObject.optString("is_shipping");
+     this.is_shipping = jsonObject.optString("is_shipping");
 
-     localItem.goods_price = jsonObject.optString("goods_price");
+     this.goods_price = jsonObject.optString("goods_price");
 
      subItemArray = jsonObject.optJSONArray("goods_attr");
      if(null != subItemArray)
       {
          for(int i = 0;i < subItemArray.length();i++)
           {
-             JSONObject subItemObject = subItemArray.getJSONObject(i);
-             GOODS_ATTR subItem = GOODS_ATTR.fromJson(subItemObject);
-             localItem.goods_attr.add(subItem);
+              JSONObject subItemObject = subItemArray.getJSONObject(i);
+              GOODS_ATTR subItem = new GOODS_ATTR();
+              subItem.fromJson(subItemObject);
+              this.goods_attr.add(subItem);
          }
      }
 
 
-     localItem.formated_goods_price = jsonObject.optString("formated_goods_price");
+     this.formated_goods_price = jsonObject.optString("formated_goods_price");
 
-     localItem.goods_attr_id = jsonObject.optString("goods_attr_id");
+     this.goods_attr_id = jsonObject.optString("goods_attr_id");
 
-     localItem.market_price = jsonObject.optString("market_price");
+     this.market_price = jsonObject.optString("market_price");
 
-     localItem.rec_type = jsonObject.optString("rec_type");
+     this.rec_type = jsonObject.optString("rec_type");
 
-     localItem.goods_id = jsonObject.optInt("goods_id");
+     this.goods_id = jsonObject.optString("goods_id");
 
-     localItem.extension_code = jsonObject.optString("extension_code");
+     this.extension_code = jsonObject.optString("extension_code");
 
-     localItem.formated_market_price = jsonObject.optString("formated_market_price");
+     this.formated_market_price = jsonObject.optString("formated_market_price");
 
-     localItem.rec_id = jsonObject.optInt("rec_id");
+     this.rec_id = jsonObject.optString("rec_id");
 
-     localItem.parent_id = jsonObject.optString("parent_id");
-     return localItem;
+     this.parent_id = jsonObject.optString("parent_id");
+
+     this.user_id = jsonObject.optString("user_id");
+     return ;
  }
 
  public JSONObject  toJson() throws JSONException 
@@ -178,6 +185,7 @@ public class GOODS_LIST  extends Model
      localItemObject.put("formated_market_price", formated_market_price);
      localItemObject.put("rec_id", rec_id);
      localItemObject.put("parent_id", parent_id);
+     localItemObject.put("user_id", user_id);
      return localItemObject;
  }
 

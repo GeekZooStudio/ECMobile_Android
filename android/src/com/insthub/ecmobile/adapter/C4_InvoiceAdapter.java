@@ -32,9 +32,9 @@ public class C4_InvoiceAdapter extends BaseAdapter {
 	private List<INV_LIST> list;
 	private LayoutInflater inflater;
 	public int flag = -1;
-	private String id;
+	private int id;
 	
-	public C4_InvoiceAdapter(Context context, List<INV_LIST> list, String id) {
+	public C4_InvoiceAdapter(Context context, List<INV_LIST> list, int id) {
 		this.context = context;
 		this.list = list;
 		inflater = LayoutInflater.from(context);
@@ -81,15 +81,14 @@ public class C4_InvoiceAdapter extends BaseAdapter {
 				holder.select.setVisibility(View.GONE);
 			}
 		} else {
-			if(id != null) {
 				
-				if(list.get(position).id.equals(id)) {
+				if(list.get(position).id==id) {
 					holder.select.setVisibility(View.VISIBLE); 
 				} else {
 					holder.select.setVisibility(View.GONE);
 				}
 				
-			}
+
 		}
 		
 		return convertView;

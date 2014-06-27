@@ -22,33 +22,33 @@ public class SPECIFICATION  extends Model
      @Column(name = "attr_type")
      public String attr_type;
 
- public static SPECIFICATION fromJson(JSONObject jsonObject)  throws JSONException
+ public void fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return null;
+       return ;
       }
 
-     SPECIFICATION   localItem = new SPECIFICATION();
 
      JSONArray subItemArray;
 
-     localItem.name = jsonObject.optString("name");
+     this.name = jsonObject.optString("name");
 
      subItemArray = jsonObject.optJSONArray("value");
      if(null != subItemArray)
       {
          for(int i = 0;i < subItemArray.length();i++)
           {
-             JSONObject subItemObject = subItemArray.getJSONObject(i);
-             SPECIFICATION_VALUE subItem = SPECIFICATION_VALUE.fromJson(subItemObject);
-              subItem.specification = localItem;
-             localItem.value.add(subItem);
+              JSONObject subItemObject = subItemArray.getJSONObject(i);
+              SPECIFICATION_VALUE subItem = new SPECIFICATION_VALUE();
+              subItem.fromJson(subItemObject);
+              subItem.specification = this;
+              this.value.add(subItem);
          }
      }
 
 
-     localItem.attr_type = jsonObject.optString("attr_type");
-     return localItem;
+     this.attr_type = jsonObject.optString("attr_type");
+     return ;
  }
 
  public JSONObject  toJson() throws JSONException 

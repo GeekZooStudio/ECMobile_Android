@@ -17,14 +17,12 @@ package com.insthub.ecmobile.model;
 import android.content.Context;
 import android.content.Intent;
 
+import android.graphics.Bitmap;
 import com.external.androidquery.callback.AjaxStatus;
 import com.insthub.BeeFramework.model.BaseModel;
 import com.insthub.BeeFramework.model.BeeCallback;
 import com.insthub.ecmobile.activity.AppOutActivity;
-import com.insthub.ecmobile.protocol.ADDRESS;
-import com.insthub.ecmobile.protocol.CONFIG;
-import com.insthub.ecmobile.protocol.SESSION;
-import com.insthub.ecmobile.protocol.STATUS;
+import com.insthub.ecmobile.protocol.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,57 +30,51 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ConfigModel extends BaseModel
-{
+public class ConfigModel extends BaseModel {
     public CONFIG config;
 
     private static ConfigModel instance;
-    public static ConfigModel getInstance()
-    {
+
+    public static ConfigModel getInstance() {
         return instance;
     }
 
-    public ConfigModel()
-    {
-       super();
+    public ConfigModel() {
+        super();
     }
 
-    public ConfigModel(Context context)
-    {
+    public ConfigModel(Context context) {
         super(context);
         instance = this;
     }
 
-    public void getConfig()
-    {
-        String url = ProtocolConst.CONFIG;
+    public void getConfig() {
+        configRequest request = new configRequest();
         BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
 
             @Override
-            public void callback(String url, JSONObject jo, AjaxStatus status)
-            {
+            public void callback(String url, JSONObject jo, AjaxStatus status) {
                 ConfigModel.this.callback(url, jo, status);
-                try
-                {
-                    STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
+                try {
+                    configResponse response = new configResponse();
+                    response.fromJson(jo);
+                    if (jo != null) {
 
-                    if(responseStatus.succeed == 1)
-                    {
-                        JSONObject dataJsonObject = jo.optJSONObject("data");
-                        ConfigModel.this.config = CONFIG.fromJson(dataJsonObject);
-                        ConfigModel.this.OnMessageResponse(url, jo, status);
-                        
-                        if(config.shop_closed == 1) {
-                        	Intent intent = new Intent(mContext,AppOutActivity.class);
-                        	intent.putExtra("flag", 1);
-                        	mContext.startActivity(intent);
+
+                        if (response.status.succeed == 1) {
+                            ConfigModel.this.config = response.data;
+                            ConfigModel.this.OnMessageResponse(url, jo, status);
+
+                            if (config.shop_closed .equals("1")) {
+                                Intent intent = new Intent(mContext, AppOutActivity.class);
+                                intent.putExtra("flag", 1);
+                                mContext.startActivity(intent);
+                            }
+
                         }
-                        
                     }
 
-                }
-                catch (JSONException e)
-                {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
@@ -90,23 +82,14 @@ public class ConfigModel extends BaseModel
 
         };
 
-        SESSION session = SESSION.getInstance();
-
-        JSONObject requestJsonObject = new JSONObject();
-
+        request.session = SESSION.getInstance();
         Map<String, String> params = new HashMap<String, String>();
-        try
-        {
-            requestJsonObject.put("session",session.toJson());
+        try {
+            params.put("json", request.toJson().toString());
+        } catch (JSONException e) {
+            // TODO: handle exception
         }
-        catch (JSONException e)
-        {
-
-        }
-
-        params.put("json",requestJsonObject.toString());
-
-        cb.url(url).type(JSONObject.class).params(params);
+        cb.url(ApiInterface.CONFIG).type(JSONObject.class).params(params);
         aq.ajax(cb);
 
     }

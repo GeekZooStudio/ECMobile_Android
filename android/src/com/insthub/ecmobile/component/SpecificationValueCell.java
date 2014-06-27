@@ -63,11 +63,11 @@ public class SpecificationValueCell extends LinearLayout{
                     // 多选
                     if ( 0 == specification_value_one.specification.attr_type.compareTo(SPECIFICATION.MULTIPLE_SELECT))
                     {
-                        if (GoodDetailDraft.getInstance().isHasSpecId(specification_value_one.id))
+                        if (GoodDetailDraft.getInstance().isHasSpecId(Integer.parseInt(specification_value_one.id)))
                         {
                             Resources resource = (Resources) ((Activity)mContext).getBaseContext().getResources();
                             ColorStateList normalTextColor = (ColorStateList) resource.getColorStateList(R.color.spec_text_color);
-                            GoodDetailDraft.getInstance().removeSpecId(specification_value_one.id);
+                            GoodDetailDraft.getInstance().removeSpecId(Integer.parseInt(specification_value_one.id));
                             specOne.setTextColor(normalTextColor);
                             specOne.setBackgroundResource(R.drawable.item_info_buy_kinds_btn_bg_grey);
                             image1.setVisibility(View.GONE);
@@ -84,11 +84,11 @@ public class SpecificationValueCell extends LinearLayout{
                     // 单选
                     if ( 0 == specification_value_one.specification.attr_type.compareTo(SPECIFICATION.SINGLE_SELECT))
                     {
-                        if (GoodDetailDraft.getInstance().isHasSpecId(specification_value_one.id))
+                        if (GoodDetailDraft.getInstance().isHasSpecId(Integer.parseInt(specification_value_one.id)))
                         {
                             Resources resource = (Resources) ((Activity)mContext).getBaseContext().getResources();
                             ColorStateList normalTextColor = (ColorStateList) resource.getColorStateList(R.color.spec_text_color);
-                            GoodDetailDraft.getInstance().removeSpecId(specification_value_one.id);
+                            GoodDetailDraft.getInstance().removeSpecId(Integer.parseInt(specification_value_one.id));
                             specOne.setTextColor(normalTextColor);
                             specOne.setBackgroundResource(R.drawable.item_info_buy_kinds_btn_bg_grey);
                             image1.setVisibility(View.GONE);
@@ -124,16 +124,16 @@ public class SpecificationValueCell extends LinearLayout{
                     // 多选
                     if ( 0 == specification_value_two.specification.attr_type.compareTo(SPECIFICATION.MULTIPLE_SELECT))
                     {
-                        if (GoodDetailDraft.getInstance().isHasSpecId(specification_value_two.id))
+                        if (GoodDetailDraft.getInstance().isHasSpecId(Integer.parseInt(specification_value_two.id)))
                         {
                             Resources resource = (Resources) ((Activity)mContext).getBaseContext().getResources();
                             ColorStateList normalTextColor = (ColorStateList) resource.getColorStateList(R.color.spec_text_color);
-                            GoodDetailDraft.getInstance().removeSpecId(specification_value_two.id);
+                            GoodDetailDraft.getInstance().removeSpecId(Integer.parseInt(specification_value_two.id));
                             specTwo.setTextColor(normalTextColor);
                             specTwo.setBackgroundResource(R.drawable.item_info_buy_kinds_btn_bg_grey);
                             image2.setVisibility(View.GONE);
                         }
-                        else
+                       else
                         {
                             specTwo.setTextColor(Color.RED);
                             specTwo.setBackgroundResource(R.drawable.item_info_buy_kinds_btn_active_bg);
@@ -145,11 +145,11 @@ public class SpecificationValueCell extends LinearLayout{
                     // 单选
                     if ( 0 == specification_value_two.specification.attr_type.compareTo(SPECIFICATION.SINGLE_SELECT))
                     {
-                        if (GoodDetailDraft.getInstance().isHasSpecId(specification_value_two.id))
+                        if (GoodDetailDraft.getInstance().isHasSpecId(Integer.parseInt(specification_value_two.id)))
                         {
                             Resources resource = (Resources) ((Activity)mContext).getBaseContext().getResources();
                             ColorStateList normalTextColor = (ColorStateList) resource.getColorStateList(R.color.spec_text_color);
-                            GoodDetailDraft.getInstance().removeSpecId(specification_value_two.id);
+                            GoodDetailDraft.getInstance().removeSpecId(Integer.parseInt(specification_value_two.id));
                             specTwo.setTextColor(normalTextColor);
                             specTwo.setBackgroundResource(R.drawable.item_info_buy_kinds_btn_bg_grey);
                             image2.setVisibility(View.GONE);
@@ -181,18 +181,9 @@ public class SpecificationValueCell extends LinearLayout{
         {
             SPECIFICATION_VALUE specification_value = dataList.get(0);
 
-            if (specification_value.price == 0)
-            {
-                //specOne.setText(specification_value.label);
-                specOne.setText(specification_value.label+"\n("+specification_value.format_price+")");
-            }
-            else
-            {
-            	//specOne.setText(specification_value.label);
-                specOne.setText(specification_value.label+"\n("+specification_value.format_price+")");
-            }
+            specOne.setText(specification_value.label+"\n("+specification_value.format_price+")");
 
-            if (GoodDetailDraft.getInstance().isHasSpecId(specification_value.id))
+            if (GoodDetailDraft.getInstance().isHasSpecId(Integer.parseInt(specification_value.id)))
             {
                 specOne.setTextColor(Color.RED);
                 specOne.setBackgroundResource(R.drawable.item_info_buy_kinds_btn_active_bg);
@@ -203,18 +194,9 @@ public class SpecificationValueCell extends LinearLayout{
             {
                 specTwo.setVisibility(View.VISIBLE);
                 SPECIFICATION_VALUE specification_value_two = dataList.get(1);
-                if (specification_value_two.price == 0)
-                {
-                    //specTwo.setText(specification_value_two.label);
-                	specTwo.setText(specification_value_two.label+"\n("+specification_value_two.format_price+")");
-                }
-                else
-                {
-                	//specTwo.setText(specification_value_two.label);
-                    specTwo.setText(specification_value_two.label+"\n("+specification_value_two.format_price+")");
-                }
+                specTwo.setText(specification_value_two.label+"\n("+specification_value_two.format_price+")");
 
-                if (GoodDetailDraft.getInstance().isHasSpecId(specification_value_two.id))
+                if (GoodDetailDraft.getInstance().isHasSpecId(Integer.parseInt(specification_value_two.id)))
                 {
                     specTwo.setTextColor(Color.RED);
                     specTwo.setBackgroundResource(R.drawable.item_info_buy_kinds_btn_active_bg);

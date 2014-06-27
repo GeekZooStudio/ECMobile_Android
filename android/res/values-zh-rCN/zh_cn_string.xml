@@ -326,7 +326,7 @@
 <string name="excellent_parter">不拘泥于电脑操作，不限制在固定空间，ECMobile有效提升了商城的宣传及销售渠道，让您更容易的找到生意伙伴，创造共赢</string>
 <string name="success_share">成功！！</string>
 <string name="user_cancel">用户取消！！</string>
-<string name="fail_share">：失败！！</string>
+<string name="fail_share">分享失败！！</string>
 <string name="successful_authentication">认证成功！</string>
 <string name="none">无</string>
 <string name="broadcast_success">转播成功</string>
@@ -352,6 +352,8 @@
 <string name="prompt">提示</string>
 <string name="pay_success">支付成功</string>
 <string name="pay_failed">支付失败</string>
+<string name="pay_finished">支付完成</string>
+<string name="is_pay_success">支付是否成功?</string>
 <string name="you_did_not_speak">您没有说话</string>
 <string name="check_orders">订单已生成，请到订单列表中查看</string>
 <string name="setting_push">推送设置</string>
@@ -361,4 +363,10 @@
 <string name="all_category">全部分类</string>
 <string name="all_price">全部价格</string>
 <string name="balance_cancel_or_not">是否取消订单?</string>
+<string name="continue_shopping_or_not">是否继续购物?</string>
+<string name="unionpay">银联在线支付</string>
+<string name="unionpay_wap">银联wap支付</string>
+<string name="alipay">支付宝支付</string>
+<string name="alipay_wap">支付宝wap支付</string>
+<string name="username_or_password_error">用户名或密码错误</string>
 </resources>

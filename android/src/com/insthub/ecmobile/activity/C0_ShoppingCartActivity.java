@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import android.content.res.Resources;
 import com.insthub.ecmobile.EcmobileManager;
+import com.insthub.ecmobile.protocol.ApiInterface;
 import com.umeng.analytics.MobclickAgent;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -101,10 +102,6 @@ public class C0_ShoppingCartActivity extends BaseActivity  implements BusinessRe
             public void onClick(View v) {
             	
             	addressModel.getAddressList();
-				pd = new ProgressDialog(C0_ShoppingCartActivity.this);
-                String holdon=resource.getString(R.string.hold_on);
-				pd.setMessage(holdon);
-				pd.show();
             }
         });
 
@@ -179,20 +176,17 @@ public class C0_ShoppingCartActivity extends BaseActivity  implements BusinessRe
     }
 
     public void OnMessageResponse(String url, JSONObject jo, AjaxStatus status) {
-        if (url.endsWith(ProtocolConst.CARTLIST)) {
+        if (url.endsWith(ApiInterface.CART_LIST)) {
             xlistView.stopRefresh();
         	xlistView.setRefreshTime();
             setShopCart();
-        } else if(url.endsWith(ProtocolConst.CARTDELETE)) {
+        } else if(url.endsWith(ApiInterface.CART_DELETE)) {
             updataCar();
-        } else if(url.endsWith(ProtocolConst.CARTUPDATA)) {
+        } else if(url.endsWith(ApiInterface.CART_UPDATE)) {
             updataCar();
-        } else if(url.endsWith(ProtocolConst.CHECKORDER)) {
+        } else if(url.endsWith(ApiInterface.FLOW_CHECKORDER)) {
         	
-        }  else if(url.endsWith(ProtocolConst.ADDRESS_LIST)) {
-			if(pd.isShowing()) {
-				pd.dismiss();
-			}
+        }  else if(url.endsWith(ApiInterface.ADDRESS_LIST)) {
 			if(addressModel.addressList.size() == 0) {
 				Intent intent = new Intent(C0_ShoppingCartActivity.this, F1_NewAddressActivity.class);
 				startActivity(intent);
@@ -202,7 +196,7 @@ public class C0_ShoppingCartActivity extends BaseActivity  implements BusinessRe
 			}
 			
 		}
-        else if(url.endsWith(ProtocolConst.ORDER_PAY))
+        else if(url.endsWith(ApiInterface.ORDER_PAY))
         {
 			Intent intent = new Intent(C0_ShoppingCartActivity.this, PayWebActivity.class);
             String data = null;

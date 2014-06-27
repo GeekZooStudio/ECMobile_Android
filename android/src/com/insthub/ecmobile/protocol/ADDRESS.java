@@ -66,52 +66,51 @@ public class ADDRESS  extends Model
      @Column(name = "mobile")
      public String mobile;
 
- public static ADDRESS fromJson(JSONObject jsonObject)  throws JSONException
+ public void fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return null;
+       return ;
       }
 
-     ADDRESS   localItem = new ADDRESS();
 
      JSONArray subItemArray;
 
-     localItem.default_address = jsonObject.optInt("default_address");
+     this.default_address = jsonObject.optInt("default_address");
 
-     localItem.sign_building = jsonObject.optString("sign_building");
+     this.sign_building = jsonObject.optString("sign_building");
 
-     localItem.city_name = jsonObject.optString("city_name");
+     this.city_name = jsonObject.optString("city_name");
 
-     localItem.consignee = jsonObject.optString("consignee");
+     this.consignee = jsonObject.optString("consignee");
 
-     localItem.tel = jsonObject.optString("tel");
+     this.tel = jsonObject.optString("tel");
 
-     localItem.zipcode = jsonObject.optString("zipcode");
+     this.zipcode = jsonObject.optString("zipcode");
 
-     localItem.country_name = jsonObject.optString("country_name");
+     this.country_name = jsonObject.optString("country_name");
 
-     localItem.country = jsonObject.optString("country");
+     this.country = jsonObject.optString("country");
 
-     localItem.city = jsonObject.optString("city");
+     this.city = jsonObject.optString("city");
 
-     localItem.id = jsonObject.optInt("id");
+     this.id = jsonObject.optInt("id");
 
-     localItem.province_name = jsonObject.optString("province_name");
+     this.province_name = jsonObject.optString("province_name");
 
-     localItem.district_name = jsonObject.optString("district_name");
+     this.district_name = jsonObject.optString("district_name");
 
-     localItem.email = jsonObject.optString("email");
+     this.email = jsonObject.optString("email");
 
-     localItem.address = jsonObject.optString("address");
+     this.address = jsonObject.optString("address");
 
-     localItem.province = jsonObject.optString("province");
+     this.province = jsonObject.optString("province");
 
-     localItem.district = jsonObject.optString("district");
+     this.district = jsonObject.optString("district");
 
-     localItem.best_time = jsonObject.optString("best_time");
+     this.best_time = jsonObject.optString("best_time");
 
-     localItem.mobile = jsonObject.optString("mobile");
-     return localItem;
+     this.mobile = jsonObject.optString("mobile");
+     return ;
  }
 
  public JSONObject  toJson() throws JSONException 

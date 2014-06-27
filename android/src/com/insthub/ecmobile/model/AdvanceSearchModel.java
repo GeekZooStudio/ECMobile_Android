@@ -18,6 +18,7 @@ import android.content.Context;
 import com.external.androidquery.callback.AjaxStatus;
 import com.insthub.BeeFramework.model.BaseModel;
 import com.insthub.BeeFramework.model.BeeCallback;
+import com.insthub.BeeFramework.view.MyProgressDialog;
 import com.insthub.ecmobile.R;
 import com.insthub.ecmobile.protocol.*;
 import org.json.JSONArray;
@@ -41,7 +42,7 @@ public class AdvanceSearchModel extends BaseModel{
 
     public void getAllBrand(String category_id)
     {
-        String url = ProtocolConst.BRAND;
+        brandRequest request=new brandRequest();
 
         BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
 
@@ -50,65 +51,48 @@ public class AdvanceSearchModel extends BaseModel{
 
                 AdvanceSearchModel.this.callback(url, jo, status);
                 try {
-                    STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
+                    brandResponse response = new brandResponse();
+                    response.fromJson(jo);
+                    if (jo != null) {
+                        if (response.status.succeed == 1) {
+                             ArrayList<BRAND>  data = response.data;
+                            if (null != data && data.size() > 0) {
+                                brandList.clear();
+                                BRAND allBrand = new BRAND();
+                                allBrand.brand_id = "0";
+                                allBrand.brand_name = mContext.getResources().getString(R.string.all_brand);
+                                brandList.add(allBrand);
+                                brandList.addAll(data);
 
-                    if(responseStatus.succeed == 1) {
-                        JSONArray dataJsonArray = jo.optJSONArray("data");
-                        if (null != dataJsonArray && dataJsonArray.length() > 0) {
-
-                            brandList.clear();
-                            BRAND allBrand = new BRAND();
-                            allBrand.brand_id = 0;
-                            allBrand.brand_name = mContext.getResources().getString(R.string.all_brand);
-                            brandList.add(allBrand);
-                            for (int i = 0; i < dataJsonArray.length(); i++)
-                            {
-                                JSONObject brandJsonObject = dataJsonArray.getJSONObject(i);
-                                BRAND brandItem = BRAND.fromJson(brandJsonObject);
-                                brandList.add(brandItem);
                             }
+                            AdvanceSearchModel.this.OnMessageResponse(url, jo, status);
                         }
-                        AdvanceSearchModel.this.OnMessageResponse(url, jo, status);
                     }
 
                 } catch (JSONException e) {
-                     
                     e.printStackTrace();
                 }
 
             }
 
         };
-
-        SESSION session = SESSION.getInstance();
-
-        JSONObject requestJsonObject = new JSONObject();
-
+        request.category_id=category_id;
+        request.session=SESSION.getInstance();
         Map<String, String> params = new HashMap<String, String>();
         try
         {
-            requestJsonObject.put("session",session.toJson());
-            if (null != category_id)
-            {
-                requestJsonObject.put("category_id",category_id);
-            }
-
+            params.put("json",request.toJson().toString());
         } catch (JSONException e) {
             // TODO: handle exception
         }
-
-        params.put("json",requestJsonObject.toString());
-
-        cb.url(url).type(JSONObject.class).params(params);
-        ProgressDialog pd = new ProgressDialog(mContext);
-        pd.setMessage(mContext.getResources().getString(R.string.hold_on));
-        aq.progress(pd).ajax(cb);
+        cb.url(ApiInterface.BRAND).type(JSONObject.class).params(params);
+        MyProgressDialog pd = new MyProgressDialog(mContext,mContext.getResources().getString(R.string.hold_on));
+        aq.progress(pd.mDialog).ajax(cb);
     }
 
     public void getPriceRange(int categoryId)
     {
-        String url = ProtocolConst.PRICE_RANGE;
-
+        final price_rangeRequest request=new price_rangeRequest();
         BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
 
             @Override
@@ -116,29 +100,26 @@ public class AdvanceSearchModel extends BaseModel{
 
                 AdvanceSearchModel.this.callback(url, jo, status);
                 try {
-                    STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
+                    price_rangeResponse response = new price_rangeResponse();
+                    response.fromJson(jo);
+                    if (jo != null) {
+                        if (response.status.succeed == 1) {
+                            ArrayList<PRICE_RANGE> price_ranges = response.data;
+                            if (null != price_ranges && price_ranges.size() > 0) {
+                                priceRangeArrayList.clear();
+                                PRICE_RANGE allPrice = new PRICE_RANGE();
+                                allPrice.price_min = -1;
+                                allPrice.price_max = -1;
+                                priceRangeArrayList.add(allPrice);
+                                priceRangeArrayList.addAll(price_ranges);
 
-                    if(responseStatus.succeed == 1) {
-                        JSONArray dataJsonArray = jo.optJSONArray("data");
-                        if (null != dataJsonArray && dataJsonArray.length() > 0) {
-                            priceRangeArrayList.clear();
-
-                            PRICE_RANGE allPrice = new PRICE_RANGE();
-                            allPrice.price_min = -1;
-                            allPrice.price_max = -1;
-                            priceRangeArrayList.add(allPrice);
-                            for (int i = 0; i < dataJsonArray.length(); i++)
-                            {
-                                JSONObject priceJsonObject = dataJsonArray.getJSONObject(i);
-                                PRICE_RANGE brandItem = PRICE_RANGE.fromJson(priceJsonObject);
-                                priceRangeArrayList.add(brandItem);
                             }
+                            AdvanceSearchModel.this.OnMessageResponse(url, jo, status);
                         }
-                        AdvanceSearchModel.this.OnMessageResponse(url, jo, status);
                     }
 
                 } catch (JSONException e) {
-                     
+
                     e.printStackTrace();
                 }
 
@@ -146,34 +127,24 @@ public class AdvanceSearchModel extends BaseModel{
 
         };
 
-        SESSION session = SESSION.getInstance();
-
-        JSONObject requestJsonObject = new JSONObject();
-
+        request.category_id=categoryId;
+        request.session=SESSION.getInstance();
         Map<String, String> params = new HashMap<String, String>();
         try
         {
-            requestJsonObject.put("session",session.toJson());
-            requestJsonObject.put("category_id",categoryId);
+            params.put("json",request.toJson().toString());
         } catch (JSONException e) {
             // TODO: handle exception
         }
-
-
-
-        params.put("json",requestJsonObject.toString());
-
-        cb.url(url).type(JSONObject.class).params(params);
-        ProgressDialog pd = new ProgressDialog(mContext);
-        pd.setMessage(mContext.getResources().getString(R.string.hold_on));
-        aq.progress(pd).ajax(cb);
-        priceRangeArrayList.clear();
+        cb.url(ApiInterface.PRICE_RANGE).type(JSONObject.class).params(params);
+        MyProgressDialog pd = new MyProgressDialog(mContext,mContext.getResources().getString(R.string.hold_on));
+        aq.progress(pd.mDialog).ajax(cb);
     }
 
     public void getCategory()
     {
-        String url = ProtocolConst.CATEGORY;
 
+        categoryRequest request = new categoryRequest();
         BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
 
             @Override
@@ -181,43 +152,39 @@ public class AdvanceSearchModel extends BaseModel{
 
                 AdvanceSearchModel.this.callback(url, jo, status);
                 try {
-                    STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
-                    if(responseStatus.succeed == 1)
-                    {
-                        categoryArrayList.clear();
-                        CATEGORY allCategory = new CATEGORY();
-                        allCategory.id = 0;
-                        allCategory.name = mContext.getString(R.string.all_category);
+                    categoryResponse response = new categoryResponse();
+                    response.fromJson(jo);
+                    if (jo != null) {
+                        if (response.status.succeed == 1) {
+                            categoryArrayList.clear();
+                            CATEGORY allCategory = new CATEGORY();
+                            allCategory.id = "0";
+                            allCategory.name = mContext.getString(R.string.all_category);
+                            categoryArrayList.add(allCategory);
+                            ArrayList<CATEGORY> data = response.data;
+                            if (null != data && data.size() > 0) {
+                                    categoryArrayList.addAll(data);
 
-                        categoryArrayList.add(allCategory);
-
-                        JSONArray categoryJSONArray = jo.optJSONArray("data");
-
-                        if (null != categoryJSONArray && categoryJSONArray.length() > 0)
-                        {
-                            for (int i = 0; i < categoryJSONArray.length(); i++)
-                            {
-                                JSONObject categoryObject = categoryJSONArray.getJSONObject(i);
-                                CATEGORY category = CATEGORY.fromJson(categoryObject);
-                                categoryArrayList.add(category);
                             }
+                            AdvanceSearchModel.this.OnMessageResponse(url, jo, status);
                         }
-
-                        AdvanceSearchModel.this.OnMessageResponse(url, jo, status);
-
                     }
 
                 } catch (JSONException e) {
-                     
+
                     e.printStackTrace();
                 }
             }
 
         };
-
-        cb.url(url).type(JSONObject.class);
+        Map<String, String> params = new HashMap<String, String>();
+        try
+        {
+            params.put("json",request.toJson().toString());
+        } catch (JSONException e) {
+            // TODO: handle exception
+        }
+        cb.url(ApiInterface.CATEGORY).type(JSONObject.class);
         aq.ajax(cb);
     }
-
-
 }

@@ -22,7 +22,7 @@ public class COLLECT_LIST  extends Model
      public String name;
 
      @Column(name = "goods_id")
-     public int goods_id;
+     public String goods_id;
 
      @Column(name = "img")
      public PHOTO   img;
@@ -31,31 +31,31 @@ public class COLLECT_LIST  extends Model
      public String promote_price;
 
      @Column(name = "rec_id")
-     public int rec_id;
+     public String rec_id;
 
- public static COLLECT_LIST fromJson(JSONObject jsonObject)  throws JSONException
+ public void fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return null;
+       return ;
       }
 
-     COLLECT_LIST   localItem = new COLLECT_LIST();
 
      JSONArray subItemArray;
 
-     localItem.shop_price = jsonObject.optString("shop_price");
+     this.shop_price = jsonObject.optString("shop_price");
 
-     localItem.market_price = jsonObject.optString("market_price");
+     this.market_price = jsonObject.optString("market_price");
 
-     localItem.name = jsonObject.optString("name");
+     this.name = jsonObject.optString("name");
 
-     localItem.goods_id = jsonObject.optInt("goods_id");
-     localItem.img = PHOTO.fromJson(jsonObject.optJSONObject("img"));
+     this.goods_id = jsonObject.optString("goods_id");
+     PHOTO  img = new PHOTO();
+     img.fromJson(jsonObject.optJSONObject("img"));
+     this.img = img;
+     this.promote_price = jsonObject.optString("promote_price");
 
-     localItem.promote_price = jsonObject.optString("promote_price");
-
-     localItem.rec_id = jsonObject.optInt("rec_id");
-     return localItem;
+     this.rec_id = jsonObject.optString("rec_id");
+     return ;
  }
 
  public JSONObject  toJson() throws JSONException 

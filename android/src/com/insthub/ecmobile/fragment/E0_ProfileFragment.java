@@ -22,6 +22,7 @@ import java.io.IOException;
 import android.content.Context;
 import android.content.res.Resources;
 import com.insthub.ecmobile.activity.*;
+import com.insthub.ecmobile.protocol.ApiInterface;
 import com.umeng.analytics.MobclickAgent;
 import org.json.JSONObject;
 
@@ -99,7 +100,7 @@ public class E0_ProfileFragment extends BaseFragment implements IXListViewListen
 	
 	private ImageView image;
 	private String uid;
-	private boolean isRefresh = false;
+	public static boolean isRefresh = false;
 
     protected Context mContext;
 	@Override
@@ -180,10 +181,11 @@ public class E0_ProfileFragment extends BaseFragment implements IXListViewListen
 		address_manage.setOnClickListener(this);
 		name.setOnClickListener(this);
         help.setOnClickListener(this);
-		
-		File files = new File(getActivity().getCacheDir()+"/ECMobile/cache"+"/temp.jpg");
-		if(files.exists()) {
-			photo.setImageBitmap(BitmapFactory.decodeFile(getActivity().getCacheDir()+"/ECMobile/cache"+"/temp.jpg"));
+
+        uid = shared.getString("uid", "");
+		File files = new File(getActivity().getCacheDir()+"/ECMobile/cache"+"/"+uid+"-temp.jpg");
+		if(files.exists()&&!uid.equals("")) {
+			photo.setImageBitmap(BitmapFactory.decodeFile(getActivity().getCacheDir()+"/ECMobile/cache"+"/"+uid+"-temp.jpg"));
 		} else {
 			photo.setImageResource(R.drawable.profile_no_avarta_icon);
 		}
@@ -195,8 +197,6 @@ public class E0_ProfileFragment extends BaseFragment implements IXListViewListen
             userInfoModel = new UserInfoModel(getActivity());
         }
         userInfoModel.addResponseListener(this);
-        
-        uid = shared.getString("uid", "");
 		if (uid.equals("")) {
 
 			Resources resource = mContext.getResources();
@@ -234,6 +234,12 @@ public class E0_ProfileFragment extends BaseFragment implements IXListViewListen
 	// set User 信息
 	public void setUserInfo() {
 		name.setText(user.name);
+        File files = new File(getActivity().getCacheDir()+"/ECMobile/cache"+"/"+uid+"-temp.jpg");
+        if(files.exists()&&!uid.equals("")) {
+            photo.setImageBitmap(BitmapFactory.decodeFile(getActivity().getCacheDir()+"/ECMobile/cache"+"/"+uid+"-temp.jpg"));
+        } else {
+            photo.setImageResource(R.drawable.profile_no_avarta_icon);
+        }
         memberLevelName.setText(user.rank_name);
         memberLevelLayout.setVisibility(View.VISIBLE);
         Resources resource = mContext.getResources();       
@@ -388,6 +394,7 @@ public class E0_ProfileFragment extends BaseFragment implements IXListViewListen
 				intent = new Intent(getActivity(), A0_SigninActivity.class);
 				startActivity(intent);
             	getActivity().overridePendingTransition(R.anim.push_buttom_in,R.anim.push_buttom_out);
+			} else {
 			}
 			break;
 		case R.id.profile_head_address_manage:
@@ -424,7 +431,12 @@ public class E0_ProfileFragment extends BaseFragment implements IXListViewListen
  				intent = new Intent(getActivity(), A0_SigninActivity.class);
              	startActivity(intent);
              	getActivity().overridePendingTransition(R.anim.push_buttom_in,R.anim.push_buttom_out);
- 			 }
+ 			 }else{
+                 intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                 startActivityForResult(intent, 1);
+                 getActivity().overridePendingTransition(R.anim.push_right_in,
+                         R.anim.push_right_out);
+             }
         	 break;
            
 		}
@@ -467,7 +479,7 @@ public class E0_ProfileFragment extends BaseFragment implements IXListViewListen
 					}
 				}
                 FileOutputStream b = null;
-                String fileName = getActivity().getCacheDir()+"/ECMobile/cache" +"/temp.jpg";
+                String fileName = getActivity().getCacheDir()+"/ECMobile/cache"+"/"+uid+"-temp.jpg";
                 try {
                     b = new FileOutputStream(fileName);
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);// 把数据写入文件
@@ -494,7 +506,7 @@ public class E0_ProfileFragment extends BaseFragment implements IXListViewListen
     }  
 
 	public void OnMessageResponse(String url, JSONObject jo, AjaxStatus status) {
-		if (url.endsWith(ProtocolConst.USERINFO)) {
+		if (url.endsWith(ApiInterface.USER_INFO)) {
 			xlistView.stopRefresh();
 			xlistView.setRefreshTime();
 			user = userInfoModel.user; // 从网络获取

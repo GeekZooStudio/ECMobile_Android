@@ -16,7 +16,7 @@ public class GOODS  extends Model
      public String promote_end_date;
 
      @Column(name = "click_count")
-     public int click_count;
+     public String  click_count;
 
      @Column(name = "goods_sn")
      public String goods_sn;
@@ -46,16 +46,16 @@ public class GOODS  extends Model
      public String goods_weight;
 
      @Column(name = "promote_price")
-     public String promote_price;
+     public int  promote_price;
      
      @Column(name = "formated_promote_price")
      public String formated_promote_price;
 
      @Column(name = "integral")
-     public String integral;
+     public int integral;
 
      @Column(name = "GOODS_id")
-     public int id;
+     public String id;
 
      @Column(name = "cat_id")
      public String cat_id;
@@ -75,99 +75,103 @@ public class GOODS  extends Model
 
      public ArrayList<SPECIFICATION>   specification = new ArrayList<SPECIFICATION>();
 
- public static GOODS fromJson(JSONObject jsonObject)  throws JSONException
+ public void fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return null;
+       return ;
       }
 
-     GOODS   localItem = new GOODS();
 
      JSONArray subItemArray;
 
-     localItem.promote_end_date = jsonObject.optString("promote_end_date");
+     this.promote_end_date = jsonObject.optString("promote_end_date");
 
-     localItem.click_count = jsonObject.optInt("click_count");
+     this.click_count = jsonObject.optString("click_count");
 
-     localItem.goods_sn = jsonObject.optString("goods_sn");
+     this.goods_sn = jsonObject.optString("goods_sn");
 
-     localItem.promote_start_date = jsonObject.optString("promote_start_date");
+     this.promote_start_date = jsonObject.optString("promote_start_date");
 
-     localItem.goods_number = jsonObject.optString("goods_number");
+     this.goods_number = jsonObject.optString("goods_number");
 
      subItemArray = jsonObject.optJSONArray("rank_prices");
      if(null != subItemArray)
       {
          for(int i = 0;i < subItemArray.length();i++)
           {
-             JSONObject subItemObject = subItemArray.getJSONObject(i);
-             PRICE subItem = PRICE.fromJson(subItemObject);
-             localItem.rank_prices.add(subItem);
+              JSONObject subItemObject = subItemArray.getJSONObject(i);
+              PRICE subItem = new PRICE();
+              subItem.fromJson(subItemObject);
+              this.rank_prices.add(subItem);
          }
      }
+     PHOTO photo=new PHOTO();
+     photo.fromJson(jsonObject.optJSONObject("img"));
+     this.img = photo;
 
-     localItem.img = PHOTO.fromJson(jsonObject.optJSONObject("img"));
-
-     localItem.brand_id = jsonObject.optString("brand_id");
+     this.brand_id = jsonObject.optString("brand_id");
 
      subItemArray = jsonObject.optJSONArray("pictures");
      if(null != subItemArray)
       {
          for(int i = 0;i < subItemArray.length();i++)
           {
-             JSONObject subItemObject = subItemArray.getJSONObject(i);
-             PHOTO subItem = PHOTO.fromJson(subItemObject);
-             localItem.pictures.add(subItem);
+              JSONObject subItemObject = subItemArray.getJSONObject(i);
+              PHOTO subItem = new PHOTO();
+              subItem.fromJson(subItemObject);
+              this.pictures.add(subItem);
          }
      }
 
 
-     localItem.goods_name = jsonObject.optString("goods_name");
+     this.goods_name = jsonObject.optString("goods_name");
 
      subItemArray = jsonObject.optJSONArray("properties");
      if(null != subItemArray)
       {
          for(int i = 0;i < subItemArray.length();i++)
           {
-             JSONObject subItemObject = subItemArray.getJSONObject(i);
-             PROPERTY subItem = PROPERTY.fromJson(subItemObject);
-             localItem.properties.add(subItem);
+              JSONObject subItemObject = subItemArray.getJSONObject(i);
+              PROPERTY subItem = new PROPERTY();
+              subItem.fromJson(subItemObject);
+              this.properties.add(subItem);
          }
      }
 
 
-     localItem.goods_weight = jsonObject.optString("goods_weight");
+     this.goods_weight = jsonObject.optString("goods_weight");
 
-     localItem.promote_price = jsonObject.optString("promote_price");
-     
-     localItem.formated_promote_price = jsonObject.optString("formated_promote_price");
+     this.promote_price = jsonObject.optInt("promote_price");
 
-     localItem.integral = jsonObject.optString("integral");
+     this.formated_promote_price = jsonObject.optString("formated_promote_price");
 
-     localItem.id = jsonObject.optInt("id");
+     this.integral = jsonObject.optInt("integral");
 
-     localItem.cat_id = jsonObject.optString("cat_id");
+     this.id = jsonObject.optString("id");
 
-     localItem.is_shipping = jsonObject.optString("is_shipping");
+     this.cat_id = jsonObject.optString("cat_id");
 
-     localItem.shop_price = jsonObject.optString("shop_price");
+     this.is_shipping = jsonObject.optString("is_shipping");
 
-     localItem.market_price = jsonObject.optString("market_price");
+     this.shop_price = jsonObject.optString("shop_price");
 
-     localItem.collected=jsonObject.optInt("collected");
+     this.market_price = jsonObject.optString("market_price");
+
+     this.collected=jsonObject.optInt("collected");
 
      subItemArray = jsonObject.optJSONArray("specification");
      if(null != subItemArray)
       {
          for(int i = 0;i < subItemArray.length();i++)
           {
-             JSONObject subItemObject = subItemArray.getJSONObject(i);
-             SPECIFICATION subItem = SPECIFICATION.fromJson(subItemObject);
-             localItem.specification.add(subItem);
+              JSONObject subItemObject = subItemArray.getJSONObject(i);
+              SPECIFICATION subItem = new SPECIFICATION();
+              subItem.fromJson(subItemObject);
+              this.specification.add(subItem);
          }
      }
 
-     return localItem;
+     return ;
  }
 
  public JSONObject  toJson() throws JSONException 

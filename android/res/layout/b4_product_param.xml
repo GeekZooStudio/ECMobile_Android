@@ -6,7 +6,9 @@
     android:orientation="vertical" >
 
     <include layout="@layout/top_view" />
-
+    <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
     <ListView
         android:id="@+id/property_list"
         android:layout_width="match_parent"
@@ -18,5 +20,11 @@
         android:headerDividersEnabled="false"
         android:overScrollFooter="#00000000"
         android:padding="5dp" />
-
+        <include
+                android:id="@+id/null_pager"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                layout="@layout/null_pager"
+                android:visibility="gone" />
+    </FrameLayout>
 </LinearLayout>

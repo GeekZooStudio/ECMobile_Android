@@ -33,30 +33,29 @@ public class TOTAL  extends Model
      @Column(name = "goods_amount")
      public String goods_amount;
 
- public static TOTAL fromJson(JSONObject jsonObject)  throws JSONException
+ public void  fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return null;
+       return ;
       }
-
-     TOTAL   localItem = new TOTAL();
 
      JSONArray subItemArray;
 
-     localItem.goods_price = jsonObject.optString("goods_price");
 
-     localItem.virtual_goods_count = jsonObject.optInt("virtual_goods_count");
+     this.goods_price = jsonObject.optString("goods_price");
 
-     localItem.market_price = jsonObject.optString("market_price");
+     this.virtual_goods_count = jsonObject.optInt("virtual_goods_count");
 
-     localItem.real_goods_count = jsonObject.optInt("real_goods_count");
+     this.market_price = jsonObject.optString("market_price");
 
-     localItem.save_rate = jsonObject.optString("save_rate");
+     this.real_goods_count = jsonObject.optInt("real_goods_count");
 
-     localItem.saving = jsonObject.optString("saving");
+     this.save_rate = jsonObject.optString("save_rate");
 
-     localItem.goods_amount = jsonObject.optString("goods_amount");
-     return localItem;
+     this.saving = jsonObject.optString("saving");
+
+     this.goods_amount = jsonObject.optString("goods_amount");
+     return ;
  }
 
  public JSONObject  toJson() throws JSONException 

@@ -152,9 +152,7 @@ public class F0_AddressListAdapter extends BaseAdapter {
 			
 			@Override
 			public void onClick(View v) {
-				 
-				//init(position);
-				//AddressManageAdapter.this.notifyDataSetChanged();
+
 				if(flag == 1) {
 					Message msg = new Message();
 	                msg.what = 1;

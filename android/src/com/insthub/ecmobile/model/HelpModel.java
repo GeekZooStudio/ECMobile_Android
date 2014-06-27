@@ -19,9 +19,9 @@ import android.content.Context;
 import com.external.androidquery.callback.AjaxStatus;
 import com.insthub.BeeFramework.model.BaseModel;
 import com.insthub.BeeFramework.model.BeeCallback;
+import com.insthub.BeeFramework.view.MyProgressDialog;
 import com.insthub.ecmobile.R;
-import com.insthub.ecmobile.protocol.SHOPHELP;
-import com.insthub.ecmobile.protocol.STATUS;
+import com.insthub.ecmobile.protocol.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,22 +29,21 @@ import org.json.JSONObject;
 import java.io.*;
 import java.util.ArrayList;
 
-public class HelpModel extends BaseModel
-{
+public class HelpModel extends BaseModel {
     public ArrayList<SHOPHELP> shophelpsList = new ArrayList<SHOPHELP>();
     String pkName;
 
     public String rootpath;
-    public HelpModel(Context context)
-    {
+
+    public HelpModel(Context context) {
         super(context);
         pkName = mContext.getPackageName();
-        rootpath = context.getCacheDir()+"/ECMobile/cache" ;
+        rootpath = context.getCacheDir() + "/ECMobile/cache";
         readHelpDataCache();
     }
 
     public void readHelpDataCache() {
-        String path = rootpath+"/"+pkName+"/helpData.dat";
+        String path = rootpath + "/" + pkName + "/helpData.dat";
         File f1 = new File(path);
         try {
             InputStream is = new FileInputStream(f1);
@@ -58,13 +57,13 @@ public class HelpModel extends BaseModel
             is.close();
 
         } catch (FileNotFoundException e) {
-             
+
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
-             
+
             e.printStackTrace();
         } catch (IOException e) {
-             
+
             e.printStackTrace();
         }
     }
@@ -74,27 +73,23 @@ public class HelpModel extends BaseModel
         try {
             if (result != null) {
                 JSONObject jsonObject = new JSONObject(result);
-
-                STATUS responseStatus = STATUS.fromJson(jsonObject.optJSONObject("status"));
-                if (responseStatus.succeed == 1) {
+                shopHelpResponse response = new shopHelpResponse();
+                response.fromJson(jsonObject);
+                if (response.status.succeed == 1) {
                     fileSave(jsonObject.toString(), "helpData");
-                    JSONArray shopHelpJsonArray = jsonObject.optJSONArray("data");
+                    ArrayList<SHOPHELP> shophelps = response.data;
                     data = jsonObject.toString();
-                    if (null != shopHelpJsonArray && shopHelpJsonArray.length() > 0) {
+                    if (null != shophelps && shophelps.size() > 0) {
                         shophelpsList.clear();
-                        for (int i = 0; i < shopHelpJsonArray.length(); i++) {
-                            JSONObject shopHelpJsonObject = shopHelpJsonArray.getJSONObject(i);
-                            SHOPHELP shopHelpItem = SHOPHELP.fromJson(shopHelpJsonObject);
-                            shophelpsList.add(shopHelpItem);
-                        }
+                        shophelpsList.addAll(shophelps);
                     }
-
                 }
+
 
             }
 
         } catch (Exception e) {
-             
+
             e.printStackTrace();
         }
 
@@ -102,16 +97,17 @@ public class HelpModel extends BaseModel
 
     // 缓存数据
     private PrintStream ps = null;
+
     public void fileSave(String result, String name) {
 
-        String path = rootpath+"/"+pkName;
+        String path = rootpath + "/" + pkName;
 
         File filePath = new File(path);
         if (!filePath.exists()) {
             filePath.mkdirs();
         }
 
-        File file = new File(filePath+"/"+name+".dat");
+        File file = new File(filePath + "/" + name + ".dat");
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(file);
@@ -128,32 +124,26 @@ public class HelpModel extends BaseModel
 
 
     public String data;
-    public void fetchShopHelp()
-    {
-        String url = ProtocolConst.SHOPHELP;
 
-        BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>(){
+    public void fetchShopHelp() {
+        shopHelpRequest request=new shopHelpRequest();
+        BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
 
             @Override
             public void callback(String url, JSONObject jo, AjaxStatus status) {
-                try
-                {
-                    STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
-                    if (responseStatus.succeed == 1)
-                    {
-                        fileSave(jo.toString(), "helpData");
-                        JSONArray shopHelpJsonArray = jo.optJSONArray("data");
-                        data = jo.toString();
-                        if (null != shopHelpJsonArray && shopHelpJsonArray.length() > 0)
-                        {
-                            shophelpsList.clear();
-                            for (int i = 0; i < shopHelpJsonArray.length(); i++)
-                            {
-                                JSONObject shopHelpJsonObject = shopHelpJsonArray.getJSONObject(i);
-                                SHOPHELP shopHelpItem = SHOPHELP.fromJson(shopHelpJsonObject);
-                                shophelpsList.add(shopHelpItem);
+                try {
+                    shopHelpResponse response = new shopHelpResponse();
+                    response.fromJson(jo);
+                    if (jo != null) {
+                        if (response.status.succeed == 1) {
+                            fileSave(jo.toString(), "helpData");
+                            ArrayList<SHOPHELP> shophelps = response.data;
+                            data = jo.toString();
+                            if (null != shophelps && shophelps.size() > 0) {
+                                shophelpsList.clear();
+                                shophelpsList.addAll(shophelps);
+                                HelpModel.this.OnMessageResponse(url, jo, status);
                             }
-                            HelpModel.this.OnMessageResponse(url, jo, status);
                         }
 
                     }
@@ -166,10 +156,9 @@ public class HelpModel extends BaseModel
 
         };
 
-        cb.url(url).type(JSONObject.class);
-        ProgressDialog pd = new ProgressDialog(mContext);
-        pd.setMessage(mContext.getString(R.string.hold_on));
-        aq.progress(pd).ajax(cb);
+        cb.url(ApiInterface.SHOPHELP).type(JSONObject.class);
+        MyProgressDialog pd = new MyProgressDialog(mContext, mContext.getResources().getString(R.string.hold_on));
+        aq.progress(pd.mDialog).ajax(cb);
 
     }
 

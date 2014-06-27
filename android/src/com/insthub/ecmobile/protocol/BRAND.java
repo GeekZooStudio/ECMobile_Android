@@ -13,7 +13,7 @@ public class BRAND  extends Model
 {
 
      @Column(name = "brand_id")
-     public int brand_id;
+     public String brand_id;
 
      @Column(name = "brand_name")
      public String brand_name;
@@ -21,22 +21,21 @@ public class BRAND  extends Model
      @Column(name = "url")
      public String url;
 
- public static BRAND fromJson(JSONObject jsonObject)  throws JSONException
+ public void fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return null;
+       return ;
       }
 
-     BRAND   localItem = new BRAND();
 
      JSONArray subItemArray;
 
-     localItem.brand_id = jsonObject.optInt("brand_id");
+     this.brand_id = jsonObject.optString("brand_id");
 
-     localItem.brand_name = jsonObject.optString("brand_name");
+     this.brand_name = jsonObject.optString("brand_name");
 
-     localItem.url = jsonObject.optString("url");
-     return localItem;
+     this.url = jsonObject.optString("url");
+     return ;
  }
 
  public JSONObject  toJson() throws JSONException 

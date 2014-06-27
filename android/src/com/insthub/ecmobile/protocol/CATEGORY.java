@@ -13,26 +13,25 @@ public class CATEGORY  extends Model
 {
 
      @Column(name = "CATEGORY_id")
-     public int id;
+     public String id;
 
      @Column(name = "name")
      public String name;
 
      public ArrayList<CATEGORY>   children = new ArrayList<CATEGORY>();
 
- public static CATEGORY fromJson(JSONObject jsonObject)  throws JSONException
+ public void fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return null;
+       return ;
       }
 
-     CATEGORY   localItem = new CATEGORY();
 
      JSONArray subItemArray;
 
-     localItem.id = jsonObject.optInt("id");
+     this.id = jsonObject.optString("id");
 
-     localItem.name = jsonObject.optString("name");
+     this.name = jsonObject.optString("name");
 
      subItemArray = jsonObject.optJSONArray("children");
      if(null != subItemArray)
@@ -40,12 +39,13 @@ public class CATEGORY  extends Model
          for(int i = 0;i < subItemArray.length();i++)
           {
              JSONObject subItemObject = subItemArray.getJSONObject(i);
-             CATEGORY subItem = CATEGORY.fromJson(subItemObject);
-             localItem.children.add(subItem);
+             CATEGORY subItem = new CATEGORY();
+             subItem.fromJson(subItemObject);
+             this.children.add(subItem);
          }
      }
 
-     return localItem;
+     return ;
  }
 
  public JSONObject  toJson() throws JSONException 

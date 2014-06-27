@@ -40,38 +40,37 @@ public class SHIPPING  extends Model
      public String free_money;
 
      @Column(name = "shipping_fee")
-     public String shipping_fee;
+     public int shipping_fee;
 
- public static SHIPPING fromJson(JSONObject jsonObject)  throws JSONException
+ public void  fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return null;
+       return ;
       }
 
-     SHIPPING   localItem = new SHIPPING();
 
      JSONArray subItemArray;
 
-     localItem.support_cod = jsonObject.optString("support_cod");
+     this.support_cod = jsonObject.optString("support_cod");
 
-     localItem.shipping_desc = jsonObject.optString("shipping_desc");
+     this.shipping_desc = jsonObject.optString("shipping_desc");
 
-     localItem.shipping_id = jsonObject.optString("shipping_id");
+     this.shipping_id = jsonObject.optString("shipping_id");
 
-     localItem.format_shipping_fee = jsonObject.optString("format_shipping_fee");
+     this.format_shipping_fee = jsonObject.optString("format_shipping_fee");
 
-     localItem.insure = jsonObject.optString("insure");
+     this.insure = jsonObject.optString("insure");
 
-     localItem.insure_formated = jsonObject.optString("insure_formated");
+     this.insure_formated = jsonObject.optString("insure_formated");
 
-     localItem.shipping_code = jsonObject.optString("shipping_code");
+     this.shipping_code = jsonObject.optString("shipping_code");
 
-     localItem.shipping_name = jsonObject.optString("shipping_name");
+     this.shipping_name = jsonObject.optString("shipping_name");
 
-     localItem.free_money = jsonObject.optString("free_money");
+     this.free_money = jsonObject.optString("free_money");
 
-     localItem.shipping_fee = jsonObject.optString("shipping_fee");
-     return localItem;
+     this.shipping_fee = jsonObject.optInt("shipping_fee");
+     return ;
  }
 
  public JSONObject  toJson() throws JSONException 

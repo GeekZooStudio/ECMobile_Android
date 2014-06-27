@@ -16,27 +16,26 @@ public class SIGNUPFILEDS  extends Model
      public String need;
 
      @Column(name = "SIGNUPFILEDS_id")
-     public int id;
+     public String id;
 
      @Column(name = "name")
      public String name;
 
- public static SIGNUPFILEDS fromJson(JSONObject jsonObject)  throws JSONException
+ public void  fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return null;
+       return ;
       }
 
-     SIGNUPFILEDS   localItem = new SIGNUPFILEDS();
 
      JSONArray subItemArray;
 
-     localItem.need = jsonObject.optString("need");
+     this.need = jsonObject.optString("need");
 
-     localItem.id = jsonObject.optInt("id");
+     this.id = jsonObject.optString("id");
 
-     localItem.name = jsonObject.optString("name");
-     return localItem;
+     this.name = jsonObject.optString("name");
+     return ;
  }
 
  public JSONObject  toJson() throws JSONException 

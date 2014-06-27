@@ -18,6 +18,7 @@ import java.util.List;
 
 import com.insthub.ecmobile.ECMobileAppConst;
 import com.insthub.ecmobile.EcmobileApp;
+import com.insthub.ecmobile.protocol.ApiInterface;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import org.json.JSONException;
@@ -37,6 +38,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.external.androidquery.callback.AjaxStatus;
@@ -56,7 +58,6 @@ import com.insthub.ecmobile.adapter.Bee_PageAdapter;
 import com.insthub.ecmobile.model.ConfigModel;
 import com.insthub.ecmobile.model.HomeModel;
 import com.insthub.ecmobile.model.LoginModel;
-import com.insthub.ecmobile.model.ProtocolConst;
 import com.insthub.ecmobile.model.ShoppingCartModel;
 import com.insthub.ecmobile.protocol.FILTER;
 import com.insthub.ecmobile.protocol.PLAYER;
@@ -81,7 +82,8 @@ public class B0_IndexFragment extends BaseFragment implements BusinessResponse,X
 
 	private ImageView back;
 	private TextView title;
-
+    private LinearLayout title_right_button;
+    private TextView headUnreadTextView;
 	
     private SharedPreferences shared;
 	private SharedPreferences.Editor editor;
@@ -104,6 +106,9 @@ public class B0_IndexFragment extends BaseFragment implements BusinessResponse,X
         Resources resource = this.getResources();
         String ecmobileStr=resource.getString(R.string.ecmobile);
         title.setText(ecmobileStr);
+
+
+        headUnreadTextView = (TextView)mainView.findViewById(R.id.head_unread_num);
         
         if (null == dataModel)
         {
@@ -112,6 +117,8 @@ public class B0_IndexFragment extends BaseFragment implements BusinessResponse,X
             dataModel.fetchCategoryGoods();
         }
 
+        
+        
         if (null == ConfigModel.getInstance())
         {
             ConfigModel configModel = new ConfigModel(getActivity());
@@ -170,13 +177,7 @@ public class B0_IndexFragment extends BaseFragment implements BusinessResponse,X
 
 
         mIndicator = (PageIndicator)bannerView.findViewById(R.id.indicator);
-        mIndicator.setViewPager(bannerViewPager); 
-        
-//        //设置小点的宽度
-//        LayoutParams params = mIndicator.getLayoutParams();
-//		params.width = 2000;
-//		mIndicator.setLayoutParams(params);
-        
+        mIndicator.setViewPager(bannerViewPager);
 
         mListView = (MyListView)mainView.findViewById(R.id.home_listview);
         mListView.addHeaderView(bannerView);
@@ -229,7 +230,7 @@ public class B0_IndexFragment extends BaseFragment implements BusinessResponse,X
 
     public void OnMessageResponse(String url, JSONObject jo, AjaxStatus status)
     {
-        if (url.endsWith(ProtocolConst.HOMEDATA))
+        if (url.endsWith(ApiInterface.HOME_DATA))
         {
             mListView.stopRefresh();
             mListView.setRefreshTime();
@@ -241,7 +242,7 @@ public class B0_IndexFragment extends BaseFragment implements BusinessResponse,X
             mListView.setAdapter(listAdapter);
             addBannerView();
         }
-        else if (url.endsWith(ProtocolConst.CATEGORYGOODS))
+        else if (url.endsWith(ApiInterface.HOME_CATEGORY))
         {
             mListView.stopRefresh();
             mListView.setRefreshTime();
@@ -253,7 +254,7 @@ public class B0_IndexFragment extends BaseFragment implements BusinessResponse,X
             mListView.setAdapter(listAdapter);
             addBannerView();
         } 
-        else if (url.endsWith(ProtocolConst.CARTLIST))
+        else if (url.endsWith(ApiInterface.CART_LIST))
         {
         	TabsFragment.setShoppingcartNum();
 		}
@@ -296,23 +297,18 @@ public class B0_IndexFragment extends BaseFragment implements BusinessResponse,X
     		String imageType = shared.getString("imageType", "mind");
     		
     		if(imageType.equals("high")) {
-//    			viewOne.setImageWithURL(getActivity(),player.photo.thumb,R.drawable.default_image);
                 imageLoader.displayImage(player.photo.thumb,viewOne, EcmobileApp.options);
     		} else if(imageType.equals("low")) {
-//    			viewOne.setImageWithURL(getActivity(),player.photo.small,R.drawable.default_image);
                 imageLoader.displayImage(player.photo.small,viewOne, EcmobileApp.options);
     		} else {
     			String netType = shared.getString("netType", "wifi");
     			if(netType.equals("wifi")) {
-//    				viewOne.setImageWithURL(getActivity(),player.photo.thumb,R.drawable.default_image);
                     imageLoader.displayImage(player.photo.thumb,viewOne, EcmobileApp.options);
     			} else {
-//    				viewOne.setImageWithURL(getActivity(),player.photo.small,R.drawable.default_image);
                     imageLoader.displayImage(player.photo.small,viewOne, EcmobileApp.options);
     			}
     		}
             
-            //viewOne.setImageWithURL(getActivity(),player.photo.url,R.drawable.default_image);
             try
             {
                 viewOne.setTag(player.toJson().toString());
@@ -333,7 +329,8 @@ public class B0_IndexFragment extends BaseFragment implements BusinessResponse,X
 
                     try {
                         JSONObject jsonObject = new JSONObject(playerJSONString);
-                        PLAYER player1 = PLAYER.fromJson(jsonObject);
+                        PLAYER player1 = new PLAYER();
+                         player1.fromJson(jsonObject);
                         if (null == player1.action)
                         {
                             if (null != player1.url) {
@@ -349,7 +346,7 @@ public class B0_IndexFragment extends BaseFragment implements BusinessResponse,X
                             if (player1.action.equals("goods"))
                             {
                                 Intent intent = new Intent(getActivity(), B2_ProductDetailActivity.class);
-                                intent.putExtra("good_id", player1.action_id);
+                                intent.putExtra("good_id", player1.action_id+"");
                                 getActivity().startActivity(intent);
                                 getActivity().overridePendingTransition(R.anim.push_right_in,
                                         R.anim.push_right_out);
@@ -446,6 +443,7 @@ public class B0_IndexFragment extends BaseFragment implements BusinessResponse,X
 
         return false;
     }
+
 
 
 }

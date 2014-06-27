@@ -16,7 +16,11 @@ package com.insthub.ecmobile.model;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.content.SharedPreferences;
+import com.insthub.BeeFramework.view.MyProgressDialog;
 import com.insthub.ecmobile.R;
+import com.insthub.ecmobile.fragment.E0_ProfileFragment;
+import com.insthub.ecmobile.protocol.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,69 +30,67 @@ import android.content.Context;
 import com.external.androidquery.callback.AjaxStatus;
 import com.insthub.BeeFramework.model.BaseModel;
 import com.insthub.BeeFramework.model.BeeCallback;
-import com.insthub.ecmobile.protocol.SESSION;
-import com.insthub.ecmobile.protocol.STATUS;
-import com.insthub.ecmobile.protocol.USER;
 
 public class UserInfoModel extends BaseModel {
-	public USER user;
+    public USER user;
+    private SharedPreferences shared;
+    private SharedPreferences.Editor editor;
 
-    public static final  int RANK_LEVEL_NORMAL = 0;
-    public static final  int RANK_LEVEL_VIP = 1;
-	
-	public UserInfoModel(Context context) {
-		super(context);
-		 
-	}
-	
-	public void getUserInfo() {
-		
-		String url = ProtocolConst.USERINFO;
+    public static final int RANK_LEVEL_NORMAL = 0;
+    public static final int RANK_LEVEL_VIP = 1;
 
-		BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
 
-			@Override
-			public void callback(String url, JSONObject jo, AjaxStatus status) {
+    public UserInfoModel(Context context) {
+        super(context);
+        shared = context.getSharedPreferences("userInfo", 0);
+        editor = shared.edit();
+    }
 
-				UserInfoModel.this.callback(url, jo, status);
-				
-				try {
-					STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
-					
-					if(responseStatus.succeed == 1) {
-						user = USER.fromJson(jo.optJSONObject("data"));
-						user.save();
-						UserInfoModel.this.OnMessageResponse(url, jo, status);
-					}
-					
-				} catch (JSONException e) {
-					 
-					e.printStackTrace();
-				}
-			
-			}
+    public void getUserInfo() {
 
-		};
+        userinfoRequest request = new userinfoRequest();
 
-		SESSION session = SESSION.getInstance();
-		 
-		JSONObject requestJsonObject = new JSONObject();
+        BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
 
-		Map<String, String> params = new HashMap<String, String>();
-		try 
-		{
-            requestJsonObject.put("session",session.toJson());
-		} catch (JSONException e) {
-			
-		}
+            @Override
+            public void callback(String url, JSONObject jo, AjaxStatus status) {
 
-        params.put("json",requestJsonObject.toString());
-		
-		cb.url(url).type(JSONObject.class).params(params);
-		ProgressDialog pd = new ProgressDialog(mContext);
-        pd.setMessage(mContext.getResources().getString(R.string.hold_on));
-		aq.progress(pd).ajax(cb);
-		
-	}
+                UserInfoModel.this.callback(url, jo, status);
+
+                try {
+
+                    userinfoResponse response = new userinfoResponse();
+                    response.fromJson(jo);
+                    if (jo != null) {
+                        if (response.status.succeed == 1) {
+                            user = response.data;
+                            user.save();
+                            editor.putString("email",user.email);
+                            editor.commit();
+                            UserInfoModel.this.OnMessageResponse(url, jo, status);
+                        }
+                    }
+                } catch (JSONException e) {
+
+                    e.printStackTrace();
+                }
+
+            }
+
+        };
+
+        request.session = SESSION.getInstance();
+
+        Map<String, String> params = new HashMap<String, String>();
+        try {
+            params.put("json", request.toJson().toString());
+        } catch (JSONException e) {
+
+        }
+        cb.url(ApiInterface.USER_INFO).type(JSONObject.class).params(params);
+        MyProgressDialog pd = new MyProgressDialog(mContext,mContext.getResources().getString(R.string.hold_on));
+        aq.progress(pd.mDialog).ajax(cb);
+
+    }
 
 }

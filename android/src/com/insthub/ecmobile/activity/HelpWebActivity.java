@@ -14,17 +14,15 @@ package com.insthub.ecmobile.activity;
 //
 
 import com.insthub.BeeFramework.activity.BaseActivity;
-import com.umeng.analytics.MobclickAgent;
+import com.insthub.ecmobile.protocol.ApiInterface;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebSettings;
-import android.webkit.WebSettings.ZoomDensity;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
@@ -93,7 +91,7 @@ public class HelpWebActivity extends BaseActivity implements BusinessResponse {
 	@Override
 	public void OnMessageResponse(String url, JSONObject jo, AjaxStatus status)
 			throws JSONException {				
-		if(url.endsWith(ProtocolConst.ARTICLE)) {			
+		if(url.endsWith(ApiInterface.ARTICLE)) {
 			webView.loadDataWithBaseURL(null,homeModel.web,"text/html","utf-8",null);			
 		}
 		

@@ -6,7 +6,9 @@
     android:orientation="vertical" >
 
     <include layout="@layout/top_view" />
-
+    <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
     <com.external.maxwin.view.XListView
         android:id="@+id/shop_notify_list"
         android:layout_width="fill_parent"
@@ -20,4 +22,12 @@
         android:visibility="gone" >
     </com.external.maxwin.view.XListView>
 
+        <include
+                layout="@layout/null_pager"
+                android:id="@+id/null_pager"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:visibility="gone"/>
+
+    </FrameLayout>
 </LinearLayout>

@@ -90,6 +90,7 @@ public class ProtocolConst {
     public static String CATEGORY = "category";                  //获取所有分类
     public static String BRAND = "brand";                       //获取所有品牌
     public static String PRICE_RANGE = "price_range";           //根据分类获取价格区间
+    public static String ORDER_WAP_PAY="order/wapPay";          //wap支付
 
     
 }

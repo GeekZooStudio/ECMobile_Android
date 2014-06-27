@@ -18,19 +18,18 @@ public class PAGINATION  extends Model
      @Column(name = "page")
      public int page;
 
- public static PAGINATION fromJson(JSONObject jsonObject)  throws JSONException
+ public void fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return null;
+       return ;
       }
 
-     PAGINATION   localItem = new PAGINATION();
 
      JSONArray subItemArray;
 
-     localItem.count = jsonObject.optInt("count");
-     localItem.page = jsonObject.optInt("page");
-     return localItem;
+     this.count = jsonObject.optInt("count");
+     this.page = jsonObject.optInt("page");
+     return ;
  }
 
  public JSONObject  toJson() throws JSONException 

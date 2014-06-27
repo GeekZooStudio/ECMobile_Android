@@ -27,26 +27,25 @@ public class SIMPLEORDER  extends Model
      @Column(name = "order_status")
      public String order_status;
 
- public static SIMPLEORDER fromJson(JSONObject jsonObject)  throws JSONException
+ public void  fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return null;
+       return ;
       }
 
-     SIMPLEORDER   localItem = new SIMPLEORDER();
 
      JSONArray subItemArray;
 
-     localItem.id = jsonObject.optInt("id");
+     this.id = jsonObject.optInt("id");
 
-     localItem.order_time = jsonObject.optString("order_time");
+     this.order_time = jsonObject.optString("order_time");
 
-     localItem.total_fee = jsonObject.optString("total_fee");
+     this.total_fee = jsonObject.optString("total_fee");
 
-     localItem.order_sn = jsonObject.optString("order_sn");
+     this.order_sn = jsonObject.optString("order_sn");
 
-     localItem.order_status = jsonObject.optString("order_status");
-     return localItem;
+     this.order_status = jsonObject.optString("order_status");
+     return ;
  }
 
  public JSONObject  toJson() throws JSONException 

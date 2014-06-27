@@ -13,39 +13,39 @@ public class CATEGORYGOODS  extends Model
 {
 
      @Column(name = "CATEGORYGOODS_id")
-     public int id;
+     public String id;
 
      @Column(name = "name")
      public String name;
 
      public ArrayList<SIMPLEGOODS>   goods = new ArrayList<SIMPLEGOODS>();
 
- public static CATEGORYGOODS fromJson(JSONObject jsonObject)  throws JSONException
+ public void fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return null;
+       return ;
       }
 
-     CATEGORYGOODS   localItem = new CATEGORYGOODS();
 
      JSONArray subItemArray;
 
-     localItem.id = jsonObject.optInt("id");
+     this.id = jsonObject.optString("id");
 
-     localItem.name = jsonObject.optString("name");
+     this.name = jsonObject.optString("name");
 
      subItemArray = jsonObject.optJSONArray("goods");
      if(null != subItemArray)
       {
          for(int i = 0;i < subItemArray.length();i++)
           {
-             JSONObject subItemObject = subItemArray.getJSONObject(i);
-             SIMPLEGOODS subItem = SIMPLEGOODS.fromJson(subItemObject);
-             localItem.goods.add(subItem);
+              JSONObject subItemObject = subItemArray.getJSONObject(i);
+              SIMPLEGOODS subItem = new SIMPLEGOODS();
+              subItem.fromJson(subItemObject);
+              this.goods.add(subItem);
          }
      }
 
-     return localItem;
+     return ;
  }
 
  public JSONObject  toJson() throws JSONException 

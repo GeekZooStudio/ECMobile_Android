@@ -21,22 +21,20 @@ public class STATUS  extends Model
      @Column(name = "error_desc")
      public String error_desc;
 
- public static STATUS fromJson(JSONObject jsonObject)  throws JSONException
+ public  void fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return null;
+       return ;
       }
-
-     STATUS   localItem = new STATUS();
 
      JSONArray subItemArray;
 
-     localItem.succeed = jsonObject.optInt("succeed");
+     this.succeed = jsonObject.optInt("succeed");
 
-     localItem.error_code = jsonObject.optInt("error_code");
+     this.error_code = jsonObject.optInt("error_code");
 
-     localItem.error_desc = jsonObject.optString("error_desc");
-     return localItem;
+     this.error_desc = jsonObject.optString("error_desc");
+     return ;
  }
 
  public JSONObject  toJson() throws JSONException 

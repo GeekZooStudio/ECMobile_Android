@@ -18,9 +18,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.content.res.Resources;
+import com.insthub.BeeFramework.view.MyProgressDialog;
 import com.insthub.BeeFramework.view.ToastView;
 import com.insthub.ecmobile.ErrorCodeConst;
 import com.insthub.ecmobile.R;
+import com.insthub.ecmobile.protocol.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,121 +34,113 @@ import android.view.Gravity;
 import com.external.androidquery.callback.AjaxStatus;
 import com.insthub.BeeFramework.model.BaseModel;
 import com.insthub.BeeFramework.model.BeeCallback;
-import com.insthub.ecmobile.protocol.SESSION;
-import com.insthub.ecmobile.protocol.SHOPHELP;
-import com.insthub.ecmobile.protocol.SIGNUPFILEDS;
-import com.insthub.ecmobile.protocol.SIMPLEGOODS;
-import com.insthub.ecmobile.protocol.STATUS;
-import com.insthub.ecmobile.protocol.USER;
 
 public class RegisterModel extends BaseModel {
 
-	private SharedPreferences shared;
-	private SharedPreferences.Editor editor;
-	public ArrayList<SIGNUPFILEDS> signupfiledslist = new ArrayList<SIGNUPFILEDS>();
-	
-	public RegisterModel(Context context) {
-		super(context);
-		 
-		shared = context.getSharedPreferences("userInfo", 0); 
-		editor = shared.edit();
-	}
-	
-	public STATUS responseStatus;
-	
-	public void signupFields() {
-		String url = ProtocolConst.SIGNUPFIELDS;
-		
-		BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
+    private SharedPreferences shared;
+    private SharedPreferences.Editor editor;
+    public ArrayList<SIGNUPFILEDS> signupfiledslist = new ArrayList<SIGNUPFILEDS>();
+    public STATUS responseStatus;
 
-			@Override
-			public void callback(String url, JSONObject jo, AjaxStatus status) {
-				
-				RegisterModel.this.callback(url, jo, status);
-				try {
-					responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
-					if(responseStatus.succeed == ErrorCodeConst.ResponseSucceed)
-                    {
-						JSONArray dataJsonArray = jo.optJSONArray("data");
-                        if (null != dataJsonArray && dataJsonArray.length() > 0)
-                        {
-                        	signupfiledslist.clear();
-                            for (int i = 0; i < dataJsonArray.length(); i++)
-                            {
-                                JSONObject signupfiledsJsonObject = dataJsonArray.getJSONObject(i);
-                                SIGNUPFILEDS signupfiledsItem = SIGNUPFILEDS.fromJson(signupfiledsJsonObject);
-                                signupfiledslist.add(signupfiledsItem);
+    public RegisterModel(Context context) {
+        super(context);
+
+        shared = context.getSharedPreferences("userInfo", 0);
+        editor = shared.edit();
+    }
+
+    public void signupFields() {
+        usersignupFieldsRequest request = new usersignupFieldsRequest();
+
+        BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
+
+            @Override
+            public void callback(String url, JSONObject jo, AjaxStatus status) {
+
+                RegisterModel.this.callback(url, jo, status);
+                try {
+                    usersignupFieldsResponse response = new usersignupFieldsResponse();
+                    response.fromJson(jo);
+                    if (jo != null) {
+                        responseStatus = response.status;
+                        if (responseStatus.succeed == ErrorCodeConst.ResponseSucceed) {
+                            ArrayList<SIGNUPFILEDS> data = response.data;
+                            if (null != data && data.size() > 0) {
+                                signupfiledslist.clear();
+                                signupfiledslist.addAll(data);
                             }
+                        } else if (responseStatus.error_code == ErrorCodeConst.UserOrEmailExist) {
+                            Resources resource = mContext.getResources();
+                            String user_or_email_exists = resource.getString(R.string.user_or_email_exists);
+                            ToastView toast = new ToastView(mContext, user_or_email_exists);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
                         }
-						
-					}
-                    else if (responseStatus.error_code == ErrorCodeConst.UserOrEmailExist)
-                    {
-                        Resources resource = mContext.getResources();
-                        String user_or_email_exists = resource.getString(R.string.user_or_email_exists);
-                        ToastView toast = new ToastView(mContext, user_or_email_exists);
-                        toast.setGravity(Gravity.CENTER, 0, 0);
-                        toast.show();
+
+                        RegisterModel.this.OnMessageResponse(url, jo, status);
+                    }
+                } catch (JSONException e) {
+
+                    e.printStackTrace();
+                }
+            }
+
+        };
+        cb.url(ApiInterface.USER_SIGNUPFIELDS).type(JSONObject.class);
+        MyProgressDialog pd = new MyProgressDialog(mContext,mContext.getResources().getString(R.string.hold_on));
+        aq.progress(pd.mDialog).ajax(cb);
+
+    }
+
+    public void signup(String name, String password, String email, ArrayList<FIELD> fields) {
+        usersignupRequest request = new usersignupRequest();
+
+        BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
+
+            @Override
+            public void callback(String url, JSONObject jo, AjaxStatus status) {
+
+                RegisterModel.this.callback(url, jo, status);
+                try {
+                    usersignupResponse response = new usersignupResponse();
+                    response.fromJson(jo);
+                    if (jo != null) {
+                        if (response.status.succeed == 1) {
+                            SIGNUP_DATA data = response.data;
+                            SESSION session = data.session;
+                            SESSION.getInstance().uid=session.uid;
+                            SESSION.getInstance().sid = session.sid;
+                            USER user = data.user;
+                            user.save();
+                            editor.putString("uid", session.uid);
+                            editor.putString("sid", session.sid);
+                            editor.commit();
+                            RegisterModel.this.OnMessageResponse(url, jo, status);
+                        }
                     }
 
-					RegisterModel.this.OnMessageResponse(url, jo, status);
-					
-				} catch (JSONException e) {
-					 
-					e.printStackTrace();
-				}
-			}
+                } catch (JSONException e) {
 
-		};
-		
-		cb.url(url).type(JSONObject.class);
-		aq.ajax(cb);
-		
-	}
-	
-	public void signup(String name, String password, String email, JSONArray field) {
-		String url = ProtocolConst.SIGNUP;
-		
-		BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
+                    e.printStackTrace();
+                }
+            }
 
-			@Override
-			public void callback(String url, JSONObject jo, AjaxStatus status) {
+        };
+        request.name = name;
+        request.password = password;
+        request.email = email;
+        request.field = fields;
+        Map<String, String> params = new HashMap<String, String>();
+        try {
+            params.put("json", request.toJson().toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-				RegisterModel.this.callback(url, jo, status);
-				try {
-					responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
-					
-					if(responseStatus.succeed == 1) {
-						
-						JSONObject data = jo.optJSONObject("data");
-						SESSION session = SESSION.fromJson(data.optJSONObject("session"));
-						USER user = USER.fromJson(data.optJSONObject("user"));
-						user.save();
-						
-						editor.putString("uid", session.uid);
-	                    editor.putString("sid", session.sid);
-	                    editor.commit();
-						
-					}
-					
-					RegisterModel.this.OnMessageResponse(url, jo, status);
-				} catch (JSONException e) {
-					 
-					e.printStackTrace();
-				}
-			}
+        cb.url(ApiInterface.USER_SIGNUP).type(JSONObject.class).params(params);
+        MyProgressDialog pd = new MyProgressDialog(mContext,mContext.getResources().getString(R.string.hold_on));
+        aq.progress(pd.mDialog).ajax(cb);
 
-		};
-		
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("name", name);
-		params.put("password", password);
-		params.put("email", email);
-		params.put("field", field);
+    }
 
-		cb.url(url).type(JSONObject.class).params(params);
-		aq.ajax(cb);
-		
-	}
-	
 }
