@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textViewTestRunning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="#88333333"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="@string/testIsRunning"
+        android:textColor="#ffffff"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <ScrollView
+        android:id="@+id/scrollViewResults"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/buttonCancel"
+        android:fillViewport="true" >
+
+        <TextView
+            android:id="@+id/textViewResult"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp" />
+    </ScrollView>
+
+    <Button
+        android:id="@+id/buttonCancel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonKillProcess"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_margin="16dp"
+        android:onClick="onClickCancel"
+        android:text="@string/buttonCancel" />
+
+    <Button
+        android:id="@+id/buttonKillProcess"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:onClick="onClickKillProcess"
+        android:text="@string/buttonKillProcess"
+        android:visibility="gone" />
+
+</RelativeLayout>

@@ -31,28 +31,28 @@ public class MESSAGE extends Model
      @Column(name = "created_at")
      public String created_at;
 
- public void fromJson(JSONObject jsonObject)  throws JSONException
+ public static MESSAGE fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return ;
+       return null;
       }
 
      MESSAGE localItem = new MESSAGE();
 
-     this.content = jsonObject.optString("content");
+     localItem.content = jsonObject.optString("content");
 
-     this.action = jsonObject.optString("action");
+     localItem.action = jsonObject.optString("action");
 
-     this.parameter = jsonObject.optString("parameter");
+     localItem.parameter = jsonObject.optString("parameter");
 
-     this.time = jsonObject.optString("time");
+     localItem.time = jsonObject.optString("time");
 
-     this.id = jsonObject.optInt("id");
+     localItem.id = jsonObject.optInt("id");
+     
+     localItem.custom_data = jsonObject.optString("custom_data");
+     localItem.created_at = jsonObject.optString("created_at");
 
-     this.custom_data = jsonObject.optString("custom_data");
-     this.created_at = jsonObject.optString("created_at");
-
-     return ;
+     return localItem;
  }
 
  public JSONObject  toJson() throws JSONException 

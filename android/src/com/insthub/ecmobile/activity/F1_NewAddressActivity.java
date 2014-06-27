@@ -13,11 +13,7 @@ package com.insthub.ecmobile.activity;
 //  Powered by BeeFramework
 //
 
-import android.content.SharedPreferences;
-import com.external.activeandroid.query.Select;
 import com.insthub.BeeFramework.activity.BaseActivity;
-import com.insthub.ecmobile.protocol.ApiInterface;
-import com.insthub.ecmobile.protocol.USER;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -48,6 +44,7 @@ public class F1_NewAddressActivity extends BaseActivity implements BusinessRespo
 	
 	private TextView title;
 	private ImageView back;
+	
 	private EditText name;
 	private EditText tel;
 	private EditText email;
@@ -56,14 +53,17 @@ public class F1_NewAddressActivity extends BaseActivity implements BusinessRespo
 	private TextView address;
 	private EditText detail;
 	private FrameLayout add;
+	
 	private String country_id;
 	private String province_id;
 	private String city_id;
 	private String county_id;
+	
 	private AddressModel addressModel;
 	private int flag;
-    private SharedPreferences shared;
-
+	
+	private ProgressDialog pd = null;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {		
 		super.onCreate(savedInstanceState);
@@ -71,7 +71,7 @@ public class F1_NewAddressActivity extends BaseActivity implements BusinessRespo
 		
 		Intent intent = getIntent();
 		flag = intent.getIntExtra("balance", 0);
-        shared =getSharedPreferences("userInfo", 0);
+		
 		title = (TextView) findViewById(R.id.top_view_text);
         Resources resource = (Resources) getBaseContext().getResources();
         title.setText(resource.getString(R.string.address_add));
@@ -87,7 +87,6 @@ public class F1_NewAddressActivity extends BaseActivity implements BusinessRespo
 		name = (EditText) findViewById(R.id.add_address_name);
 		tel = (EditText) findViewById(R.id.add_address_telNum);
 		email = (EditText) findViewById(R.id.add_address_email);
-        email.setText(shared.getString("email",""));
 		zipCode = (EditText) findViewById(R.id.add_address_zipCode);
 		area = (LinearLayout) findViewById(R.id.add_address_area);
 		address = (TextView) findViewById(R.id.add_address_address);
@@ -116,45 +115,37 @@ public class F1_NewAddressActivity extends BaseActivity implements BusinessRespo
 				String address = detail.getText().toString();
 
                 Resources resource = (Resources) getBaseContext().getResources();
-                String nameText=resource.getString(R.string.add_name);
+                String name=resource.getString(R.string.add_name);
                 String addtel=resource.getString(R.string.add_tel);
-                String emailText=resource.getString(R.string.add_email);
+                String email=resource.getString(R.string.add_email);
                 String cor=resource.getString(R.string.add_correct_email );
                 String adda=resource.getString(R.string.add_address);
                 String con=resource.getString(R.string.confirm_address);
 
 				if("".equals(consignee)) {
-					ToastView toast = new ToastView(F1_NewAddressActivity.this, nameText);
+					ToastView toast = new ToastView(F1_NewAddressActivity.this, name);
 			        toast.setGravity(Gravity.CENTER, 0, 0);
 			        toast.show();
-                    name.requestFocus();
 				} else if("".equals(telNum)) {
 					ToastView toast = new ToastView(F1_NewAddressActivity.this, addtel);
 			        toast.setGravity(Gravity.CENTER, 0, 0);
 			        toast.show();
-                    tel.requestFocus();
 				} else if("".equals(mail)) {
-					ToastView toast = new ToastView(F1_NewAddressActivity.this, emailText);
+					ToastView toast = new ToastView(F1_NewAddressActivity.this, email);
 			        toast.setGravity(Gravity.CENTER, 0, 0);
 			        toast.show();
-                    email.requestFocus();
 				} else if(!ReflectionUtils.isEmail(mail)) {
 					ToastView toast = new ToastView(F1_NewAddressActivity.this, cor);
 			        toast.setGravity(Gravity.CENTER, 0, 0);
 			        toast.show();
-                    email.requestFocus();
 				} else if("".equals(address)) {
 					ToastView toast = new ToastView(F1_NewAddressActivity.this, adda);
 			        toast.setGravity(Gravity.CENTER, 0, 0);
 			        toast.show();
-                    detail.requestFocus();
 				} else if(country_id == null || province_id == null || city_id == null || county_id == null) {
 					ToastView toast = new ToastView(F1_NewAddressActivity.this, con);
 			        toast.setGravity(Gravity.CENTER, 0, 0);
 			        toast.show();
-                    Intent intent = new Intent(F1_NewAddressActivity.this, F3_RegionPickActivity.class);
-                    startActivityForResult(intent, 1);
-                    overridePendingTransition(R.anim.my_scale_action,R.anim.my_alpha_action);
 				} else {
 					addressModel = new AddressModel(F1_NewAddressActivity.this);
 					addressModel.addResponseListener(F1_NewAddressActivity.this);
@@ -191,13 +182,13 @@ public class F1_NewAddressActivity extends BaseActivity implements BusinessRespo
 	@Override
 	public void OnMessageResponse(String url, JSONObject jo, AjaxStatus status)
 			throws JSONException {
-		if(url.endsWith(ApiInterface.ADDRESS_ADD)) {
+		if(url.endsWith(ProtocolConst.ADDRESS_ADD)) {
 			if(flag == 1) {
 				Intent intent = new Intent();
 				intent.putExtra("ok", "ok");
-				setResult(Activity.RESULT_OK, intent);
-                finish();
-            } else {
+				setResult(Activity.RESULT_OK, intent);  
+                finish(); 
+			} else {
 				finish();
 			}
 			

@@ -33,7 +33,10 @@ import com.insthub.ecmobile.component.AdvanceSearchValueCell;
 import com.insthub.ecmobile.model.AdvanceSearchModel;
 import com.insthub.ecmobile.model.GoodDetailDraft;
 import com.insthub.ecmobile.model.ProtocolConst;
-import com.insthub.ecmobile.protocol.*;
+import com.insthub.ecmobile.protocol.BRAND;
+import com.insthub.ecmobile.protocol.CATEGORY;
+import com.insthub.ecmobile.protocol.FILTER;
+import com.insthub.ecmobile.protocol.PRICE_RANGE;
 import com.umeng.analytics.MobclickAgent;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -98,8 +101,7 @@ public class D2_FilterActivity extends BaseActivity implements BusinessResponse 
             if (null != filterJSONString)
             {
                 JSONObject filterJSONObject = new JSONObject(filterJSONString);
-                filter = new FILTER();
-                filter.fromJson(filterJSONObject);
+                filter = FILTER.fromJson(filterJSONObject);
 
                 if (null == filter.brand_id || filter.brand_id.length() == 0)
                 {
@@ -382,7 +384,7 @@ public class D2_FilterActivity extends BaseActivity implements BusinessResponse 
 
                 priceRangeLayout.removeAllViews();
                 priceHolderList.clear();
-                dataModel.getPriceRange(Integer.parseInt(selectCategory.id));
+                dataModel.getPriceRange(selectCategory.id);
             }
             else
             {
@@ -462,7 +464,7 @@ public class D2_FilterActivity extends BaseActivity implements BusinessResponse 
                 searchHolder.searchName.setTextColor(Color.RED);
                 searchHolder.searchName.setBackgroundResource(R.drawable.item_info_buy_kinds_btn_active_bg);
                 searchHolder.searchImage.setVisibility(View.VISIBLE);
-                dataModel.getPriceRange(Integer.parseInt(category.id));
+                dataModel.getPriceRange(category.id);
             }
 
             categoryHolderList.add(searchHolder);
@@ -492,7 +494,7 @@ public class D2_FilterActivity extends BaseActivity implements BusinessResponse 
                     searchHolder2.searchName.setTextColor(Color.RED);
                     searchHolder2.searchName.setBackgroundResource(R.drawable.item_info_buy_kinds_btn_active_bg);
                     searchHolder2.searchImage.setVisibility(View.VISIBLE);
-                    dataModel.getPriceRange(Integer.parseInt(category2.id));
+                    dataModel.getPriceRange(category2.id);
                 }
                 categoryHolderList.add(searchHolder2);
             }
@@ -619,15 +621,15 @@ public class D2_FilterActivity extends BaseActivity implements BusinessResponse 
 
     public void OnMessageResponse(String url, JSONObject jo, AjaxStatus status)
             throws JSONException {
-        if(url.endsWith(ApiInterface.BRAND))
+        if(url.endsWith(ProtocolConst.BRAND))
         {
             RelayoutBrandView();
         }
-        else if (url.endsWith(ApiInterface.CATEGORY))
+        else if (url.endsWith(ProtocolConst.CATEGORY))
         {
             RelayoutCategoryView();
         }
-        else if (url.endsWith(ApiInterface.PRICE_RANGE))
+        else if (url.endsWith(ProtocolConst.PRICE_RANGE))
         {
             RelayoutPriceRangeView();
 

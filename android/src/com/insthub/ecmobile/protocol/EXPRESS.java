@@ -18,19 +18,20 @@ public class EXPRESS  extends Model
      @Column(name = "context")
      public String context;
 
- public void fromJson(JSONObject jsonObject)  throws JSONException
+ public static EXPRESS fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return ;
+       return null;
       }
 
+     EXPRESS   localItem = new EXPRESS();
 
      JSONArray subItemArray;
 
-     this.time = jsonObject.optString("time");
+     localItem.time = jsonObject.optString("time");
 
-     this.context = jsonObject.optString("context");
-     return ;
+     localItem.context = jsonObject.optString("context");
+     return localItem;
  }
 
  public JSONObject  toJson() throws JSONException 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.insthub.ecmobile"
-    android:versionCode="5"
-    android:versionName="3.1" >
+    android:versionCode="4"
+    android:versionName="3.0.0" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -43,7 +43,7 @@
             android:value="ecmobile.db" />
         <meta-data
             android:name="AA_DB_VERSION"
-            android:value="4" />
+            android:value="3" />
 
         <activity android:name="com.insthub.ecmobile.activity.EcmobileMainActivity"
             android:screenOrientation="portrait" 
@@ -65,7 +65,7 @@
                   android:screenOrientation="portrait" />
 
         <activity android:name="com.insthub.ecmobile.activity.A1_SignupActivity"
-                  android:windowSoftInputMode="stateVisible|adjustResize"
+                  android:windowSoftInputMode="stateHidden|adjustPan"
                   android:screenOrientation="portrait" />
 
         <activity android:name="com.insthub.ecmobile.activity.B1_ProductListActivity"
@@ -151,7 +151,6 @@
         <activity android:name="com.insthub.ecmobile.activity.G2_InfoActivity"
                   android:screenOrientation="portrait"/>
 
-
         <activity android:name="com.insthub.ecmobile.activity.GalleryImageActivity"
             android:screenOrientation="portrait" />
 
@@ -159,8 +158,6 @@
         <activity android:name="com.insthub.ecmobile.activity.AppOutActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name="com.insthub.ecmobile.AppExpiredAcitivty"
-                  android:screenOrientation="portrait" />
 
         <activity android:name="com.insthub.ecmobile.activity.ShareActivity"
                   android:screenOrientation="portrait"
@@ -222,11 +219,8 @@
 
         <activity android:name="com.insthub.ecmobile.activity.AlixPayActivity"
                 android:screenOrientation="portrait"
-                android:theme="@android:style/Theme.Dialog"
                 />
-        <activity android:name="com.insthub.ecmobile.activity.OtherPayWebActivity"
-                  android:screenOrientation="portrait"
-                />
+
         <service android:name="com.insthub.BeeFramework.service.MemoryService" >
             <intent-filter android:priority="1000" > 
                 <action android:name="com.insthub.BeeFramework.service.MemoryService" />
@@ -263,21 +257,7 @@
         </activity>
         <activity android:name="com.alipay.android.app.sdk.WapPayActivity" android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.unionpay.uppay.PayActivity"
-                android:theme="@style/Theme.UPPay"
-                android:label="@string/app_name"
-                android:screenOrientation="portrait"
-                android:configChanges="orientation|keyboardHidden"
-                android:excludeFromRecents="true">
-       </activity>
-        <activity android:name="com.unionpay.uppay.PayActivityEx"
-                  android:theme="@style/Theme.UPPay"
-                  android:label="@string/app_name"
-                  android:screenOrientation="portrait"
-                  android:configChanges="orientation|keyboardHidden"
-                  android:excludeFromRecents="true"
-                  android:windowSoftInputMode="adjustResize">
-        </activity>
+
         <!-- push service client -->
         <receiver android:name="com.insthub.BeeFramework.service.PushMessageReceiver">
             <intent-filter>

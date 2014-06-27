@@ -16,12 +16,16 @@ package com.insthub.ecmobile.activity;
 //
 
 import android.content.Context;
-import android.view.*;
+import android.os.Build;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
+import com.iflytek.speech.RecognizerResult;
+import com.iflytek.speech.SpeechError;
+import com.iflytek.ui.RecognizerDialog;
+import com.iflytek.ui.RecognizerDialogListener;
 import com.insthub.ecmobile.EcmobileManager;
-import com.insthub.ecmobile.protocol.ApiInterface;
+import com.insthub.ecmobile.ShareConst;
 import com.insthub.ecmobile.protocol.FILTER;
 import com.insthub.ecmobile.protocol.PAGINATED;
 import com.umeng.analytics.MobclickAgent;
@@ -34,6 +38,9 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.external.androidquery.callback.AjaxStatus;
@@ -47,7 +54,10 @@ import com.insthub.ecmobile.R;
 import com.insthub.ecmobile.adapter.B1_ProductListAdapter;
 import com.insthub.ecmobile.adapter.GoodListLargeListActivityAdapter;
 import com.insthub.ecmobile.model.GoodsListModel;
+import com.insthub.ecmobile.model.ProtocolConst;
 import com.insthub.ecmobile.model.ShoppingCartModel;
+
+import java.util.ArrayList;
 
 public class B1_ProductListActivity extends BaseActivity implements BusinessResponse, IXListViewListener,OnClickListener
 {
@@ -104,9 +114,11 @@ public class B1_ProductListActivity extends BaseActivity implements BusinessResp
 
     private ImageView search;
     private EditText input;
-    private Button searchFilter;
+    private ImageView voice;
+    private TextView searchFilter;
     private View bottom_line;
-	private View top_view;
+	
+
 	public B1_ProductListActivity() 
 	{
 		
@@ -119,12 +131,25 @@ public class B1_ProductListActivity extends BaseActivity implements BusinessResp
 
         input = (EditText) findViewById(R.id.search_input);
         search = (ImageView) findViewById(R.id.search_search);
-        searchFilter = (Button )findViewById(R.id.search_filter);
+        voice = (ImageView) findViewById(R.id.search_voice);
+        searchFilter = (TextView)findViewById(R.id.search_filter);
         bottom_line = (View)findViewById(R.id.bottom_line);
-        top_view=findViewById(R.id.top_view);
+
         search.setOnClickListener(this);
+        voice.setOnClickListener(this);
         searchFilter.setOnClickListener(this);
-        top_view.setOnClickListener(this);
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB_MR2)
+        {
+            voice.setVisibility(View.GONE);
+        }
+        else
+        {
+            voice.setVisibility(View.VISIBLE);
+        }
+
+        voice.setVisibility(View.GONE);
+        
         input.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         input.setInputType(EditorInfo.TYPE_CLASS_TEXT);
 
@@ -151,33 +176,7 @@ public class B1_ProductListActivity extends BaseActivity implements BusinessResp
             }
         });
 
-       final LinearLayout mainView = (LinearLayout) findViewById(R.id.keyboardLayout1);
-        ViewTreeObserver mainViewObserver =  mainView.getViewTreeObserver();
-        if (null != mainViewObserver)
-        {
-            mainViewObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-
-                    int heightDiff = mainView.getRootView().getHeight() - mainView.getHeight();
-                    if (heightDiff > 100)
-                    { // if more than 100 pixels, its probably a keyboard...
-                        input.setCursorVisible(true);
-                        top_view.setVisibility(View.VISIBLE);
-                        searchFilter.setVisibility(View.GONE);
-                    }
-                    else
-                    {
-                        input.setCursorVisible(false);
-                        top_view.setVisibility(View.INVISIBLE);
-                        searchFilter.setVisibility(View.VISIBLE);
-                    }
-                }
-            });
-        }
-
-
-        shared = getSharedPreferences("userInfo", 0);
+		shared = getSharedPreferences("userInfo", 0); 
 		editor = shared.edit();
 
         backImageButton = (ImageView)findViewById(R.id.nav_back_button);
@@ -185,7 +184,6 @@ public class B1_ProductListActivity extends BaseActivity implements BusinessResp
 		{				
 			public void onClick(View v) {				
 				finish();
-                CloseKeyBoard();
 				overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
 			}
 		});
@@ -221,9 +219,7 @@ public class B1_ProductListActivity extends BaseActivity implements BusinessResp
         	good_list_shopping_cart_num_bg.setVisibility(View.GONE);
         } else {
         	good_list_shopping_cart_num_bg.setVisibility(View.VISIBLE);
-            if(ShoppingCartModel.getInstance()!=null){
-                good_list_shopping_cart_num.setText(ShoppingCartModel.getInstance().goods_num+"");
-            }
+        	good_list_shopping_cart_num.setText(ShoppingCartModel.getInstance().goods_num+"");
         }
         bg = (ImageView) findViewById(R.id.goodslist_bg);
         null_pager = findViewById(R.id.null_pager);
@@ -242,8 +238,7 @@ public class B1_ProductListActivity extends BaseActivity implements BusinessResp
             try
             {
                 JSONObject filterJSONObject = new JSONObject(filter_string);
-                filter =new com.insthub.ecmobile.protocol.FILTER();
-                filter.fromJson(filterJSONObject);
+                filter = com.insthub.ecmobile.protocol.FILTER.fromJson(filterJSONObject);
                 filter.sort_by = dataModel.PRICE_DESC;
 
                 if(null != filter.category_id)
@@ -254,7 +249,6 @@ public class B1_ProductListActivity extends BaseActivity implements BusinessResp
                 if (null != filter.keywords)
                 {
                     input.setText(filter.keywords);
-                    input.setSelection(input.getText().length());
                 }
 
             }
@@ -408,31 +402,28 @@ public class B1_ProductListActivity extends BaseActivity implements BusinessResp
         		listAdapter.notifyDataSetChanged();	
     		}
     	}
-
-        //设置购物车数量
-        if (ShoppingCartModel.getInstance().goods_num == 0) {
-            good_list_shopping_cart_num_bg.setVisibility(View.GONE);
+    	
+    	//设置购物车数量
+        if(ShoppingCartModel.getInstance().goods_num == 0) {
+        	good_list_shopping_cart_num_bg.setVisibility(View.GONE);
         } else {
-            good_list_shopping_cart_num_bg.setVisibility(View.VISIBLE);
-            if (ShoppingCartModel .getInstance()!= null) {
-                good_list_shopping_cart_num.setText(ShoppingCartModel.getInstance().goods_num + "");
-            }
+        	good_list_shopping_cart_num_bg.setVisibility(View.VISIBLE);
+        	good_list_shopping_cart_num.setText(ShoppingCartModel.getInstance().goods_num+"");
         }
-
+    	
     }
 	
     public void OnMessageResponse(String url, JSONObject jo, AjaxStatus status) throws JSONException
     {    
     	
-    	if(url.endsWith(ApiInterface.SEARCH))
+    	if(url.endsWith(ProtocolConst.SEARCH))
         {
     		goodlistView.stopRefresh();
     		goodlistView.stopLoadMore();
     		goodlistView.setRefreshTime();
 
     		setContent();
-            PAGINATED paginated = new PAGINATED();
-            paginated.fromJson(jo.optJSONObject("paginated"));
+            PAGINATED paginated = PAGINATED.fromJson(jo.optJSONObject("paginated"));
             if (0 == paginated.more)
             {
                 goodlistView.setPullLoadEnable(false);
@@ -454,13 +445,9 @@ public class B1_ProductListActivity extends BaseActivity implements BusinessResp
             case R.id.search_search:
 
                 break;
-            case R.id.top_view:
-                CloseKeyBoard();
-                input.setText("");
-                break;
             case R.id.search_voice:
             {
-//                showRecognizerDialog(); //弹出语音搜索框
+                showRecognizerDialog(); //弹出语音搜索框
                 break;
             }
             case R.id.search_filter:
@@ -486,6 +473,39 @@ public class B1_ProductListActivity extends BaseActivity implements BusinessResp
 
     }
 
+    public void showRecognizerDialog() {
+
+        RecognizerDialog recognizerDialog = new RecognizerDialog(this, "appid="+ EcmobileManager.getXunFeiCode(this));
+        recognizerDialog.setEngine("sms", null, null);
+        recognizerDialog.setListener(new RecognizerDialogListener() {
+            @Override
+            public void onResults(ArrayList<RecognizerResult> results, boolean arg1) {
+                StringBuffer result = new StringBuffer();
+                for (RecognizerResult r : results) {
+                    result.append(r.text);
+                }
+                if(result.length()>0) {
+                    input.setText(result.toString().substring(0, result.toString().length()-1));
+                }
+
+            }
+
+            @Override
+            public void onEnd(SpeechError arg0) {
+                if(input.getText().toString().equals("")) {
+                    ToastView toast = new ToastView(B1_ProductListActivity.this, getString(R.string.you_did_not_speak));
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                } else {
+                    B1_ProductListActivity.this.filter.keywords =  input.getText().toString();
+                    dataModel.fetchPreSearch(B1_ProductListActivity.this.filter);
+                }
+
+            }
+        });
+        recognizerDialog.show();
+
+    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -522,13 +542,11 @@ public class B1_ProductListActivity extends BaseActivity implements BusinessResp
                         try
                         {
                             JSONObject filterJSONObject = new JSONObject(filter_string);
-                            FILTER filter = new com.insthub.ecmobile.protocol.FILTER();
-                            filter.fromJson(filterJSONObject);
+                            FILTER filter = com.insthub.ecmobile.protocol.FILTER.fromJson(filterJSONObject);
                             this.filter.category_id = filter.category_id;
                             this.filter.price_range = filter.price_range;
                             this.filter.brand_id = filter.brand_id;
                             dataModel.fetchPreSearch(this.filter);
-                            input.clearFocus();
                         }
                         catch (JSONException e)
                         {

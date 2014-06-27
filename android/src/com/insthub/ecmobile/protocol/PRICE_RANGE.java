@@ -45,18 +45,20 @@ public class PRICE_RANGE extends Model
     @Column(name = "price_max")
     public int price_max;
 
-    public void fromJson(JSONObject jsonObject)  throws JSONException
+    public static PRICE_RANGE fromJson(JSONObject jsonObject)  throws JSONException
     {
         if(null == jsonObject){
-            return ;
+            return null;
         }
+
+        PRICE_RANGE   localItem = new PRICE_RANGE();
 
         JSONArray subItemArray;
 
-        this.price_min = jsonObject.optInt("price_min");
+        localItem.price_min = jsonObject.optInt("price_min");
 
-        this.price_max = jsonObject.optInt("price_max");
-        return ;
+        localItem.price_max = jsonObject.optInt("price_max");
+        return localItem;
     }
 
     public JSONObject  toJson() throws JSONException

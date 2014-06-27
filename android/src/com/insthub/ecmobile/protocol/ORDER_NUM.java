@@ -12,45 +12,47 @@ import com.external.activeandroid.annotation.Table;
 public class ORDER_NUM  extends Model
 {
 
-    @Column(name = "shipped")
-    public String   shipped;
+     @Column(name = "shipped")
+     public String shipped;
 
-    @Column(name = "await_ship")
-    public String   await_ship;
+     @Column(name = "await_ship")
+     public String await_ship;
 
-    @Column(name = "await_pay")
-    public String   await_pay;
+     @Column(name = "await_pay")
+     public String await_pay;
 
-    @Column(name = "finished")
-    public String   finished;
+     @Column(name = "finished")
+     public String finished;
 
-    public void  fromJson(JSONObject jsonObject)  throws JSONException
-    {
-        if(null == jsonObject){
-            return ;
-        }
+ public static ORDER_NUM fromJson(JSONObject jsonObject)  throws JSONException
+ {
+     if(null == jsonObject){
+       return null;
+      }
 
-        JSONArray subItemArray;
+     ORDER_NUM   localItem = new ORDER_NUM();
 
-        this.shipped = jsonObject.optString("shipped");
+     JSONArray subItemArray;
 
-        this.await_ship = jsonObject.optString("await_ship");
+     localItem.shipped = jsonObject.optString("shipped");
 
-        this.await_pay = jsonObject.optString("await_pay");
+     localItem.await_ship = jsonObject.optString("await_ship");
 
-        this.finished = jsonObject.optString("finished");
-        return ;
-    }
+     localItem.await_pay = jsonObject.optString("await_pay");
 
-    public JSONObject  toJson() throws JSONException
-    {
-        JSONObject localItemObject = new JSONObject();
-        JSONArray itemJSONArray = new JSONArray();
-        localItemObject.put("shipped", shipped);
-        localItemObject.put("await_ship", await_ship);
-        localItemObject.put("await_pay", await_pay);
-        localItemObject.put("finished", finished);
-        return localItemObject;
-    }
+     localItem.finished = jsonObject.optString("finished");
+     return localItem;
+ }
+
+ public JSONObject  toJson() throws JSONException 
+ {
+     JSONObject localItemObject = new JSONObject();
+     JSONArray itemJSONArray = new JSONArray();
+     localItemObject.put("shipped", shipped);
+     localItemObject.put("await_ship", await_ship);
+     localItemObject.put("await_pay", await_pay);
+     localItemObject.put("finished", finished);
+     return localItemObject;
+ }
 
 }

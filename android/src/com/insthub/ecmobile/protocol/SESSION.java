@@ -31,20 +31,20 @@ public class SESSION  extends Model
      }
      
 
- public void fromJson(JSONObject jsonObject)  throws JSONException
+ public static SESSION fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return ;
+       return null;
       }
 
-
+     SESSION   localItem = SESSION.getInstance();
 
      JSONArray subItemArray;
 
-     this.uid = jsonObject.optString("uid");
+     localItem.uid = jsonObject.optString("uid");
 
-     this.sid = jsonObject.optString("sid");
-     return ;
+     localItem.sid = jsonObject.optString("sid");
+     return localItem;
  }
 
  public JSONObject  toJson() throws JSONException 

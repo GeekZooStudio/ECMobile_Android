@@ -91,7 +91,7 @@
 <string name="setting_official">Official information</string>
 <string name="setting_service">Customer service</string>
 <string name="setting_website">Official website</string>
-<string name="setting_tech">Technical support</string>
+<string name="setting_tech">Copyright</string>
 <string name="setting_rate">Rating for us</string>
 <string name="setting_geekzoo">About Geek-Zoo</string>
 <string name="setting_about">About the APP</string>
@@ -326,7 +326,7 @@
 <string name="excellent_parter">不拘泥于电脑操作，不限制在固定空间，ECMobile有效提升了商城的宣传及销售渠道，让您更容易的找到生意伙伴，创造共赢</string>
 <string name="success_share">Success!!</string>
 <string name="user_cancel">User cancelled!!</string>
-<string name="fail_share">Share Failed!!</string>
+<string name="fail_share">：Failed!!</string>
 <string name="successful_authentication">Successful authentication!</string>
 <string name="none">None</string>
 <string name="broadcast_success">Broadcast success</string>
@@ -352,8 +352,6 @@
 <string name="prompt">Prompt</string>
 <string name="pay_success">Pay success</string>
 <string name="pay_failed">Pay failed</string>
-<string name="pay_finished">Pay finished</string>
-<string name="is_pay_success">Is pay successed?</string>
 <string name="you_did_not_speak">You did not speak</string>
 <string name="check_orders">The order has been generated successfully,You can go to the order list to check  orders</string>
 <string name="setting_push">Notification Setting</string>
@@ -363,10 +361,4 @@
 <string name="all_category">All Category</string>
 <string name="all_price">All Price</string>
 <string name="balance_cancel_or_not">Cancel orders or not?</string>
-<string name="continue_shopping_or_not">Continue shopping or not?</string>
-<string name="unionpay">Unionpay Online Payment</string>
-<string name="unionpay_wap">Unionpay Wap Payment</string>
-<string name="alipay">Alipay Online Payment</string>
-<string name="alipay_wap">Alipay Wap Payment</string>
-<string name="username_or_password_error">Username or password error</string>
 </resources>

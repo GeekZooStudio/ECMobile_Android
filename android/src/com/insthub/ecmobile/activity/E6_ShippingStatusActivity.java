@@ -15,7 +15,6 @@ package com.insthub.ecmobile.activity;
 
 import android.content.res.Resources;
 import com.insthub.BeeFramework.activity.BaseActivity;
-import com.insthub.ecmobile.protocol.ApiInterface;
 import com.umeng.analytics.MobclickAgent;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,10 +50,12 @@ public class E6_ShippingStatusActivity extends BaseActivity implements BusinessR
 	private TextView name;
 	private TextView order_sn;
 	private LinearLayout info;
+	
 	private String order_id;
 	private OrderModel orderModel;
 	private LinearLayout express_linear;
-
+	
+	private ProgressDialog pd = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {		
@@ -88,6 +89,11 @@ public class E6_ShippingStatusActivity extends BaseActivity implements BusinessR
 		orderModel = new OrderModel(this);
 		orderModel.addResponseListener(this);
 		orderModel.orderExpress(order_id);
+		
+		pd = new ProgressDialog(E6_ShippingStatusActivity.this);
+        String hol=resource.getString(R.string.hold_on);
+		pd.setMessage(hol);
+		pd.show();
 		
 	}
 	
@@ -133,9 +139,12 @@ public class E6_ShippingStatusActivity extends BaseActivity implements BusinessR
 	
 	@Override
 	public void OnMessageResponse(String url, JSONObject jo, AjaxStatus status)
-			throws JSONException {
+			throws JSONException {			
+		if(pd.isShowing()) {
+			pd.dismiss();
+		}
 		
-		if(url.endsWith(ApiInterface.ORDER_EXPRESS)) {
+		if(url.endsWith(ProtocolConst.EXPRESS)) {
 			setExpressInfo();
 		}
 		

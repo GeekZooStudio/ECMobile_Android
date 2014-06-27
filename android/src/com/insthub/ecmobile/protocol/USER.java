@@ -12,66 +12,59 @@ import com.external.activeandroid.annotation.Table;
 public class USER  extends Model
 {
 
-    @Column(name = "collection_num")
-    public String   collection_num;
+     @Column(name = "collection_num")
+     public String collection_num;
 
-    @Column(name = "USER_id",unique = true)
-    public String   id;
+     @Column(name = "USER_id",unique = true)
+     public String id;
 
-    @Column(name = "rank_level")
-    public int rank_level;
+     @Column(name = "order_num")
+     public ORDER_NUM   order_num;
 
-    @Column(name = "order_num")
-    public ORDER_NUM   order_num;
+     @Column(name = "rank_name")
+     public String rank_name;
 
-    @Column(name = "name")
-    public String   name;
+     @Column(name = "rank_level")
+     public int rank_level;
 
-    @Column(name = "rank_name")
-    public String   rank_name;
+     @Column(name = "name")
+     public String name;
 
-    @Column(name="email")
-    public String email;
+ public static USER fromJson(JSONObject jsonObject)  throws JSONException
+ {
+     if(null == jsonObject){
+       return null;
+      }
 
-    public void  fromJson(JSONObject jsonObject)  throws JSONException
-    {
-        if(null == jsonObject){
-            return ;
-        }
+     USER   localItem = new USER();
 
-        JSONArray subItemArray;
+     JSONArray subItemArray;
 
-        this.collection_num = jsonObject.optString("collection_num");
+     localItem.collection_num = jsonObject.optString("collection_num");
 
-        this.id = jsonObject.optString("id");
+     localItem.id = jsonObject.optString("id");
+     localItem.order_num = ORDER_NUM.fromJson(jsonObject.optJSONObject("order_num"));
 
-        this.rank_level = jsonObject.optInt("rank_level");
-        ORDER_NUM  order_num = new ORDER_NUM();
-        order_num.fromJson(jsonObject.optJSONObject("order_num"));
-        this.order_num = order_num;
+     localItem.name = jsonObject.optString("name");
+     localItem.rank_name = jsonObject.optString("rank_name");
+     localItem.rank_level = jsonObject.optInt("rank_level");
+     return localItem;
+ }
 
-        this.name = jsonObject.optString("name");
-
-        this.rank_name = jsonObject.optString("rank_name");
-        this.email=jsonObject.optString("email");
-        return ;
-    }
-
-    public JSONObject  toJson() throws JSONException
-    {
-        JSONObject localItemObject = new JSONObject();
-        JSONArray itemJSONArray = new JSONArray();
-        localItemObject.put("collection_num", collection_num);
-        localItemObject.put("id", id);
-        localItemObject.put("rank_level", rank_level);
-        if(null != order_num)
-        {
-            localItemObject.put("order_num", order_num.toJson());
-        }
-        localItemObject.put("name", name);
-        localItemObject.put("rank_name", rank_name);
-        localItemObject.put("email",email);
-        return localItemObject;
-    }
+ public JSONObject  toJson() throws JSONException 
+ {
+     JSONObject localItemObject = new JSONObject();
+     JSONArray itemJSONArray = new JSONArray();
+     localItemObject.put("collection_num", collection_num);
+     localItemObject.put("id", id);
+     if(null!=order_num)
+     {
+       localItemObject.put("order_num", order_num.toJson());
+     }
+     localItemObject.put("name", name);
+     localItemObject.put("rank_name",rank_name);
+     localItemObject.put("rank_level",rank_level);
+     return localItemObject;
+ }
 
 }

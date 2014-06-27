@@ -23,19 +23,20 @@ public class PHOTO  extends Model
      
      
 
- public void fromJson(JSONObject jsonObject)  throws JSONException
+ public static PHOTO fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return ;
+       return null;
       }
 
+     PHOTO   localItem = new PHOTO();
 
      JSONArray subItemArray;
 
-     this.small = jsonObject.optString("small");
-     this.thumb = jsonObject.optString("thumb");
-     this.url = jsonObject.optString("url");
-     return ;
+     localItem.small = jsonObject.optString("small");
+     localItem.thumb = jsonObject.optString("thumb");
+     localItem.url = jsonObject.optString("url");
+     return localItem;
  }
 
  public JSONObject  toJson() throws JSONException 

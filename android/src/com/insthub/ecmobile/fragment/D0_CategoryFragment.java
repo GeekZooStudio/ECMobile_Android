@@ -17,19 +17,13 @@ package com.insthub.ecmobile.fragment;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.util.Log;
 import android.widget.*;
 import com.external.maxwin.view.XListView;
-import com.iflytek.cloud.speech.*;
-import com.iflytek.cloud.ui.RecognizerDialog;
-import com.iflytek.cloud.ui.RecognizerDialogListener;
-import com.insthub.BeeFramework.Utils.JsonParser;
 import com.insthub.ecmobile.EcmobileManager;
 import com.insthub.ecmobile.ShareConst;
 import com.insthub.ecmobile.activity.D2_FilterActivity;
 import com.insthub.ecmobile.activity.D1_CategoryActivity;
 import com.insthub.ecmobile.adapter.D0_CategoryAdapter;
-import com.insthub.ecmobile.protocol.ApiInterface;
 import com.insthub.ecmobile.protocol.CATEGORY;
 import com.insthub.ecmobile.protocol.FILTER;
 import com.umeng.analytics.MobclickAgent;
@@ -51,6 +45,10 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.external.androidquery.callback.AjaxStatus;
+import com.iflytek.speech.RecognizerResult;
+import com.iflytek.speech.SpeechError;
+import com.iflytek.ui.RecognizerDialog;
+import com.iflytek.ui.RecognizerDialogListener;
 import com.insthub.BeeFramework.fragment.BaseFragment;
 import com.insthub.BeeFramework.model.BusinessResponse;
 import com.insthub.BeeFramework.view.MyViewGroup;
@@ -93,10 +91,18 @@ public class D0_CategoryFragment extends BaseFragment implements OnClickListener
 		layout = (MyViewGroup) view.findViewById(R.id.search_layout);
 
         parentListView = (XListView) view.findViewById(R.id.parent_list);
-
+		
 		search.setOnClickListener(this);
 		voice.setOnClickListener(this);
-
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB_MR2)
+        {
+            voice.setVisibility(View.GONE);
+        }
+        else
+        {
+            voice.setVisibility(View.VISIBLE);
+        }
+        
         input.setOnEditorActionListener(new OnEditorActionListener() {
 			
 			@Override
@@ -113,7 +119,6 @@ public class D0_CategoryFragment extends BaseFragment implements OnClickListener
                         startActivity(intent);
                         getActivity().overridePendingTransition(R.anim.push_right_in,
                                 R.anim.push_right_out);
-                        return true;
 
                     }
                     catch (JSONException e)
@@ -125,7 +130,7 @@ public class D0_CategoryFragment extends BaseFragment implements OnClickListener
 			}
 		});
 
-
+		
 		if (null == searchModel)
         {
             searchModel = new SearchModel(getActivity());
@@ -248,58 +253,62 @@ public class D0_CategoryFragment extends BaseFragment implements OnClickListener
 	}
 	
 	public void showRecognizerDialog() {
-        String appid=EcmobileManager.getXunFeiCode(getActivity());
-        if(appid!=null&&!"".equals(appid)) {
-            //用户登录
-            SpeechUser.getUser().login(getActivity(), null, null
-                    , "appid=" + EcmobileManager.getXunFeiCode(getActivity()), listener);
-            final RecognizerDialog recognizerDialog = new RecognizerDialog(getActivity());
-            //设置引擎为转写
-            recognizerDialog.setParameter(SpeechConstant.DOMAIN, "iat");
-            //设置识别语言为中文
-            recognizerDialog.setParameter(SpeechConstant.LANGUAGE, "zh_cn");
-            //设置方言为普通话
-            recognizerDialog.setParameter(SpeechConstant.ACCENT, "mandarin");
-            //设置录音采样率为
-            recognizerDialog.setParameter(SpeechConstant.SAMPLE_RATE, "16000");
-            //设置监听对象
-            recognizerDialog.setListener(new RecognizerDialogListener() {
-                @Override
-                public void onResult(RecognizerResult results, boolean b) {
-                    String text = JsonParser.parseIatResult(results.getResultString());
-                    if (text.length() > 0) {
-                        input.setText(text.toString());
-                        input.setSelection(input.getText().length());
-                        try {
-                            recognizerDialog.setListener(null);
-                            Intent intent = new Intent(getActivity(), B1_ProductListActivity.class);
-                            FILTER filter = new FILTER();
-                            filter.keywords = input.getText().toString();
-                            intent.putExtra(B1_ProductListActivity.FILTER, filter.toJson().toString());
-                            startActivity(intent);
-                            getActivity().overridePendingTransition(R.anim.push_right_in,
-                                    R.anim.push_right_out);
-                        } catch (JSONException e) {
-                        }
+		
+		RecognizerDialog recognizerDialog = new RecognizerDialog(getActivity(), "appid="+ EcmobileManager.getXunFeiCode(getActivity()));
+		
+		recognizerDialog.setEngine("sms", null, null);
+		recognizerDialog.setListener(new RecognizerDialogListener() {
+			@Override
+			public void onResults(ArrayList<RecognizerResult> results, boolean arg1) {
+				StringBuffer result = new StringBuffer();
+				for (RecognizerResult r : results) {
+					result.append(r.text);
+				}
+				if(result.length()>0) {
+					input.setText(result.toString().substring(0, result.toString().length()-1));
+				}
+				
+			}
+
+			@Override
+			public void onEnd(SpeechError arg0) {
+				if(input.getText().toString().equals("")) {
+
+					//Toast.makeText(getActivity(), you_not_speak, 0).show();
+					ToastView toast = new ToastView(getActivity(), getString(R.string.you_did_not_speak));
+					toast.setGravity(Gravity.CENTER, 0, 0);
+					toast.show();
+				}
+                else
+                {
+                    try
+                    {
+                        Intent intent = new Intent(getActivity(), B1_ProductListActivity.class);
+                        FILTER filter = new FILTER();
+                        filter.keywords = input.getText().toString();
+                        intent.putExtra(B1_ProductListActivity.FILTER,filter.toJson().toString());
+                        startActivity(intent);
+                        getActivity().overridePendingTransition(R.anim.push_right_in,
+                                R.anim.push_right_out);
                     }
-                }
+                    catch (JSONException e)
+                    {
 
-                @Override
-                public void onError(SpeechError speechError) {
-
-                }
-            });
-            //开始识别
-            recognizerDialog.show();
-        }
+                    }
+				}
+				
+			}
+		});
+		recognizerDialog.show();
+		
 	}
 
 	public void OnMessageResponse(String url, JSONObject jo, AjaxStatus status) {
-		if (url.endsWith(ApiInterface.SEARCHKEYWORDS))
+		if (url.endsWith(ProtocolConst.SEARCHKEYWORDS))
         {
 			addKeywords();
 		}
-        else if (url.endsWith(ApiInterface.CATEGORY))
+        else if (url.endsWith(ProtocolConst.CATEGORY))
         {
             parentListAdapter.notifyDataSetChanged();
         }
@@ -314,7 +323,6 @@ public class D0_CategoryFragment extends BaseFragment implements OnClickListener
     @Override
     public void onResume() {
         super.onResume();
-        input.setText("");
         MobclickAgent.onPageStart("Search");
     }
 
@@ -323,24 +331,4 @@ public class D0_CategoryFragment extends BaseFragment implements OnClickListener
         super.onPause();
         MobclickAgent.onPageEnd("Search");
     }
-    private SpeechListener listener = new SpeechListener()
-    {
-
-        @Override
-        public void onData(byte[] arg0) {
-        }
-
-        @Override
-        public void onCompleted(SpeechError error) {
-            if(error != null) {
-                Toast.makeText(getActivity(), "登陆失败"
-                        , Toast.LENGTH_SHORT).show();
-
-            }
-        }
-
-        @Override
-        public void onEvent(int arg0, Bundle arg1) {
-        }
-    };
 }

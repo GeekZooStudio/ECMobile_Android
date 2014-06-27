@@ -17,7 +17,6 @@ import java.util.ArrayList;
 
 import android.content.res.Resources;
 import com.insthub.BeeFramework.activity.BaseActivity;
-import com.insthub.ecmobile.protocol.flowcheckOrderResponse;
 import com.umeng.analytics.MobclickAgent;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -61,12 +60,15 @@ public class C3_DistributionActivity extends BaseActivity {
 		String s = intent.getStringExtra("payment");
 		
 		try{
-            flowcheckOrderResponse response = new flowcheckOrderResponse();
-            response.fromJson(new JSONObject(s));
-			ArrayList<SHIPPING> shippings = response.data.shipping_list;
-			if (null != shippings && shippings.size() > 0) {
+			JSONObject jo = new JSONObject(s);
+			JSONArray paymentArray = jo.optJSONArray("shipping_list");
+			if (null != paymentArray && paymentArray.length() > 0) {
 				list.clear();
-			    list.addAll(shippings);
+				for (int i = 0; i < paymentArray.length(); i++) {
+					JSONObject shippingJsonObject = paymentArray.getJSONObject(i);
+					SHIPPING shipping_Item = SHIPPING.fromJson(shippingJsonObject);
+					list.add(shipping_Item);
+				}
         	}
 		
 		} catch (JSONException e) {			

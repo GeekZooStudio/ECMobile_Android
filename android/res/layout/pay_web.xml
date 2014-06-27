@@ -6,13 +6,7 @@
     android:orientation="vertical" >
 
     <include layout="@layout/top_view" />
-    <ProgressBar
-            android:id="@+id/web_progress"
-            style="@style/ProgressBarHorizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="2dp"
-            android:max="100"
-            android:visibility="gone" />
+
     <WebView
         android:id="@+id/pay_web"
         android:layout_width="fill_parent"

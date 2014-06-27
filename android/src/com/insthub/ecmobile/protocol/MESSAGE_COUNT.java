@@ -1,56 +1,35 @@
-
 package com.insthub.ecmobile.protocol;
-import java.util.ArrayList;
-import org.json.JSONArray;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-import com.external.activeandroid.Model;
-import com.external.activeandroid.annotation.Column;
-import com.external.activeandroid.annotation.Table;
 
-@Table(name = "MESSAGE_COUNT")
-public class MESSAGE_COUNT  extends Model
-{
+public class MESSAGE_COUNT {
 
-    @Column(name = "succeed")
     public int succeed;
-
-    @Column(name = "unread")
-    public int unread;
-
-    @Column(name = "error_code")
     public int error_code;
-
-    @Column(name = "error_desc")
-    public String   error_desc;
-
-    public void  fromJson(JSONObject jsonObject)  throws JSONException
-    {
+    public String error_desc;
+    public int unread;
+    
+    public static MESSAGE_COUNT fromJson(JSONObject jsonObject) throws JSONException {
         if(null == jsonObject){
-            return ;
+        	return null;
         }
 
-        JSONArray subItemArray;
-
-        this.succeed = jsonObject.optInt("succeed");
-
-        this.unread = jsonObject.optInt("unread");
-
-        this.error_code = jsonObject.optInt("error_code");
-
-        this.error_desc = jsonObject.optString("error_desc");
-        return ;
+        MESSAGE_COUNT localItem = new MESSAGE_COUNT();
+        localItem.succeed = jsonObject.optInt("succeed");
+        localItem.error_code = jsonObject.optInt("error_code");
+        localItem.error_desc = jsonObject.optString("error_desc");
+        localItem.unread = jsonObject.optInt("unread");
+        return localItem;
     }
-
-    public JSONObject  toJson() throws JSONException
-    {
+    
+    public JSONObject toJson() throws JSONException {
         JSONObject localItemObject = new JSONObject();
-        JSONArray itemJSONArray = new JSONArray();
         localItemObject.put("succeed", succeed);
-        localItemObject.put("unread", unread);
         localItemObject.put("error_code", error_code);
         localItemObject.put("error_desc", error_desc);
+        localItemObject.put("unread", unread);
         return localItemObject;
     }
-
+	
 }

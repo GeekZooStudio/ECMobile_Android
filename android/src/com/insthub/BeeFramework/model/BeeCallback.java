@@ -7,10 +7,8 @@ import com.external.activeandroid.util.Log;
 import com.external.androidquery.callback.AjaxCallback;
 import com.external.androidquery.callback.AjaxStatus;
 import com.external.androidquery.util.AQUtility;
-import com.insthub.BeeFramework.Utils.JsonFormatTool;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,8 +20,7 @@ public class BeeCallback<T> extends AjaxCallback<T>
 {
     public String timeStamp;
     public String endTimeStamp;
-    public long startTimestamp;
-    public long endTimestamp;
+    
     public String startTime;
     public String message;
     public String requset;
@@ -313,13 +310,13 @@ public class BeeCallback<T> extends AjaxCallback<T>
     public String toString()
     {
         String msgDesc = "";
-        SimpleDateFormat sdf = new SimpleDateFormat("MM月dd日HH时mm分ss秒SSS");
 
-        msgDesc += "创建时间："+ sdf.format(new Date(startTimestamp)) +"\n\n";
-
-        if (0 != this.endTimestamp)
+        msgDesc += "创建时间："+this.timeStamp +"\n\n";
+        startTime = "创建时间："+this.timeStamp;
+        
+        if (null != this.endTimeStamp)
         {
-            msgDesc += "结束时间："+sdf.format(new Date(endTimestamp)) +"\n\n";
+            msgDesc += "结束时间："+this.endTimeStamp +"\n\n";
         }
 
         msgDesc += "消息："+ this.getUrl()+"\n\n";
@@ -328,7 +325,7 @@ public class BeeCallback<T> extends AjaxCallback<T>
         if (null != this.params)
         {
             msgDesc += "请求："+this.params.toString()+"\n\n";
-            requset = "请求：\n"+ JsonFormatTool.formatJson(this.params.toString(), "    ");
+            requset = "请求："+this.params.toString();
         }
         else
         {
@@ -336,44 +333,22 @@ public class BeeCallback<T> extends AjaxCallback<T>
             requset = "请求："+"{}";
         }
 
-        if(null != this.result)
-        {
+        if(null != this.result) {
             msgDesc += "响应："+this.getResult().toString()+"\n\n";
-            response = "响应：\n"+"json:"+JsonFormatTool.formatJson(this.getResult().toString(), "    ");
-
+            
+            response = "响应："+this.getResult().toString();
+            
             float f = this.getResult().toString().getBytes().length;
-            if(this.getResult().toString().getBytes().length > 1024)
-            {
-                float a = f/1024;
-                DecimalFormat df = new DecimalFormat("#.##");
-                msgDesc += "网络包大小："+df.format(a)+"k";
-                netSize = "网络包大小："+df.format(a)+"k";
+            if(this.getResult().toString().getBytes().length > 1024) {
+            	float a = f/1024;
+            	DecimalFormat df = new DecimalFormat("#.##");
+            	msgDesc += "网络包大小："+df.format(a)+"k";
+            	netSize = "网络包大小："+df.format(a)+"k";
+            } else {
+            	msgDesc += "网络包大小："+this.getResult().toString().getBytes().length+"b";
+            	netSize = "网络包大小："+this.getResult().toString().getBytes().length+"b";
             }
-            else
-            {
-                msgDesc += "网络包大小："+this.getResult().toString().getBytes().length+"b";
-                netSize = "网络包大小："+this.getResult().toString().getBytes().length+"b";
-            }
-
-            msgDesc += "网络请求时间: " + (endTimestamp - startTimestamp)/1000;
-
-        }
-        else
-        {
-            String str = null;
-            try {
-                if (null != this.getStatus() && null != this.getStatus().getData())
-                {
-                    str = new String(this.getStatus().getData(), this.getEncoding());
-                    msgDesc += "响应："+str+"\n\n";
-                    response = "响应："+str;
-                }
-
-
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            }
-
+            
         }
 
         return msgDesc;

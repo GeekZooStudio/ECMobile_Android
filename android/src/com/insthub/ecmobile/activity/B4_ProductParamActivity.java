@@ -38,7 +38,7 @@ public class B4_ProductParamActivity extends BaseActivity implements BusinessRes
 
     private TextView title;
     private ImageView back;
-    private View null_paView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -58,7 +58,7 @@ public class B4_ProductParamActivity extends BaseActivity implements BusinessRes
                 finish();
             }
         });
-        null_paView = findViewById(R.id.null_pager);
+
         propertyListView = (ListView)findViewById(R.id.property_list);
 
         if(GoodDetailDraft.getInstance().goodDetail.properties.size() > 0) {
@@ -67,7 +67,6 @@ public class B4_ProductParamActivity extends BaseActivity implements BusinessRes
             propertyListView.setAdapter(listAdapter);
         } else {
         	propertyListView.setVisibility(View.GONE);
-            null_paView.setVisibility(View.VISIBLE);
         }
         
         

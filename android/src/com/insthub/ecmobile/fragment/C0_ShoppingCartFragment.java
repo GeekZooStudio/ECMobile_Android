@@ -17,7 +17,6 @@ package com.insthub.ecmobile.fragment;
 import java.util.ArrayList;
 
 import com.insthub.ecmobile.activity.AlixPayActivity;
-import com.insthub.ecmobile.protocol.ApiInterface;
 import com.insthub.ecmobile.protocol.ORDER_INFO;
 import com.umeng.analytics.MobclickAgent;
 import org.json.JSONException;
@@ -65,6 +64,7 @@ import com.insthub.ecmobile.model.ShoppingCartModel;
 public class C0_ShoppingCartFragment extends BaseFragment implements BusinessResponse, IXListViewListenerCart{
 	
 	private View view;
+	//private View headView;
 	private View footerView;
 	
 	private TextView footer_total;
@@ -83,7 +83,10 @@ public class C0_ShoppingCartFragment extends BaseFragment implements BusinessRes
     
     private AddressModel addressModel;
     private OrderModel orderModel;
-
+    private MyDialog mDialog;
+    
+    private ProgressDialog pd = null;
+    
     private SharedPreferences shared;
 	private SharedPreferences.Editor editor;
 	
@@ -111,11 +114,13 @@ public class C0_ShoppingCartFragment extends BaseFragment implements BusinessRes
 		xlistView.setRefreshTime();
 		xlistView.setXListViewListener(this,1);
 		
+		//headView = LayoutInflater.from(getActivity()).inflate(R.layout.shop_car_head, null);
 		footerView = LayoutInflater.from(getActivity()).inflate(R.layout.c0_shopping_car_footer, null);
 		footer_total = (TextView) footerView.findViewById(R.id.shop_car_footer_total);
 		footer_balance = (FrameLayout) footerView.findViewById(R.id.shop_car_footer_balance);
 		cart_icon = (ImageView) footerView.findViewById(R.id.shop_car_footer_balance_cart_icon);
 		
+		//xlistView.addHeaderView(headView);
 		xlistView.addFooterView(footerView);
 		
 		addressModel = new AddressModel(getActivity());
@@ -125,8 +130,13 @@ public class C0_ShoppingCartFragment extends BaseFragment implements BusinessRes
 			
 			@Override
 			public void onClick(View v) {
-
+				 
+				//shoppingCartModel.checkOrder();
+				
 				addressModel.getAddressList();
+				pd = new ProgressDialog(getActivity());
+				pd.setMessage(resource.getString(R.string.hold_on));
+				pd.show();
 				
 				
 			}
@@ -219,16 +229,19 @@ public class C0_ShoppingCartFragment extends BaseFragment implements BusinessRes
 
 	@SuppressLint("NewApi")
 	public void OnMessageResponse(String url, JSONObject jo, AjaxStatus status) {
-		if (url.endsWith(ApiInterface.CART_LIST)) {
+		if (url.endsWith(ProtocolConst.CARTLIST)) {
 			xlistView.stopRefresh();
 			xlistView.setRefreshTime();
 			setShopCart();
 			TabsFragment.setShoppingcartNum();
-		} else if(url.endsWith(ApiInterface.CART_DELETE)) {
+		} else if(url.endsWith(ProtocolConst.CARTDELETE)) {
 			updataCar();
-		} else if(url.endsWith(ApiInterface.CART_UPDATE)) {
+		} else if(url.endsWith(ProtocolConst.CARTUPDATA)) {
 			updataCar();
-		} else if(url.endsWith(ApiInterface.ADDRESS_LIST)) {
+		} else if(url.endsWith(ProtocolConst.ADDRESS_LIST)) {
+			if(pd.isShowing()) {
+				pd.dismiss();
+			}
 			if(addressModel.addressList.size() == 0) {
 				Intent intent = new Intent(getActivity(), F1_NewAddressActivity.class);
 				startActivity(intent);
@@ -242,7 +255,7 @@ public class C0_ShoppingCartFragment extends BaseFragment implements BusinessRes
 			}
 			
 		}
-        else if(url.endsWith(ApiInterface.ORDER_PAY))
+        else if(url.endsWith(ProtocolConst.ORDER_PAY))
         {
 			Intent intent = new Intent(getActivity(), PayWebActivity.class);
 

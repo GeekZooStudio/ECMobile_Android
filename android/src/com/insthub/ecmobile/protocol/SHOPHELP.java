@@ -17,13 +17,13 @@ public class SHOPHELP  extends Model
      @Column(name = "name")
      public String name;
 
- public void  fromJson(JSONObject jsonObject)  throws JSONException
+ public static SHOPHELP fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return ;
+       return null;
       }
 
-
+     SHOPHELP   localItem = new SHOPHELP();
 
      JSONArray subItemArray;
 
@@ -32,16 +32,15 @@ public class SHOPHELP  extends Model
       {
          for(int i = 0;i < subItemArray.length();i++)
           {
-              JSONObject subItemObject = subItemArray.getJSONObject(i);
-              ARTICLE subItem = new ARTICLE();
-              subItem.fromJson(subItemObject);
-              this.article.add(subItem);
+             JSONObject subItemObject = subItemArray.getJSONObject(i);
+             ARTICLE subItem = ARTICLE.fromJson(subItemObject);
+             localItem.article.add(subItem);
          }
      }
 
 
-     this.name = jsonObject.optString("name");
-     return ;
+     localItem.name = jsonObject.optString("name");
+     return localItem;
  }
 
  public JSONObject  toJson() throws JSONException 

@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 import android.content.res.Resources;
 import com.insthub.BeeFramework.activity.BaseActivity;
-import com.insthub.ecmobile.protocol.ApiInterface;
 import com.umeng.analytics.MobclickAgent;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -120,7 +119,7 @@ public class B5_ProductCommentActivity extends BaseActivity implements IXListVie
 	@Override
 	public void OnMessageResponse(String url, JSONObject jo, AjaxStatus status)
 			throws JSONException {		
-		if(url.endsWith(ApiInterface.COMMENTS)) {
+		if(url.endsWith(ProtocolConst.COMMENTS)) {
 			xlistView.setRefreshTime();
 			xlistView.stopRefresh();
 			xlistView.stopLoadMore();

@@ -18,9 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.insthub.BeeFramework.view.MyProgressDialog;
 import com.insthub.ecmobile.R;
-import com.insthub.ecmobile.protocol.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,344 +29,442 @@ import android.content.Context;
 import com.external.androidquery.callback.AjaxStatus;
 import com.insthub.BeeFramework.model.BaseModel;
 import com.insthub.BeeFramework.model.BeeCallback;
+import com.insthub.ecmobile.protocol.ADDRESS;
+import com.insthub.ecmobile.protocol.REGIONS;
+import com.insthub.ecmobile.protocol.SESSION;
+import com.insthub.ecmobile.protocol.SIMPLEGOODS;
+import com.insthub.ecmobile.protocol.STATUS;
 
 public class AddressModel extends BaseModel {
 
-    public ArrayList<ADDRESS> addressList = new ArrayList<ADDRESS>();
-    public ArrayList<REGIONS> regionsList0 = new ArrayList<REGIONS>();
-    public ADDRESS address;
+	public ArrayList<ADDRESS> addressList = new ArrayList<ADDRESS>();
+	public ArrayList<REGIONS> regionsList0 = new ArrayList<REGIONS>();
+	public ArrayList<REGIONS> regionsList1 = new ArrayList<REGIONS>();
+	public ArrayList<REGIONS> regionsList2 = new ArrayList<REGIONS>();
+	public ArrayList<REGIONS> regionsList3 = new ArrayList<REGIONS>();
+	public AddressModel(Context context) {
+		super(context);
+		 
+	}
+	
+	// 获取地址列表
+	public void getAddressList() {
+		String url = ProtocolConst.ADDRESS_LIST;
 
-    public AddressModel(Context context) {
-        super(context);
+		BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
 
-    }
+			@Override
+			public void callback(String url, JSONObject jo, AjaxStatus status) {
 
-    // 获取地址列表
-    public void getAddressList() {
-
-        final addresslistRequest request = new addresslistRequest();
-        BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
-
-            @Override
-            public void callback(String url, JSONObject jo, AjaxStatus status) {
-                try {
-                    AddressModel.this.callback(url, jo, status);
-                    if (jo != null) {
-                        addresslistResponse response = new addresslistResponse();
-                        response.fromJson(jo);
-                        if (response.status.succeed == 1) {
-                           addressList.clear();
-                           ArrayList<ADDRESS> data = response.data;
-                            if (null != data && data.size() > 0) {
-                                addressList.addAll(data);
-                            }
-                        }
-                       AddressModel.this.OnMessageResponse(url, jo, status);
-                    }
-
-                } catch (JSONException e) {
-
-                    e.printStackTrace();
-                }
-
-            }
-
-        };
-        request.session=SESSION.getInstance();
-        Map<String, String> params = new HashMap<String, String>();
-        try {
-            params.put("json", request.toJson().toString());
-        } catch (JSONException e) {
-            // TODO: handle exception
-        }
-        cb.url(ApiInterface.ADDRESS_LIST).type(JSONObject.class).params(params);
-        MyProgressDialog pd = new MyProgressDialog(mContext,mContext.getResources().getString(R.string.hold_on));
-        aq.progress(pd.mDialog).ajax(cb);
-
-    }
-
-    // 添加地址
-    public void addAddress(String consignee, String tel, String email, String mobile, String zipcode, String address, String country, String province, String city, String district) {
-       addressaddRequest request=new addressaddRequest();
-        BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
-
-            @Override
-            public void callback(String url, JSONObject jo, AjaxStatus status) {
-                AddressModel.this.callback(url, jo, status);
-                try {
-                    addressaddResponse response = new addressaddResponse();
-                    response.fromJson(jo);
-                    if (response.status.succeed == 1) {
-                            AddressModel.this.OnMessageResponse(url, jo, status);
-                    } else {
-                        AddressModel.this.OnMessageResponse(url, jo, status);
-                    }
-
-                } catch (JSONException e) {
-
-                    e.printStackTrace();
-                }
-            }
-
-        };
-
-        SESSION session = SESSION.getInstance();
-        ADDRESS add = new ADDRESS();
-        add.consignee = consignee;
-        add.tel = tel;
-        add.email = email;
-        add.mobile = mobile;
-        add.zipcode = zipcode;
-        add.address = address;
-        add.country = country;
-        add.province = province;
-        add.city = city;
-        add.district = district;
-
-       request.session=session;
-       request.address=add;
-
-        Map<String, String> params = new HashMap<String, String>();
-        try {
-            params.put("json", request.toJson().toString());
-
-        } catch (JSONException e) {
-            // TODO: handle exception
-        }
-
-
-        cb.url(ApiInterface.ADDRESS_ADD).type(JSONObject.class).params(params);
-        MyProgressDialog pd = new MyProgressDialog(mContext,mContext.getResources().getString(R.string.hold_on));
-        aq.progress(pd.mDialog).ajax(cb);
-
-    }
-
-    // 获取地区城市
-    public void region(int parent_id) {
-        regionRequest request=new regionRequest();
-        request.parent_id=parent_id;
-        BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
-
-            @Override
-            public void callback(String url, JSONObject jo, AjaxStatus status) {
-
-                AddressModel.this.callback(url, jo, status);
-
-                try {
-                    regionResponse response = new regionResponse();
-                    response.fromJson(jo);
-                    if (jo != null) {
-                        if (response.status.succeed == 1) {
-                            REGION_DATA data = response.data;
-                            ArrayList<REGIONS> regionses = data.regions;
-                            regionsList0.clear();
-                            if (null != regionses && regionses.size() > 0) {
-                                regionsList0.clear();
-                                for (int i = 0; i < regionses.size(); i++) {
-                                    REGIONS regions = regionses.get(i);
-                                    regionsList0.add(regions);
+				AddressModel.this.callback(url, jo, status);
+				try {
+					STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
+					
+					if(responseStatus.succeed == 1) {
+						JSONArray dataJsonArray = jo.optJSONArray("data");
+                        if (null != dataJsonArray && dataJsonArray.length() > 0) {
+                        	addressList.clear();
+                            for (int i = 0; i < dataJsonArray.length(); i++) {
+                                JSONObject addressJsonObject = dataJsonArray.getJSONObject(i);
+                                ADDRESS addressItem = ADDRESS.fromJson(addressJsonObject);
+                                //addressItem.save();
+                                if(!addressItem.province_name.equals("null")) {
+                                	addressList.add(addressItem);
                                 }
+                                
                             }
-                            AddressModel.this.OnMessageResponse(url, jo, status);
-                        } else {
-                            AddressModel.this.OnMessageResponse(url, jo, status);
                         }
-                    }
+                        AddressModel.this.OnMessageResponse(url, jo, status);
+					}
+					
+				} catch (JSONException e) {
+					 
+					e.printStackTrace();
+				}
+			
+			}
 
-                } catch (JSONException e) {
+		};
 
-                    e.printStackTrace();
-                }
-            }
+		SESSION session = SESSION.getInstance();
+		 
+		JSONObject requestJsonObject = new JSONObject();
 
-        };
+		Map<String, String> params = new HashMap<String, String>();
+		try 
+		{
+            requestJsonObject.put("session",session.toJson());
+		} catch (JSONException e) {
+			// TODO: handle exception
+		}
 
-        Map<String, String> params = new HashMap<String, String>();
-        try {
-            params.put("json", request.toJson().toString());
+        params.put("json",requestJsonObject.toString());
+		
+		cb.url(url).type(JSONObject.class).params(params);
+		ProgressDialog pd = new ProgressDialog(mContext);
+        pd.setMessage(mContext.getResources().getString(R.string.hold_on));
+		aq.progress(pd).ajax(cb);
+		
+	}
+	
+	// 添加地址
+	public void addAddress(String consignee, String tel, String email, String mobile, String zipcode, String address, String country, String province, String city, String district) {
+		String url = ProtocolConst.ADDRESS_ADD;
 
-        } catch (JSONException e) {
-            // TODO: handle exception
-        }
+		BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
 
-        cb.url(ApiInterface.REGION).type(JSONObject.class).params(params);
-        aq.ajax(cb);
-
-    }
-
-
-    // 获取地址详细信息
-    public void getAddressInfo(String address_id) {
-        addressinfoRequest request=new addressinfoRequest();
-        request.address_id=address_id;
-        request.session=SESSION.getInstance();
-        BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
-
-            @Override
-            public void callback(String url, JSONObject jo, AjaxStatus status) {
-
-                AddressModel.this.callback(url, jo, status);
-
-                try {
-                    addressinfoResponse response = new addressinfoResponse();
-                    response.fromJson(jo);
-                    if (jo != null) {
-                        if (response.status.succeed == 1) {
-                            address=response.data;
-                            AddressModel.this.OnMessageResponse(url, jo, status);
+			@Override
+			public void callback(String url, JSONObject jo, AjaxStatus status) {
+				AddressModel.this.callback(url, jo, status);
+				try {
+					STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
+					if(responseStatus.succeed == 1) {
+						JSONArray dataJsonArray = jo.optJSONArray("data");
+                        if (null != dataJsonArray && dataJsonArray.length() > 0) {
+                        	addressList.clear();
+                            for (int i = 0; i < dataJsonArray.length(); i++) {
+                                JSONObject addressJsonObject = dataJsonArray.getJSONObject(i);
+                                ADDRESS addressItem = ADDRESS.fromJson(addressJsonObject);
+                                addressList.add(addressItem);
+                            }
                         }
-                    }
+                       
+					}
+					AddressModel.this.OnMessageResponse(url, jo, status);
+					
+				} catch (JSONException e) {
+					 
+					e.printStackTrace();
+				}
+			}
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+		};
 
-            }
+		SESSION session = SESSION.getInstance();
+		ADDRESS add = new ADDRESS();
+		add.consignee = consignee;
+		add.tel = tel;
+		add.email = email;
+		add.mobile = mobile;
+		add.zipcode = zipcode;
+		add.address = address;
+		add.country = country;
+		add.province = province;
+		add.city = city;
+		add.district = district;
+		 
+		JSONObject requestJsonObject = new JSONObject();
 
-        };
+		Map<String, String> params = new HashMap<String, String>();
+		try 
+		{
+            requestJsonObject.put("session",session.toJson());
+            requestJsonObject.put("address",add.toJson());
+		} catch (JSONException e) {
+			// TODO: handle exception
+		}
 
-        Map<String, String> params = new HashMap<String, String>();
-        try {
-            params.put("json", request.toJson().toString());
+        params.put("json",requestJsonObject.toString());
+		
+		cb.url(url).type(JSONObject.class).params(params);
+		ProgressDialog pd = new ProgressDialog(mContext);
+        pd.setMessage(mContext.getResources().getString(R.string.hold_on));
+		aq.progress(pd).ajax(cb);
+		
+	}
+	
+	// 获取地区城市
+	public void region(String parent_id, final int i) {
+		String url = ProtocolConst.REGION;
 
-        } catch (JSONException e) {
-            // TODO: handle exception
-        }
-        cb.url(ApiInterface.ADDRESS_INFO).type(JSONObject.class).params(params);
-        MyProgressDialog pd = new MyProgressDialog(mContext,mContext.getResources().getString(R.string.hold_on));
-        aq.progress(pd.mDialog).ajax(cb);
+		BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
 
-    }
+			@Override
+			public void callback(String url, JSONObject jo, AjaxStatus status) {
 
-    // 设置默认地址
-    public void addressDefault(String address_id) {
+				AddressModel.this.callback(url, jo, status);
+				
+				try {
+					STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
+					
+					if(responseStatus.succeed == 1) {
+						
+						JSONObject data = jo.optJSONObject("data");
+						JSONArray regionsJsonArray = data.optJSONArray("regions");
+						regionsList0.clear();
+						if (null != regionsJsonArray && regionsJsonArray.length() > 0) {
+							regionsList0.clear();
+							for (int i = 0; i < regionsJsonArray.length(); i++) {
+								JSONObject regionsJsonObject = regionsJsonArray.getJSONObject(i);
+								REGIONS regions = REGIONS.fromJson(regionsJsonObject);
+								regionsList0.add(regions);
+							}
+						}
 
-        addresssetDefaultRequest request=new addresssetDefaultRequest();
-        request.address_id=address_id;
-        request.session=SESSION.getInstance();
-        BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
+						
+//						if(i == 0) {
+//							if (null != regionsJsonArray && regionsJsonArray.length() > 0) {
+//								regionsList0.clear();
+//								for (int i = 0; i < regionsJsonArray.length(); i++) {
+//									JSONObject regionsJsonObject = regionsJsonArray.getJSONObject(i);
+//									REGIONS regions = REGIONS.fromJson(regionsJsonObject);
+//									regionsList0.add(regions);
+//								}
+//							}
+//						} else if(i == 1) {
+//							if (null != regionsJsonArray && regionsJsonArray.length() > 0) {
+//								regionsList1.clear();
+//								for (int i = 0; i < regionsJsonArray.length(); i++) {
+//									JSONObject regionsJsonObject = regionsJsonArray.getJSONObject(i);
+//									REGIONS regions = REGIONS.fromJson(regionsJsonObject);
+//									regionsList1.add(regions);
+//								}
+//							}
+//						} else if(i == 2) {
+//							if (null != regionsJsonArray && regionsJsonArray.length() > 0) {
+//								regionsList2.clear();
+//								for (int i = 0; i < regionsJsonArray.length(); i++) {
+//									JSONObject regionsJsonObject = regionsJsonArray.getJSONObject(i);
+//									REGIONS regions = REGIONS.fromJson(regionsJsonObject);
+//									regionsList2.add(regions);
+//								}
+//							}
+//						} else if(i == 3) {
+//							if (null != regionsJsonArray && regionsJsonArray.length() > 0) {
+//								regionsList3.clear();
+//								for (int i = 0; i < regionsJsonArray.length(); i++) {
+//									JSONObject regionsJsonObject = regionsJsonArray.getJSONObject(i);
+//									REGIONS regions = REGIONS.fromJson(regionsJsonObject);
+//									regionsList3.add(regions);
+//								}
+//							}
+//						}
+						AddressModel.this.OnMessageResponse(url, jo, status);
+					}
+					
+				} catch (JSONException e) {
+					 
+					e.printStackTrace();
+				}
+			}
 
-            @Override
-            public void callback(String url, JSONObject jo, AjaxStatus status) {
+		};
 
-                AddressModel.this.callback(url, jo, status);
+		Map<String, String> params = new HashMap<String, String>();
+		
+		params.put("parent_id", parent_id);
 
-                try {
-                    addresssetDefaultResponse response = new addresssetDefaultResponse();
-                    response.fromJson(jo);
-                    if(jo!=null){
-                        if (response.status.succeed == 1) {
-                            AddressModel.this.OnMessageResponse(url, jo, status);
+		cb.url(url).type(JSONObject.class).params(params);
+		aq.ajax(cb);
+
+	}
+	
+	public ADDRESS address;
+	// 获取地址详细信息
+	public void getAddressInfo(String address_id) {
+		String url = ProtocolConst.ADDRESS_INFO;
+
+		BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
+
+			@Override
+			public void callback(String url, JSONObject jo, AjaxStatus status) {
+
+				AddressModel.this.callback(url, jo, status);
+				
+				try {
+					STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
+					if(responseStatus.succeed == 1) {
+						address = ADDRESS.fromJson(jo.optJSONObject("data"));
+                        
+                        AddressModel.this.OnMessageResponse(url, jo, status);
+					}
+					
+				} catch (JSONException e) {
+					 
+					e.printStackTrace();
+				}
+			
+			}
+
+		};
+
+		SESSION session = SESSION.getInstance();
+		 
+		JSONObject requestJsonObject = new JSONObject();
+
+		Map<String, String> params = new HashMap<String, String>();
+		try 
+		{
+            requestJsonObject.put("session",session.toJson());
+            requestJsonObject.put("address_id",address_id);
+		} catch (JSONException e) {
+			// TODO: handle exception
+		}
+
+        params.put("json",requestJsonObject.toString());
+		cb.url(url).type(JSONObject.class).params(params);
+		ProgressDialog pd = new ProgressDialog(mContext);
+        pd.setMessage(mContext.getResources().getString(R.string.hold_on));
+		aq.progress(pd).ajax(cb);
+		
+	}
+	
+	// 设置默认地址
+	public void addressDefault(String address_id) {
+		String url = ProtocolConst.ADDRESS_DEFAULT;
+
+		BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
+
+			@Override
+			public void callback(String url, JSONObject jo, AjaxStatus status) {
+
+				AddressModel.this.callback(url, jo, status);
+					
+				try {
+					STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
+					if(responseStatus.succeed == 1) {
+	                    AddressModel.this.OnMessageResponse(url, jo, status);
+					}
+						
+				} catch (JSONException e) {
+					 
+					e.printStackTrace();
+				}
+			}
+
+		};
+
+		SESSION session = SESSION.getInstance();
+			 
+		JSONObject requestJsonObject = new JSONObject();
+
+		Map<String, String> params = new HashMap<String, String>();
+		try 
+		{
+	        requestJsonObject.put("session",session.toJson());
+	        requestJsonObject.put("address_id",address_id);
+		} catch (JSONException e) {
+			// TODO: handle exception
+		}
+
+	    params.put("json",requestJsonObject.toString());
+	    cb.url(url).type(JSONObject.class).params(params);
+	    ProgressDialog pd = new ProgressDialog(mContext);
+        pd.setMessage(mContext.getResources().getString(R.string.hold_on));
+		aq.progress(pd).ajax(cb);
+			
+	}
+	
+	// 删除地址
+	public void addressDelete(String address_id) {
+		String url = ProtocolConst.ADDRESS_DELETE;
+
+		BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
+
+			@Override
+			public void callback(String url, JSONObject jo, AjaxStatus status) {
+
+				AddressModel.this.callback(url, jo, status);
+					
+				try {
+					STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
+					if(responseStatus.succeed == 1) {
+	                    AddressModel.this.OnMessageResponse(url, jo, status);
+					}
+						
+				} catch (JSONException e) {
+					 
+					e.printStackTrace();
+				}
+			}
+
+		};
+
+		SESSION session = SESSION.getInstance();
+			 
+		JSONObject requestJsonObject = new JSONObject();
+
+		Map<String, String> params = new HashMap<String, String>();
+		try 
+		{
+	        requestJsonObject.put("session",session.toJson());
+	        requestJsonObject.put("address_id",address_id);
+		} catch (JSONException e) {
+			// TODO: handle exception
+		}
+
+	    params.put("json",requestJsonObject.toString());
+	    cb.url(url).type(JSONObject.class).params(params);
+	    ProgressDialog pd = new ProgressDialog(mContext);
+        pd.setMessage(mContext.getResources().getString(R.string.hold_on));
+		aq.progress(pd).ajax(cb);
+			
+	}
+	
+	// 修改地址
+	public void addressUpdate(String address_id, String consignee, String tel, String email, String mobile, String zipcode, String address, String country, String province, String city, String district) {
+		String url = ProtocolConst.ADDRESS_UPDATE;
+
+		BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
+
+			@Override
+			public void callback(String url, JSONObject jo, AjaxStatus status) {
+				AddressModel.this.callback(url, jo, status);
+				try {
+					STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
+					if(responseStatus.succeed == 1) {
+						JSONArray dataJsonArray = jo.optJSONArray("data");
+                        if (null != dataJsonArray && dataJsonArray.length() > 0) {
+                        	addressList.clear();
+                            for (int i = 0; i < dataJsonArray.length(); i++) {
+                                JSONObject addressJsonObject = dataJsonArray.getJSONObject(i);
+                                ADDRESS addressItem = ADDRESS.fromJson(addressJsonObject);
+                                addressList.add(addressItem);
+                            }
                         }
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
+                        AddressModel.this.OnMessageResponse(url, jo, status);
+					}
+					
+				} catch (JSONException e) {
+					 
+					e.printStackTrace();
+				}
+			}
 
-        };
-        Map<String, String> params = new HashMap<String, String>();
-        try {
-            params.put("json", request.toJson().toString());
+		};
 
-        } catch (JSONException e) {
-            // TODO: handle exception
-        }
-        cb.url(ApiInterface.ADDRESS_SETDEFAULT).type(JSONObject.class).params(params);
-        MyProgressDialog pd = new MyProgressDialog(mContext,mContext.getResources().getString(R.string.hold_on));
-        aq.progress(pd.mDialog).ajax(cb);
+		SESSION session = SESSION.getInstance();
+		ADDRESS add = new ADDRESS();
+		add.consignee = consignee;
+		add.tel = tel;
+		add.email = email;
+		add.mobile = mobile;
+		add.zipcode = zipcode;
+		add.address = address;
+		add.country = country;
+		add.province = province;
+		add.city = city;
+		add.district = district;
+		 
+		JSONObject requestJsonObject = new JSONObject();
 
-    }
+		Map<String, String> params = new HashMap<String, String>();
+		try 
+		{
+            requestJsonObject.put("session",session.toJson());
+            requestJsonObject.put("address_id", address_id);
+            requestJsonObject.put("address",add.toJson());
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 
-    // 删除地址
-    public void addressDelete(String address_id) {
-        addressdeleteRequest request=new addressdeleteRequest();
-        request.address_id=address_id;
-        request.session=SESSION.getInstance();
-        BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
-
-            @Override
-            public void callback(String url, JSONObject jo, AjaxStatus status) {
-
-                AddressModel.this.callback(url, jo, status);
-
-                try {
-                    addressdeleteResponse response = new addressdeleteResponse();
-                    response.fromJson(jo);
-                    if(jo!=null) {
-                        if (response.status.succeed == 1) {
-                            AddressModel.this.OnMessageResponse(url, jo, status);
-                        }
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        };
-
-        Map<String, String> params = new HashMap<String, String>();
-        try {
-            params.put("json", request.toJson().toString());
-
-        } catch (JSONException e) {
-            // TODO: handle exception
-        }
-        cb.url(ApiInterface.ADDRESS_DELETE).type(JSONObject.class).params(params);
-        MyProgressDialog pd = new MyProgressDialog(mContext,mContext.getResources().getString(R.string.hold_on));
-        aq.progress(pd.mDialog).ajax(cb);
-
-    }
-
-    // 修改地址
-    public void addressUpdate(String address_id, String consignee, String tel, String email, String mobile, String zipcode, String address, String country, String province, String city, String district) {
-       addressupdateRequest request=new addressupdateRequest();
-        BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
-
-            @Override
-            public void callback(String url, JSONObject jo, AjaxStatus status) {
-                AddressModel.this.callback(url, jo, status);
-                try {
-                    addressupdateResponse response = new addressupdateResponse();
-                    response.fromJson(jo);
-                    if (jo != null) {
-                        if (response.status.succeed == 1) {
-                            AddressModel.this.OnMessageResponse(url, jo, status);
-                        }
-                    }
-
-                } catch (JSONException e) {
-
-                    e.printStackTrace();
-                }
-            }
-
-        };
-        ADDRESS add = new ADDRESS();
-        add.consignee = consignee;
-        add.tel = tel;
-        add.email = email;
-        add.mobile = mobile;
-        add.zipcode = zipcode;
-        add.address = address;
-        add.country = country;
-        add.province = province;
-        add.city = city;
-        add.district = district;
-        request.address=add;
-        request.session=SESSION.getInstance();
-        request.address_id=address_id;
-
-        Map<String, String> params = new HashMap<String, String>();
-        try {
-            params.put("json", request.toJson().toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        cb.url(ApiInterface.ADDRESS_UPDATE).type(JSONObject.class).params(params);
-        MyProgressDialog pd = new MyProgressDialog(mContext,mContext.getResources().getString(R.string.hold_on));
-        aq.progress(pd.mDialog).ajax(cb);
-
-    }
+        params.put("json",requestJsonObject.toString());
+		
+		cb.url(url).type(JSONObject.class).params(params);
+		ProgressDialog pd = new ProgressDialog(mContext);
+        pd.setMessage(mContext.getResources().getString(R.string.hold_on));
+		aq.progress(pd).ajax(cb);
+		
+	}
 
 }

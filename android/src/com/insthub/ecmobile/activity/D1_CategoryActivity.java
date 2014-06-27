@@ -22,6 +22,10 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.*;
 
 import com.external.maxwin.view.XListView;
+import com.iflytek.speech.RecognizerResult;
+import com.iflytek.speech.SpeechError;
+import com.iflytek.ui.RecognizerDialog;
+import com.iflytek.ui.RecognizerDialogListener;
 import com.insthub.BeeFramework.activity.BaseActivity;
 import com.insthub.BeeFramework.view.MyViewGroup;
 import com.insthub.ecmobile.EcmobileManager;
@@ -71,8 +75,8 @@ public class D1_CategoryActivity extends BaseActivity
         try
         {
             JSONObject jsonObject = new JSONObject(categoryStr);
-            category = new  CATEGORY();
-            category.fromJson(jsonObject);
+            CATEGORY category1 = CATEGORY.fromJson(jsonObject);
+            this.category = category1;
             childListAdapter = new D0_CategoryAdapter(this,this.category.children);
             childListView.setAdapter(childListAdapter);
             childListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

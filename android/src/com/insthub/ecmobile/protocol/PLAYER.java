@@ -28,25 +28,23 @@ public class PLAYER  extends Model
      public int action_id;
 
 
- public void fromJson(JSONObject jsonObject)  throws JSONException
+ public static PLAYER fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return ;
+       return null;
       }
 
      PLAYER   localItem = new PLAYER();
 
      JSONArray subItemArray;
 
-     this.description = jsonObject.optString("description");
-     PHOTO  photo = new PHOTO();
-     photo.fromJson(jsonObject.optJSONObject("photo"));
-     this.photo = photo;
+     localItem.description = jsonObject.optString("description");
+     localItem.photo = PHOTO.fromJson(jsonObject.optJSONObject("photo"));
 
-     this.url = jsonObject.optString("url");
-     this.action = jsonObject.optString("action");
-     this.action_id = jsonObject.optInt("action_id");
-     return ;
+     localItem.url = jsonObject.optString("url");
+     localItem.action = jsonObject.optString("action");
+     localItem.action_id = jsonObject.optInt("action_id");
+     return localItem;
  }
 
  public JSONObject  toJson() throws JSONException 

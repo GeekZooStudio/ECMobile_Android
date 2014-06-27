@@ -21,21 +21,22 @@ public class PAGINATED  extends Model
      @Column(name = "count")
      public int count;
 
- public void fromJson(JSONObject jsonObject)  throws JSONException
+ public static PAGINATED fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return ;
+       return null;
       }
 
+     PAGINATED   localItem = new PAGINATED();
 
      JSONArray subItemArray;
 
-     this.total = jsonObject.optInt("total");
+     localItem.total = jsonObject.optInt("total");
 
-     this.more = jsonObject.optInt("more");
+     localItem.more = jsonObject.optInt("more");
 
-     this.count = jsonObject.optInt("count");
-     return ;
+     localItem.count = jsonObject.optInt("count");
+     return localItem;
  }
 
  public JSONObject  toJson() throws JSONException 

@@ -13,23 +13,14 @@ package com.insthub.ecmobile.activity;
 //  Powered by BeeFramework
 //
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.res.Resources;
-import android.graphics.Color;
-import android.util.Log;
-import com.insthub.BeeFramework.activity.BaseActivity;
 import com.insthub.BeeFramework.view.MyDialog;
-import com.insthub.ecmobile.ECMobileAppConst;
 import com.insthub.ecmobile.EcmobileManager;
 import com.insthub.ecmobile.ShareConst;
 import com.insthub.ecmobile.model.OrderModel;
 import com.insthub.ecmobile.protocol.*;
 import com.umeng.analytics.MobclickAgent;
 
-import com.unionpay.UPPayAssistEx;
-import com.unionpay.uppay.PayActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,9 +43,7 @@ import com.insthub.BeeFramework.view.ToastView;
 import com.insthub.ecmobile.model.ProtocolConst;
 import com.insthub.ecmobile.model.ShoppingCartModel;
 
-import java.util.ArrayList;
-
-public class C1_CheckOutActivity extends BaseActivity implements OnClickListener, BusinessResponse {
+public class C1_CheckOutActivity extends AlixPayActivity implements OnClickListener, BusinessResponse {
 	
 	private TextView title;
 	private ImageView back;
@@ -83,10 +72,6 @@ public class C1_CheckOutActivity extends BaseActivity implements OnClickListener
 	private TextView bonus_text;
 	private TextView coupon;
 	private TextView totalPriceTextView;
-    private TextView text_balance_redPaper;
-    private TextView text_balance_score;
-    private ImageView arrow_balance_score;
-    private ImageView arrow_balance_redpocket;
 	private FrameLayout submit;
 	
 	private  ShoppingCartModel shoppingCartModel;
@@ -96,30 +81,20 @@ public class C1_CheckOutActivity extends BaseActivity implements OnClickListener
 
     private PAYMENT payment;
     private SHIPPING shipping;
-    private BONUS selectedBONUS;
+    BONUS selectedBONUS;
 
     private String scoreNum = null; //兑换的积分数
     private String scoreChangedMoney = null; //积分兑换的钱
     private String scoreChangedMoneyFormated = null; //积分兑换的钱
 
-	private int inv_type =-1; //发票类型
-	private int inv_content =-1; //发票内容
+	private String inv_type = null; //发票类型
+	private String inv_content = null; //发票内容
 	private String inv_payee = null; //发票抬头
 
     private MyDialog mDialog;
     private OrderModel orderModel;
-    private String UPPay_mMode = "00";//银联环境设置
-    private ORDER_INFO order_info;
-    private final static int REQUEST_ADDRESS_LIST = 1;
-    private final static int REQUEST_PAYMENT= 2;
-    private final static int REQUEST_Distribution  = 3;
-    private final static int REQUEST_BONUS  = 4;
-    private final static int REQUEST_INVOICE = 5;
-    private final static int REQUEST_RedEnvelope    = 6;
-    private final static int REQUEST_ALIPAY = 7;
-    private final static int REQUEST_Pay_Web = 8;
-    private final static int REQUEST_UPPay  = 10;
-
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {		
 		super.onCreate(savedInstanceState);
@@ -164,11 +139,7 @@ public class C1_CheckOutActivity extends BaseActivity implements OnClickListener
         totalPriceTextView = (TextView) findViewById(R.id.balance_total);
 		submit = (FrameLayout) findViewById(R.id.balance_submit);
 		body = (LinearLayout) findViewById(R.id.balance_body);
-        text_balance_redPaper=(TextView)findViewById(R.id.text_balance_redPaper);
-        text_balance_score=(TextView)findViewById(R.id.text_balance_score);
-        arrow_balance_redpocket=(ImageView)findViewById(R.id.arrow_balance_redpocket);
-		arrow_balance_score=(ImageView)findViewById(R.id.arrow_balance_score);
-
+		
 		user.setOnClickListener(this);
 		pay.setOnClickListener(this);
 		dis.setOnClickListener(this);
@@ -203,17 +174,17 @@ public class C1_CheckOutActivity extends BaseActivity implements OnClickListener
 		case R.id.balance_user:
 			intent = new Intent(this, F0_AddressListActivity.class);
 			intent.putExtra("flag", 1);
-			startActivityForResult(intent, REQUEST_ADDRESS_LIST);
+			startActivityForResult(intent, 1);
 			break;
 		case R.id.balance_pay:
 			intent = new Intent(this, C2_PaymentActivity.class);
 			intent.putExtra("payment", paymentJSONString);
-			startActivityForResult(intent, REQUEST_PAYMENT);
+			startActivityForResult(intent, 2);
 			break;
 		case R.id.balance_dis:
 			intent = new Intent(this, C3_DistributionActivity.class);
 			intent.putExtra("payment", paymentJSONString);
-			startActivityForResult(intent, REQUEST_Distribution);
+			startActivityForResult(intent, 3);
 			break;
 		case R.id.balance_invoice:
 			intent = new Intent(this, C4_InvoiceActivity.class);
@@ -222,7 +193,7 @@ public class C1_CheckOutActivity extends BaseActivity implements OnClickListener
 			intent.putExtra("inv_content", inv_content);
 			intent.putExtra("inv_payee", inv_payee);
 			
-			startActivityForResult(intent, REQUEST_INVOICE);
+			startActivityForResult(intent, 5);
 			break;
 		case R.id.balance_goods:
 
@@ -241,7 +212,7 @@ public class C1_CheckOutActivity extends BaseActivity implements OnClickListener
                 {
                     intent = new Intent(this, C6_RedEnvelopeActivity.class);
                     intent.putExtra("payment", paymentJSONString);
-                    startActivityForResult(intent, REQUEST_RedEnvelope);
+                    startActivityForResult(intent, 6);
                 }
                 else
                 {
@@ -261,7 +232,7 @@ public class C1_CheckOutActivity extends BaseActivity implements OnClickListener
 		case R.id.balance_score:
 			intent = new Intent(this, C5_BonusActivity.class);
 			intent.putExtra("payment", paymentJSONString);
-			startActivityForResult(intent, REQUEST_BONUS);
+			startActivityForResult(intent, 4);
 			break;
 		case R.id.balance_submit:
             Resources resourc = (Resources) getBaseContext().getResources();
@@ -286,11 +257,11 @@ public class C1_CheckOutActivity extends BaseActivity implements OnClickListener
             {
                 if (null != selectedBONUS)
                 {
-                    shoppingCartModel.flowDone(payment.pay_id, shipping.shipping_id, selectedBONUS.bonus_id, scoreNum, inv_type+"", inv_payee, inv_content+"");
+                    shoppingCartModel.flowDone(payment.pay_id, shipping.shipping_id, selectedBONUS.bonus_id, scoreNum, inv_type, inv_payee, inv_content);
                 }
                 else
                 {
-                    shoppingCartModel.flowDone(payment.pay_id, shipping.shipping_id, null, scoreNum, inv_type+"", inv_payee, inv_content+"");
+                    shoppingCartModel.flowDone(payment.pay_id, shipping.shipping_id, null, scoreNum, inv_type, inv_payee, inv_content);
                 }
 
             }
@@ -352,19 +323,16 @@ public class C1_CheckOutActivity extends BaseActivity implements OnClickListener
 		
 		try {
 			JSONObject jo = new JSONObject(shoppingCartModel.orderInfoJsonString);
-            flowcheckOrderResponse response = new flowcheckOrderResponse();
-            response.fromJson(jo);
-			int bonus =response.data.allow_use_bonus;
-			ArrayList<BONUS> bonuses =response.data.bonus;
-			if(bonus==1 && bonuses.size()>0)
+			String bonus = jo.getString("allow_use_bonus");
+			JSONArray bonusArray = jo.optJSONArray("bonus");
+			if(bonus.equals("1") && bonusArray != null)
             {
 				redPaper.setEnabled(true); 
 			}
             else
             {
 				redPaper.setEnabled(false);
-                text_balance_redPaper.setTextColor(Color.parseColor("#9B9B9B"));
-                arrow_balance_redpocket.setVisibility(View.INVISIBLE);
+				redPaper.setBackgroundResource(R.drawable.cell_bg_header_small);
 			}
 		} catch (JSONException e) {			
 			e.printStackTrace();
@@ -372,16 +340,13 @@ public class C1_CheckOutActivity extends BaseActivity implements OnClickListener
 		
 		try{
 			JSONObject jo = new JSONObject(paymentJSONString);
-            flowcheckOrderResponse response = new flowcheckOrderResponse();
-            response.fromJson(jo);
-			String your_score = response.data.your_integral;
-			String order_max_score = response.data.order_max_integral+"";
+			String your_score = jo.get("your_integral").toString();
+			String order_max_score = jo.get("order_max_integral").toString();
 			int min_score = Math.min(Integer.valueOf(your_score), Integer.valueOf(order_max_score));
 			if(min_score == 0)
             {
 				score.setEnabled(false);
-                text_balance_score.setTextColor(Color.parseColor("#9B9B9B"));
-                arrow_balance_score.setVisibility(View.INVISIBLE);
+				score.setBackgroundResource(R.drawable.cell_bg_footer_small);
 			}
             else
             {
@@ -408,10 +373,9 @@ public class C1_CheckOutActivity extends BaseActivity implements OnClickListener
         @Override
 	public void OnMessageResponse(String url, JSONObject jo, AjaxStatus status)
 			throws JSONException {		
-		if(url.endsWith(ApiInterface.FLOW_CHECKORDER))
+		if(url.endsWith(ProtocolConst.CHECKORDER))
         {
-            STATUS res_status = new STATUS();
-            res_status.fromJson(jo.optJSONObject("status"));
+            STATUS res_status = STATUS.fromJson(jo.optJSONObject("status"));
 			if(res_status.succeed == 1)
             {
 				setInfo();
@@ -420,16 +384,15 @@ public class C1_CheckOutActivity extends BaseActivity implements OnClickListener
             {
 				Intent intent = new Intent(this, F1_NewAddressActivity.class);
 				intent.putExtra("balance", 1);
-				startActivityForResult(intent, REQUEST_ADDRESS_LIST);
+				startActivityForResult(intent, 1);
 			}
 			
 		}
-        else if(url.endsWith(ApiInterface.FLOW_DONE))
+        else if(url.endsWith(ProtocolConst.FLOW_DOWN))
         {
             JSONObject json = jo.getJSONObject("data");
             JSONObject orderObject = json.optJSONObject("order_info");
-            order_info = new ORDER_INFO();
-            order_info.fromJson(orderObject);
+            order_info = ORDER_INFO.fromJson(orderObject);
 
             Resources resource = (Resources) getBaseContext().getResources();
             String suc=resource.getString(R.string.successful_operation);
@@ -447,6 +410,8 @@ public class C1_CheckOutActivity extends BaseActivity implements OnClickListener
             {
                 mDialog = new MyDialog(this, suc, pay);
                 mDialog.show();
+                final int finalOrder_id = order_info.order_id;
+
                 mDialog.positive.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {                        
@@ -460,25 +425,19 @@ public class C1_CheckOutActivity extends BaseActivity implements OnClickListener
                         {
                             if (0 == order_info.pay_code.compareTo("alipay"))
                             {
-                                showAlipayDialog();
-                            }else if(0==order_info.pay_code.compareTo("upop")){
-                                orderModel.orderPay(order_info.order_id);
-                            }else if(0==order_info.pay_code.compareTo("tenpay")){
-                                orderModel.orderPay(order_info.order_id);
+                                performPay();
                             }
                             else
                             {
-                                orderModel.orderPay(order_info.order_id);
+                                orderModel.orderPay(finalOrder_id);
                             }
                         }
                         else
                         {
-                            orderModel.orderPay(order_info.order_id);
+                        	orderModel.orderPay(finalOrder_id);
                         }
 
                     }
-
-
                 });
                 mDialog.negative.setOnClickListener(new OnClickListener() {
                     @Override
@@ -491,27 +450,21 @@ public class C1_CheckOutActivity extends BaseActivity implements OnClickListener
                     }
                 });
             }
-		}else  if (url.endsWith(ApiInterface.ORDER_PAY)) {
-            String pay_wap= orderModel.pay_wap;
-            String pay_online=orderModel.pay_online;
-            String upop_tn=orderModel.upop_tn;
+		}
+        else if(url.endsWith(ProtocolConst.ORDER_PAY))
+        {
+            Intent intent = new Intent(this, PayWebActivity.class);
 
-            if (upop_tn != null && !"".equals(upop_tn)) {
-                //银联sdk支付
-                UPPayAssistEx.startPayByJAR(C1_CheckOutActivity.this, PayActivity.class, null, null,
-                        upop_tn, UPPay_mMode);
-            } else if (pay_wap != null && !"".equals(pay_wap)) {
-                //wap支付
-                Intent intent = new Intent(this, PayWebActivity.class);
-                intent.putExtra(PayWebActivity.PAY_URL, pay_wap);
-                startActivityForResult(intent, REQUEST_Pay_Web);
-            } else if (pay_online != null && !"".equals(pay_online)) {
-                //其他方式
-                Intent intent = new Intent(this, OtherPayWebActivity.class);
-                intent.putExtra("html", pay_online);
-                startActivity(intent);
-                finish();
+            String data = null;
+            try
+            {
+                data = jo.getString("data").toString();
+                intent.putExtra("html", data);
+            } catch (JSONException e) {
+                e.printStackTrace(); 
             }
+            startActivity(intent);
+            finish();
         }
 	}
 
@@ -519,14 +472,14 @@ public class C1_CheckOutActivity extends BaseActivity implements OnClickListener
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {		
 		super.onActivityResult(requestCode, resultCode, data);
 		
-		if (requestCode == REQUEST_ADDRESS_LIST)
+		if (requestCode == 1)
         {
 			if (data != null)
             {
 				shoppingCartModel.checkOrder();
 			}
 		}
-        else if(requestCode ==REQUEST_PAYMENT)
+        else if(requestCode == 2)
         {
 			if (data != null)
             {
@@ -534,8 +487,7 @@ public class C1_CheckOutActivity extends BaseActivity implements OnClickListener
                 try
                 {
                     JSONObject paymentJSONObject = new JSONObject(paymentString);
-                    payment = new PAYMENT();
-                    payment.fromJson(paymentJSONObject);
+                    payment = PAYMENT.fromJson(paymentJSONObject);
                     pay_type.setText(payment.pay_name);
                 }
                 catch (JSONException e)
@@ -545,7 +497,7 @@ public class C1_CheckOutActivity extends BaseActivity implements OnClickListener
 
 			}
 		}
-        else if(requestCode == REQUEST_Distribution)
+        else if(requestCode == 3)
         {
 			if (data != null)
             {
@@ -553,8 +505,7 @@ public class C1_CheckOutActivity extends BaseActivity implements OnClickListener
                 try
                 {
                    JSONObject shippingJSONObject = new JSONObject(shippingString);
-                    shipping = new SHIPPING();
-                    shipping.fromJson(shippingJSONObject);
+                    shipping = SHIPPING.fromJson(shippingJSONObject);
                     dis_type.setText(shipping.shipping_name);
                     fees.setText(shipping.format_shipping_fee);
                     refreshTotalPrice();
@@ -565,7 +516,7 @@ public class C1_CheckOutActivity extends BaseActivity implements OnClickListener
                 }
 			}
 		}
-        else if(requestCode == REQUEST_BONUS)
+        else if(requestCode == 4)
         {
 			if (data != null)
             {
@@ -582,193 +533,40 @@ public class C1_CheckOutActivity extends BaseActivity implements OnClickListener
 			    refreshTotalPrice();
 			}
 		}
-        else if(requestCode == REQUEST_INVOICE)
+        else if(requestCode == 5)
         {
 			if (data != null)
             {
-				inv_type = data.getIntExtra("inv_type",0);
-				inv_content = data.getIntExtra("inv_content",0);
+				inv_type = data.getStringExtra("inv_type");
+				inv_content = data.getStringExtra("inv_content");
 				inv_payee = data.getStringExtra("inv_payee");
 				invoice_message.setText(inv_payee);
 			}
 		}
-        else if(requestCode == REQUEST_RedEnvelope) {
-            if (data != null) {
-                String bonusJSONString = data.getStringExtra("bonus");
+        else if(requestCode == 6)
+        {
+			if (data != null)
+            {
+				String bonusJSONString  = data.getStringExtra("bonus");
 
-                if (null != bonusJSONString) {
-                    try {
+                if (null != bonusJSONString)
+                {
+                    try
+                    {
                         JSONObject jsonObject = new JSONObject(bonusJSONString);
-                        selectedBONUS = new  BONUS();
-                        selectedBONUS.fromJson(jsonObject);
-                        redPaper_name.setText(selectedBONUS.type_name + "[" + selectedBONUS.bonus_money_formated + "]");
-                        bonus_text.setText("-" + selectedBONUS.bonus_money_formated);
+                        selectedBONUS = BONUS.fromJson(jsonObject);
+                        redPaper_name.setText(selectedBONUS.type_name+"["+selectedBONUS.bonus_money_formated+"]");
+                        bonus_text.setText("-"+selectedBONUS.bonus_money_formated);
                         refreshTotalPrice();
-                    } catch (JSONException e) {
+                    }
+                    catch (JSONException e)
+                    {
 
                     }
                 }
 
-            }
-        }else    if (requestCode == REQUEST_UPPay) {
-            if (data == null) {
-                return;
-            }
-        /*
-         * 支付控件返回字符串:success、fail、cancel
-         *      分别代表支付成功，支付失败，支付取消
-         */
-            String str = data.getExtras().getString("pay_result");
-            if (str.equalsIgnoreCase("success")) {
-                Resources resource = getResources();
-                String exit = resource.getString(R.string.pay_success);
-                String exiten = resource.getString(R.string.continue_shopping_or_not);
-                final MyDialog mDialog = new MyDialog(C1_CheckOutActivity.this, exit, exiten);
-                mDialog.show();
-                mDialog.positive.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mDialog.dismiss();
-                        Intent it = new Intent(C1_CheckOutActivity.this, EcmobileMainActivity.class);
-                        startActivity(it);
-                        finish();
-
-                    }
-                });
-                mDialog.negative.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mDialog.dismiss();
-                        Intent intent = new Intent(C1_CheckOutActivity.this, E4_HistoryActivity.class);
-                        intent.putExtra("flag", "await_ship");
-                        startActivity(intent);
-                        finish();
-
-                    }
-                });
-            } else if (str.equalsIgnoreCase("fail") || str.equals("cancel")) {
-                ToastView toast = new ToastView(C1_CheckOutActivity.this, getResources().getString(R.string.pay_failed));
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
-                Intent intent = new Intent(C1_CheckOutActivity.this, E4_HistoryActivity.class);
-                intent.putExtra("flag", "await_pay");
-                startActivity(intent);
-                finish();
-            }
-        }else if (requestCode==REQUEST_ALIPAY){
-            if (data == null) {
-                return;
-            }
-            String str = data.getExtras().getString("pay_result");
-            if (str.equalsIgnoreCase("success")) {
-                Resources resource = getResources();
-                String exit = resource.getString(R.string.pay_success);
-                String exiten = resource.getString(R.string.continue_shopping_or_not);
-                final MyDialog mDialog = new MyDialog(C1_CheckOutActivity.this, exit, exiten);
-                mDialog.show();
-                mDialog.positive.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mDialog.dismiss();
-                        Intent it = new Intent(C1_CheckOutActivity.this, EcmobileMainActivity.class);
-                        startActivity(it);
-                        finish();
-
-                    }
-                });
-                mDialog.negative.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mDialog.dismiss();
-                        Intent intent = new Intent(C1_CheckOutActivity.this, E4_HistoryActivity.class);
-                        intent.putExtra("flag", "await_ship");
-                        startActivity(intent);
-                        finish();
-
-                    }
-                });
-            } else if (str.equalsIgnoreCase("fail")) {
-                ToastView toast = new ToastView(C1_CheckOutActivity.this, getResources().getString(R.string.pay_failed));
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
-                Intent intent = new Intent(C1_CheckOutActivity.this, E4_HistoryActivity.class);
-                intent.putExtra("flag", "await_pay");
-                startActivity(intent);
-                finish();
-            }
-        }else if (requestCode==REQUEST_Pay_Web){
-            if (data == null) {
-                return;
-            }
-            String str = data.getExtras().getString("pay_result");
-            if (str.equalsIgnoreCase("success")) {
-                Resources resource = getResources();
-                String exit = resource.getString(R.string.pay_success);
-                String exiten = resource.getString(R.string.continue_shopping_or_not);
-                final MyDialog mDialog = new MyDialog(C1_CheckOutActivity.this, exit, exiten);
-                mDialog.show();
-                mDialog.positive.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mDialog.dismiss();
-                        Intent it = new Intent(C1_CheckOutActivity.this, EcmobileMainActivity.class);
-                        startActivity(it);
-                        finish();
-
-                    }
-                });
-                mDialog.negative.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mDialog.dismiss();
-                        Intent intent = new Intent(C1_CheckOutActivity.this, E4_HistoryActivity.class);
-                        intent.putExtra("flag", "await_ship");
-                        startActivity(intent);
-                        finish();
-
-                    }
-                });
-            } else if (str.equalsIgnoreCase("fail")) {
-                ToastView toast = new ToastView(C1_CheckOutActivity.this, getResources().getString(R.string.pay_failed));
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
-                Intent intent = new Intent(C1_CheckOutActivity.this, E4_HistoryActivity.class);
-                intent.putExtra("flag", "await_pay");
-                startActivity(intent);
-                finish();
-            }
-            else
-            {
-
-                Resources resource = getResources();
-                String exit = resource.getString(R.string.pay_finished);
-                String exiten = resource.getString(R.string.is_pay_success);
-                final MyDialog mDialog = new MyDialog(C1_CheckOutActivity.this, exit, exiten);
-                mDialog.show();
-                mDialog.positive.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mDialog.dismiss();
-                        Intent it = new Intent(C1_CheckOutActivity.this, EcmobileMainActivity.class);
-                        startActivity(it);
-                        finish();
-
-                    }
-                });
-                mDialog.negative.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mDialog.dismiss();
-                        Intent intent = new Intent(C1_CheckOutActivity.this, E4_HistoryActivity.class);
-                        intent.putExtra("flag", "await_pay");
-                        startActivity(intent);
-                        finish();
-
-                    }
-                });
-
-            }
-        }
+			}
+		}
 		
 	}
 
@@ -776,7 +574,7 @@ public class C1_CheckOutActivity extends BaseActivity implements OnClickListener
     {
         float total_price_show = totalGoodsPrice;
 
-        if (null != shipping && 0 != shipping.shipping_fee)
+        if (null != shipping && null != shipping.shipping_fee)
         {
             total_price_show += Float.valueOf(shipping.shipping_fee);
         }
@@ -812,37 +610,5 @@ public class C1_CheckOutActivity extends BaseActivity implements OnClickListener
             MobclickAgent.onPageEnd("BalancePage");
             MobclickAgent.onPause(this);
         }
-    }
-    private void showAlipayDialog(){
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View view = inflater.inflate(R.layout.alipay_dialog,null);
-        final Dialog dialog = new Dialog(this, R.style.dialog);
-        dialog.setContentView(view);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
-        LinearLayout alipayLayout = (LinearLayout) view.findViewById(R.id.alipay);
-        LinearLayout alipayWapLayout = (LinearLayout) view.findViewById(R.id.alipay_wap);
-
-        alipayLayout.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                dialog.dismiss();
-                Intent intent =new Intent(C1_CheckOutActivity.this,AlixPayActivity.class);
-                intent.putExtra(AlixPayActivity.ORDER_INFO,order_info);
-                startActivityForResult(intent, REQUEST_ALIPAY);
-            }
-        });
-
-        alipayWapLayout.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                dialog.dismiss();
-                orderModel.orderPay(order_info.order_id);
-            }
-        });
     }
 }

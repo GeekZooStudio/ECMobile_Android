@@ -17,10 +17,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
-import com.insthub.BeeFramework.view.MyProgressDialog;
 import com.insthub.ecmobile.R;
 import com.insthub.ecmobile.protocol.*;
 import org.json.JSONArray;
@@ -37,9 +35,9 @@ import com.insthub.BeeFramework.view.ToastView;
 
 public class ShoppingCartModel extends BaseModel {
 
-    public ArrayList<GOODS_LIST> goods_list = new ArrayList<GOODS_LIST>();
-    public TOTAL total;
-    public int goods_num;
+	public ArrayList<GOODS_LIST> goods_list = new ArrayList<GOODS_LIST>();
+	public TOTAL total;
+	public int goods_num;
 
     // 结算（提交订单前的订单预览）
     public ADDRESS address;
@@ -49,426 +47,571 @@ public class ShoppingCartModel extends BaseModel {
 
     public String orderInfoJsonString;
 
-    private static ShoppingCartModel instance;
-    public int order_id;
-
-    public static ShoppingCartModel getInstance() {
+	private static ShoppingCartModel instance;
+    public static ShoppingCartModel getInstance()
+    {
         return instance;
     }
 
-    public ShoppingCartModel() {
-        super();
+    public ShoppingCartModel()
+    {
+       super();
     }
 
-    public ShoppingCartModel(Context context) {
+    public ShoppingCartModel(Context context)
+    {
         super(context);
         instance = this;
     }
+	
+	// 获取购物车列表
+	public void cartList() {
+		String url = ProtocolConst.CARTLIST;
+		
+		BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
 
-    // 获取购物车列表
-    public void cartList() {
-        cartlistRequest request = new cartlistRequest();
-        BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
+			@Override
+			public void callback(String url, JSONObject jo, AjaxStatus status) {
 
-            @Override
-            public void callback(String url, JSONObject jo, AjaxStatus status) {
+				ShoppingCartModel.this.callback(url, jo, status);
+				try {
+					STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
 
-                ShoppingCartModel.this.callback(url, jo, status);
-                try {
-                    cartlistResponse response = new cartlistResponse();
-                    response.fromJson(jo);
-                    if (null != jo) {
-                        if (response.status.succeed == 1) {
-                            CART_LIST_DATA data = response.data;
-
-                            total = data.total;
-                            ArrayList<GOODS_LIST> goods_lists = data.goods_list;
-
-                            goods_list.clear();
-                            ShoppingCartModel.this.goods_num = 0;
-                            if (null != goods_lists && goods_lists.size() > 0) {
-                                goods_list.clear();
-                                for (int i = 0; i < goods_lists.size(); i++) {
-                                    GOODS_LIST goods_list_Item = goods_lists.get(i);
-                                    goods_list.add(goods_list_Item);
-                                    ShoppingCartModel.this.goods_num += Integer.valueOf(goods_list_Item.goods_number);
-                                }
+					System.out.println("jo--"+jo);
+					if(responseStatus.succeed == 1)
+                    {
+						JSONObject dataJsonObject = jo.optJSONObject("data");
+						
+						total = TOTAL.fromJson(dataJsonObject.optJSONObject("total"));
+						JSONArray dataJsonArray = dataJsonObject.optJSONArray("goods_list");
+						
+						goods_list.clear();
+						ShoppingCartModel.this.goods_num = 0;
+						if (null != dataJsonArray && dataJsonArray.length() > 0) {
+							goods_list.clear();
+                            for (int i = 0; i < dataJsonArray.length(); i++) {
+                                JSONObject goodsJsonObject = dataJsonArray.getJSONObject(i);
+                                GOODS_LIST goods_list_Item = GOODS_LIST.fromJson(goodsJsonObject);
+                                goods_list.add(goods_list_Item);
+                                
+                                ShoppingCartModel.this.goods_num += Integer.valueOf(goods_list_Item.goods_number);
+                                
                             }
-                            ShoppingCartModel.this.OnMessageResponse(url, jo, status);
                         }
-                    }
-                } catch (JSONException e) {
+						
+						ShoppingCartModel.this.OnMessageResponse(url, jo, status);
+						
+					}
+					
+				} catch (JSONException e) {
+					 
+					e.printStackTrace();
+				}
+			}
 
-                    e.printStackTrace();
-                }
-            }
+		};
+		
+		SESSION session = SESSION.getInstance();;
+		 
+		JSONObject requestJsonObject = new JSONObject();
 
-        };
+		Map<String, String> params = new HashMap<String, String>();
+		try 
+		{
+            requestJsonObject.put("session",session.toJson());
+		} catch (JSONException e) {
+			// TODO: handle exception
+		}
 
-        request.session = SESSION.getInstance();
+        params.put("json",requestJsonObject.toString());
+		
+		cb.url(url).type(JSONObject.class).params(params);
+		ProgressDialog pd = new ProgressDialog(mContext);
+        pd.setMessage(mContext.getResources().getString(R.string.hold_on));
+		aq.progress(pd).ajax(cb);
+		
+	}
+	
+	// 在首页获取购物车列表，存成单件
+	public void homeCartList() {
+		String url = ProtocolConst.CARTLIST;
+		
+		BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
 
-        Map<String, String> params = new HashMap<String, String>();
-        try {
-            params.put("json", request.toJson().toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        cb.url(ApiInterface.CART_LIST).type(JSONObject.class).params(params);
-        MyProgressDialog pd = new MyProgressDialog(mContext,mContext.getResources().getString(R.string.hold_on));
-        aq.progress(pd.mDialog).ajax(cb);
+			@Override
+			public void callback(String url, JSONObject jo, AjaxStatus status) {
+				
+				try {
+					STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
 
-    }
-
-    // 在首页获取购物车列表，存成单件
-    public void homeCartList() {
-        cartlistRequest request = new cartlistRequest();
-
-        BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
-
-            @Override
-            public void callback(String url, JSONObject jo, AjaxStatus status) {
-
-                try {
-                    cartlistResponse response = new cartlistResponse();
-                    response.fromJson(jo);
-                    if (null != jo) {
-                        if (response.status.succeed == 1) {
-                            CART_LIST_DATA data = response.data;
-
-                            total = data.total;
-                            ArrayList<GOODS_LIST> goods_lists = data.goods_list;
-
-                            goods_list.clear();
-                            ShoppingCartModel.this.goods_num = 0;
-                            if (null != goods_lists && goods_lists.size() > 0) {
-                                goods_list.clear();
-                                for (int i = 0; i < goods_lists.size(); i++) {
-                                    GOODS_LIST goods_list_Item = goods_lists.get(i);
-                                    goods_list.add(goods_list_Item);
-                                    ShoppingCartModel.this.goods_num += Integer.valueOf(goods_list_Item.goods_number);
-                                }
+					if(responseStatus.succeed == 1)
+                    {
+						JSONObject dataJsonObject = jo.optJSONObject("data");
+						
+						total = TOTAL.fromJson(dataJsonObject.optJSONObject("total"));
+						JSONArray dataJsonArray = dataJsonObject.optJSONArray("goods_list");
+						
+						goods_list.clear();
+						ShoppingCartModel.this.goods_num = 0;
+						if (null != dataJsonArray && dataJsonArray.length() > 0) {
+							goods_list.clear();
+                            for (int i = 0; i < dataJsonArray.length(); i++) {
+                                JSONObject goodsJsonObject = dataJsonArray.getJSONObject(i);
+                                GOODS_LIST goods_list_Item = GOODS_LIST.fromJson(goodsJsonObject);
+                                goods_list.add(goods_list_Item);
+                                
+                                ShoppingCartModel.this.goods_num += Integer.valueOf(goods_list_Item.goods_number);
+                                
                             }
-                            ShoppingCartModel.this.OnMessageResponse(url, jo, status);
                         }
-                    }
-                } catch (JSONException e) {
+					}
+					ShoppingCartModel.this.OnMessageResponse(url, jo, status);
+					
+				} catch (JSONException e) {
+					 
+					e.printStackTrace();
+				}
+			}
 
-                    e.printStackTrace();
-                }
-            }
+		};
+		
+		SESSION session = SESSION.getInstance();;
+		 
+		JSONObject requestJsonObject = new JSONObject();
 
-        };
+		Map<String, String> params = new HashMap<String, String>();
+		try 
+		{
+            requestJsonObject.put("session",session.toJson());
+		} catch (JSONException e) {
+			// TODO: handle exception
+		}
 
-        request.session = SESSION.getInstance();
+        params.put("json",requestJsonObject.toString());
+		
+		cb.url(url).type(JSONObject.class).params(params);
+		aq.ajax(cb);
+		
+	}
+	
+	
+	public void deleteGoods(int rec_id) {
+		String url = ProtocolConst.CARTDELETE;
+		
+		BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
 
-        Map<String, String> params = new HashMap<String, String>();
-        try {
-            params.put("json", request.toJson().toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+			@Override
+			public void callback(String url, JSONObject jo, AjaxStatus status) {
 
-        cb.url(ApiInterface.CART_LIST).type(JSONObject.class).params(params);
-        aq.ajax(cb);
+				ShoppingCartModel.this.callback(url, jo, status);
+				try {
+					STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
+					if(responseStatus.succeed == 1) {
+						
+						ShoppingCartModel.this.OnMessageResponse(url, jo, status);
+						
+					}
+					
+				} catch (JSONException e) {
+					 
+					e.printStackTrace();
+				}
+			}
 
-    }
+		};
+		
+		SESSION session = SESSION.getInstance();;
+		 
+		JSONObject requestJsonObject = new JSONObject();
 
+		Map<String, Object> params = new HashMap<String, Object>();
+		try 
+		{
+            requestJsonObject.put("session",session.toJson());
+            requestJsonObject.put("rec_id",rec_id);
+		} catch (JSONException e) {
+			// TODO: handle exception
+		}
 
-    public void deleteGoods(int rec_id) {
-        cartdeleteRequest request = new cartdeleteRequest();
-        BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
+        params.put("json",requestJsonObject.toString());
+		
+		cb.url(url).type(JSONObject.class).params(params);
+		aq.ajax(cb);
+		
+	}
+	
+	public void updateGoods(int rec_id, int new_number) {
+		String url = ProtocolConst.CARTUPDATA;
+		
+		BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
 
-            @Override
-            public void callback(String url, JSONObject jo, AjaxStatus status) {
+			@Override
+			public void callback(String url, JSONObject jo, AjaxStatus status) {
 
-                ShoppingCartModel.this.callback(url, jo, status);
-                try {
-                    cartdeleteResponse response = new cartdeleteResponse();
-                    response.fromJson(jo);
-                    if (jo != null) {
-                        if (response.status.succeed == 1) {
+				ShoppingCartModel.this.callback(url, jo, status);
+				try {
+					STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
+					if(responseStatus.succeed == 1) {
+						
+					}
+					
+					ShoppingCartModel.this.OnMessageResponse(url, jo, status);
+					
+				} catch (JSONException e) {
+					 
+					e.printStackTrace();
+				}
+			}
 
-                            ShoppingCartModel.this.OnMessageResponse(url, jo, status);
+		};
+		
+		SESSION session = SESSION.getInstance();;
+		 
+		JSONObject requestJsonObject = new JSONObject();
 
-                        }
-                    }
-                } catch (JSONException e) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		try 
+		{
+            requestJsonObject.put("session",session.toJson());
+            requestJsonObject.put("rec_id",rec_id);
+            requestJsonObject.put("new_number",new_number);
+		} catch (JSONException e) {
+			// TODO: handle exception
+		}
+		
+        params.put("json",requestJsonObject.toString());
+		
+		cb.url(url).type(JSONObject.class).params(params);
+		aq.ajax(cb);
+		
+	}
 
-                    e.printStackTrace();
-                }
-            }
+	public void checkOrder() {
+		String url = ProtocolConst.CHECKORDER;
+		
+		BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
 
-        };
-        request.session = SESSION.getInstance();
-        request.rec_id = rec_id;
-        Map<String, String> params = new HashMap<String, String>();
-        try {
-            params.put("json", request.toJson().toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        cb.url(ApiInterface.CART_DELETE).type(JSONObject.class).params(params);
-        MyProgressDialog pd = new MyProgressDialog(mContext, mContext.getResources().getString(R.string.hold_on));
-        aq.progress(pd.mDialog).ajax(cb);
+			@Override
+			public void callback(String url, JSONObject jo, AjaxStatus status) {
 
-    }
+				ShoppingCartModel.this.callback(url, jo, status);
+				try {
+					STATUS res_status = STATUS.fromJson(jo.optJSONObject("status"));
+					if(res_status.succeed == 1) {
+						
+						JSONObject dataJsonObject = jo.getJSONObject("data");
+						address = ADDRESS.fromJson(dataJsonObject.optJSONObject("consignee"));
+						JSONArray goodsArray = dataJsonObject.optJSONArray("goods_list");
 
-    public void updateGoods(int rec_id, int new_number) {
-        cartupdateRequest request = new cartupdateRequest();
-        BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
+						if (null != goodsArray && goodsArray.length() > 0) {
 
-            @Override
-            public void callback(String url, JSONObject jo, AjaxStatus status) {
-
-                ShoppingCartModel.this.callback(url, jo, status);
-                try {
-                    cartdeleteResponse response = new cartdeleteResponse();
-                    response.fromJson(jo);
-                    if (jo != null) {
-                        if (response.status.succeed == 1) {
-
-                        }
-                        ShoppingCartModel.this.OnMessageResponse(url, jo, status);
-                    }
-                } catch (JSONException e) {
-
-                    e.printStackTrace();
-                }
-            }
-
-        };
-
-        request.session = SESSION.getInstance();
-        request.rec_id = rec_id;
-        request.new_number = new_number;
-        Map<String, String> params = new HashMap<String, String>();
-        try {
-            params.put("json", request.toJson().toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        cb.url(ApiInterface.CART_UPDATE).type(JSONObject.class).params(params);
-        MyProgressDialog pd = new MyProgressDialog(mContext, mContext.getResources().getString(R.string.hold_on));
-        aq.progress(pd.mDialog).ajax(cb);
-
-    }
-
-    public void checkOrder() {
-        flowcheckOrderRequest request = new flowcheckOrderRequest();
-        BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
-
-            @Override
-            public void callback(String url, JSONObject jo, AjaxStatus status) {
-
-                ShoppingCartModel.this.callback(url, jo, status);
-                try {
-                    flowcheckOrderResponse response = new flowcheckOrderResponse();
-                    response.fromJson(jo);
-                    if (jo != null) {
-
-                        if (response.status.succeed == 1) {
-
-                            CHECK_ORDER_DATA check_order_data = response.data;
-                            address = check_order_data.consignee;
-                            ArrayList<GOODS_LIST> goods = check_order_data.goods_list;
-
-                            if (null != goods && goods.size() > 0) {
-
-                                balance_goods_list.clear();
-                                balance_goods_list.addAll(goods);
-
+							balance_goods_list.clear();
+                            for (int i = 0; i < goodsArray.length(); i++)
+                            {
+                                JSONObject goodsJsonObject = goodsArray.getJSONObject(i);
+                                GOODS_LIST goods_list_Item = GOODS_LIST.fromJson(goodsJsonObject);
+                                balance_goods_list.add(goods_list_Item);
                             }
+                        }
 
-                            orderInfoJsonString = jo.toString();
-                            ArrayList<SHIPPING> shipping_lists = check_order_data.shipping_list;
-                            if (null != shipping_lists && shipping_lists.size() > 0) {
-                                shipping_list.clear();
-                                shipping_list.addAll(shipping_lists);
+                        orderInfoJsonString = dataJsonObject.toString();
 
+                        JSONArray shippingArray = dataJsonObject.optJSONArray("shipping_list");
+                        if (null != shippingArray && shippingArray.length() > 0)
+                        {
+                            shipping_list.clear();
+                            for (int i = 0; i < shippingArray.length(); i++)
+                            {
+                                JSONObject shippingJSONObject =  shippingArray.getJSONObject(i);
+                                SHIPPING shipping = SHIPPING.fromJson(shippingJSONObject);
+                                shipping_list.add(shipping);
                             }
-
-                            ArrayList<PAYMENT> payments = check_order_data.payment_list;
-
-                            if (null != payments && payments.size() > 0) {
-                                payment_list.clear();
-                                ;
-                                payment_list.addAll(payments);
-
+                        }
+						
+						JSONArray paymentArray = dataJsonObject.optJSONArray("payment_list");
+						
+						if (null != paymentArray && paymentArray.length() > 0) {
+							payment_list.clear();
+                            for (int i = 0; i < paymentArray.length(); i++) {
+                                JSONObject paymentJsonObject = paymentArray.getJSONObject(i);
+                                PAYMENT payment_Item = PAYMENT.fromJson(paymentJsonObject);
+                                payment_list.add(payment_Item);
                             }
-
                         }
+						
+					}
+					
+					ShoppingCartModel.this.OnMessageResponse(url, jo, status);
+					
+				} catch (JSONException e) {
+					 
+					e.printStackTrace();
+				}
+			}
 
-                        ShoppingCartModel.this.OnMessageResponse(url, jo, status);
-                    }
-                } catch (JSONException e) {
+		};
+		
+		SESSION session = SESSION.getInstance();
+		 
+		JSONObject requestJsonObject = new JSONObject();
 
-                    e.printStackTrace();
-                }
+		Map<String, String> params = new HashMap<String, String>();
+		try 
+		{
+            requestJsonObject.put("session",session.toJson());
+		} catch (JSONException e) {
+			// TODO: handle exception
+		}
+
+        params.put("json",requestJsonObject.toString());
+		
+		cb.url(url).type(JSONObject.class).params(params);
+		ProgressDialog pd = new ProgressDialog(mContext);
+        pd.setMessage(mContext.getResources().getString(R.string.hold_on));
+		aq.progress(pd).ajax(cb);
+		
+	}
+	
+	// 订单生成
+	public String order_id;
+	public void flowDone(String pay_id, String shipping_id,String bonus, String score, String inv_type,String inv_payee, String inv_content) {
+		String url = ProtocolConst.FLOW_DOWN;
+		
+		BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
+
+			@Override
+			public void callback(String url, JSONObject jo, AjaxStatus status) {
+
+				ShoppingCartModel.this.callback(url, jo, status);
+				try {
+					STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
+					if(responseStatus.succeed == 1)
+                    {
+						JSONObject json = jo.getJSONObject("data");
+						order_id = json.getString("order_id");
+						ShoppingCartModel.this.OnMessageResponse(url, jo, status);
+					}
+					
+				} catch (JSONException e) {
+					 
+					e.printStackTrace();
+				}
+			}
+
+		};
+		
+		SESSION session = SESSION.getInstance();;
+		 
+		JSONObject requestJsonObject = new JSONObject();
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		try 
+		{
+            requestJsonObject.put("session",session.toJson());
+            requestJsonObject.put("pay_id",pay_id);
+            requestJsonObject.put("shipping_id",shipping_id);
+            if (null != bonus)
+            {
+                requestJsonObject.put("bonus",bonus);
             }
 
-        };
-
-        request.session = SESSION.getInstance();
-        Map<String, String> params = new HashMap<String, String>();
-        try {
-            params.put("json", request.toJson().toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        cb.url(ApiInterface.FLOW_CHECKORDER).type(JSONObject.class).params(params);
-        MyProgressDialog pd = new MyProgressDialog(mContext, mContext.getResources().getString(R.string.hold_on));
-        aq.progress(pd.mDialog).ajax(cb);
-
-    }
-
-    // 订单生成
-    public void flowDone(String pay_id, String shipping_id, String bonus, String score, String inv_type, String inv_payee, String inv_content) {
-        flowdoneRequest request = new flowdoneRequest();
-
-        BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
-
-            @Override
-            public void callback(String url, JSONObject jo, AjaxStatus status) {
-
-                ShoppingCartModel.this.callback(url, jo, status);
-                try {
-                    flowdoneResponse response = new flowdoneResponse();
-                    response.fromJson(jo);
-                    if (jo != null) {
-                        if (response.status.succeed == 1) {
-                            FLOW_DONE_DATA data = response.data;
-                            order_id = data.order_id;
-                            ShoppingCartModel.this.OnMessageResponse(url, jo, status);
-                        }
-                    }
-                } catch (JSONException e) {
-
-                    e.printStackTrace();
-                }
+            if (null != score)
+            {
+                requestJsonObject.put("integral",score);
             }
 
-        };
-
-        request.session = SESSION.getInstance();
-        request.pay_id = pay_id;
-        request.shipping_id = shipping_id;
-        request.bonus = bonus;
-        request.integral = score;
-        if(!inv_content.equals("-1")) {
-            request.inv_content = inv_content;
-        }
-        if(!inv_type.equals("-1")){
-            request.inv_type = inv_type;
-        }
-        request.inv_payee=inv_payee;
-        Map<String, String> params = new HashMap<String, String>();
-        try {
-            params.put("json", request.toJson().toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        cb.url(ApiInterface.FLOW_DONE).type(JSONObject.class).params(params);
-        MyProgressDialog pd = new MyProgressDialog(mContext, mContext.getResources().getString(R.string.hold_on));
-        aq.progress(pd.mDialog).ajax(cb);
-
-    }
-
-    public void score(String score) {
-        validateintegralRequest request = new validateintegralRequest();
-        BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
-
-            @Override
-            public void callback(String url, JSONObject jo, AjaxStatus status) {
-
-                ShoppingCartModel.this.callback(url, jo, status);
-                try {
-                    validateintegralResponse response = new validateintegralResponse();
-                    response.fromJson(jo);
-                    if (jo != null) {
-
-
-                        if (response.status.succeed == 1) {
-                            VALIDATE_INTEGRAL_DATA data = response.data;
-                            String bonus = data.bouns;
-                            String bonus_formated = data.bonus_formated;
-                            ShoppingCartModel.this.OnMessageResponse(url, jo, status);
-                        }
-                    }
-                } catch (JSONException e) {
-
-                    e.printStackTrace();
-                }
+            if (null != inv_type)
+            {
+                requestJsonObject.put("inv_type",inv_type);
             }
 
-        };
+            if (null != inv_payee)
+            {
+                requestJsonObject.put("inv_payee",inv_payee);
+            }
 
-        request.session = SESSION.getInstance();
-        request.integral = score;
+            if (null != inv_content)
+            {
+                requestJsonObject.put("inv_content",inv_content);
+            }
 
-        Map<String, String> params = new HashMap<String, String>();
-        try {
-            params.put("json", request.toJson().toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            
+		} catch (JSONException e) {
+			// TODO: handle exception
+		}
+		
+        params.put("json",requestJsonObject.toString());
+		
+		cb.url(url).type(JSONObject.class).params(params);
+		ProgressDialog pd = new ProgressDialog(mContext);
+        pd.setMessage(mContext.getResources().getString(R.string.hold_on));
+		aq.progress(pd).ajax(cb);
+		
+	}
 
-        cb.url(ApiInterface.VALIDATE_INTEGRAL).type(JSONObject.class).params(params);
-        aq.ajax(cb);
+	public void score(String score) {
+		String url = ProtocolConst.VALIDATE_INTEGRAL;
+		
+		BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
 
-    }
+			@Override
+			public void callback(String url, JSONObject jo, AjaxStatus status) {
 
-    // 验证红包
-    public void bonus(String bonus_sn) {
-        validatebonusRequest request = new validatebonusRequest();
-        BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
+				ShoppingCartModel.this.callback(url, jo, status);
+				try {
+					STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
+					if(responseStatus.succeed == 1)
+                    {
+						JSONObject data = jo.getJSONObject("data");
+						String bonus = data.getString("bonus").toString();
+						String bonus_formated = data.getString("bonus_formated").toString();
+						ShoppingCartModel.this.OnMessageResponse(url, jo, status);
+					}
+					
+				} catch (JSONException e) {
+					 
+					e.printStackTrace();
+				}
+			}
+
+		};
+		
+		SESSION session = SESSION.getInstance();;
+		 
+		JSONObject requestJsonObject = new JSONObject();
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		try 
+		{
+            requestJsonObject.put("session",session.toJson());
+            requestJsonObject.put("integral",score);
+		} catch (JSONException e) {
+			// TODO: handle exception
+		}
+		
+        params.put("json",requestJsonObject.toString());
+		
+		cb.url(url).type(JSONObject.class).params(params);
+		aq.ajax(cb);
+		
+	}
+	
+	// 验证红包
+	public void bonus(String bonus_sn) {
+		String url = ProtocolConst.VALIDATE_BONUS;
+		
+		BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
+
+			@Override
+			public void callback(String url, JSONObject jo, AjaxStatus status) {
+
+				//ShoppingCartModel.this.callback(url, jo, status);
+				try {
+					STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
+					if(responseStatus.succeed == 1) {
+						JSONObject data = jo.getJSONObject("data");
+						String bonus = data.getString("bonus").toString();
+						String bonus_formated = data.getString("bonus_formated").toString();
+						ShoppingCartModel.this.OnMessageResponse(url, jo, status);
+						
+					}
+					
+					if(responseStatus.error_code == 101) {
+						//Toast toast = Toast.makeText(mContext, "红包输入错误", 0);
+						ToastView toast = new ToastView(mContext, "红包输入错误");
+				        toast.setGravity(Gravity.CENTER, 0, 0);
+				        toast.show();
+					}
+					
+				} catch (JSONException e) {
+					 
+					e.printStackTrace();
+				}
+			}
+
+		};
+		
+		SESSION session = SESSION.getInstance();;
+		 
+		JSONObject requestJsonObject = new JSONObject();
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		try 
+		{
+            requestJsonObject.put("session",session.toJson());
+            requestJsonObject.put("bonus_sn",bonus_sn);
+		} catch (JSONException e) {
+			// TODO: handle exception
+		}
+		
+        params.put("json",requestJsonObject.toString());
+		
+		cb.url(url).type(JSONObject.class).params(params);
+		aq.ajax(cb);
+		
+	}
+
+    public void getRedPackets()
+    {
+        String url = ProtocolConst.VALIDATE_BONUS;
+
+        BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>()
+        {
 
             @Override
-            public void callback(String url, JSONObject jo, AjaxStatus status) {
+            public void callback(String url, JSONObject jo, AjaxStatus status)
+            {
 
                 //ShoppingCartModel.this.callback(url, jo, status);
-                try {
-                    validatebonusResponse response = new validatebonusResponse();
-                    response.fromJson(jo);
-                    if (jo != null) {
+                try
+                {
+                    STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
+                    if(responseStatus.succeed == 1)
+                    {
+                        JSONObject data = jo.getJSONObject("data");
+                        String bonus = data.getString("bonus").toString();
+                        String bonus_formated = data.getString("bonus_formated").toString();
+                        ShoppingCartModel.this.OnMessageResponse(url, jo, status);
 
-                        if (response.status.succeed == 1) {
-                            VALIDATE_BONUS_DATA data = response.data;
-                            String bonus = data.bouns;
-                            String bonus_formated = data.bonus_formated;
-                            ShoppingCartModel.this.OnMessageResponse(url, jo, status);
-
-                        }
-
-                        if (response.status.error_code == 101) {
-                            //Toast toast = Toast.makeText(mContext, "红包输入错误", 0);
-                            ToastView toast = new ToastView(mContext, "红包输入错误");
-                            toast.setGravity(Gravity.CENTER, 0, 0);
-                            toast.show();
-                        }
                     }
-                } catch (JSONException e) {
 
+                    if(responseStatus.error_code == 101)
+                    {
+                        ToastView toast = new ToastView(mContext, "红包输入错误");
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                    }
+
+                }
+                catch (JSONException e)
+                {
+                     
                     e.printStackTrace();
                 }
             }
 
         };
 
-        request.session = SESSION.getInstance();
-        request.bonus_sn = bonus_sn;
+        SESSION session = SESSION.getInstance();
 
-        Map<String, String> params = new HashMap<String, String>();
-        try {
-            params.put("json", request.toJson().toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
+        JSONObject requestJsonObject = new JSONObject();
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        try
+        {
+            requestJsonObject.put("session",session.toJson());
+        }
+        catch (JSONException e)
+        {
+            // TODO: handle exception
         }
 
-        cb.url(ApiInterface.VALIDATE_BONUS).type(JSONObject.class).params(params);
-        aq.ajax(cb);
+        params.put("json",requestJsonObject.toString());
 
+        cb.url(url).type(JSONObject.class).params(params);
+        aq.ajax(cb);
     }
+	
+	
 
 }

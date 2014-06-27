@@ -56,7 +56,7 @@ public class Rsa {
 		try {
 			PKCS8EncodedKeySpec priPKCS8 = new PKCS8EncodedKeySpec(
 					Base64.decode(privateKey));
-			KeyFactory keyf = KeyFactory.getInstance("RSA","BC");
+			KeyFactory keyf = KeyFactory.getInstance("RSA");
 			PrivateKey priKey = keyf.generatePrivate(priPKCS8);
 
 			java.security.Signature signature = java.security.Signature

@@ -16,12 +16,14 @@ package com.insthub.ecmobile.activity;
 import java.util.ArrayList;
 
 import com.insthub.BeeFramework.activity.BaseActivity;
-import com.insthub.ecmobile.protocol.flowcheckOrderResponse;
+import com.umeng.analytics.MobclickAgent;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -43,17 +45,17 @@ public class C4_InvoiceActivity extends BaseActivity implements OnClickListener 
 	
 	private EditText taitou;
 	
-	private ListView listView_invoice_content;
-	private ListView listView_invoice_type;
+	private ListView listView1;
+	private ListView listView2;
 	
-	private ArrayList<INV_LIST> list_content = new ArrayList<INV_LIST>();
-	private ArrayList<INV_LIST> list_type = new ArrayList<INV_LIST>();
+	private ArrayList<INV_LIST> list1 = new ArrayList<INV_LIST>();
+	private ArrayList<INV_LIST> list2 = new ArrayList<INV_LIST>();
 	
-	private C4_InvoiceAdapter invoiceContentAdapter;
-	private C4_InvoiceAdapter invoiceTypeAdapter;
+	private C4_InvoiceAdapter invoiceAdapter1;
+	private C4_InvoiceAdapter invoiceAdapter2;
 	
-	private int type_id =-1;
-	private int content_id =-1;
+	private String type_id = null;
+	private String content_id = null;
 
 	private String inv_payee = null; //发票抬头
 	
@@ -62,40 +64,48 @@ public class C4_InvoiceActivity extends BaseActivity implements OnClickListener 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.c4_invoice);
 		
-        listView_invoice_content = (ListView) findViewById(R.id.invoice_list_content);
-        listView_invoice_type = (ListView) findViewById(R.id.invoice_list_type);
+        listView1 = (ListView) findViewById(R.id.invoice_list1);
+        listView2 = (ListView) findViewById(R.id.invoice_list2);
 
 		Intent intent = getIntent();
 		String s = intent.getStringExtra("payment");
-		type_id = intent.getIntExtra("inv_type",-1);
-		content_id = intent.getIntExtra("inv_content", -1);
+		type_id = intent.getStringExtra("inv_type");
+		content_id = intent.getStringExtra("inv_content");
 		inv_payee = intent.getStringExtra("inv_payee");
 		
 		try{
-            flowcheckOrderResponse response = new flowcheckOrderResponse();
-            response.fromJson(new JSONObject(s));
-		    ArrayList<INV_LIST> inv_lists = response.data.inv_content_list;
+			JSONObject jo = new JSONObject(s);
+			JSONArray contentArray = jo.optJSONArray("inv_content_list");
 
-			if (null != inv_lists && inv_lists.size() > 0)
+			if (null != contentArray && contentArray.length() > 0)
             {
-			   list_content.clear();
-			   list_content.addAll(inv_lists);
-
+				list1.clear();
+				for (int i = 0; i < contentArray.length(); i++)
+                {
+					JSONObject contentJsonObject = contentArray.getJSONObject(i);
+					INV_LIST content_Item = INV_LIST.fromJson(contentJsonObject);
+					list1.add(content_Item);
+				}
         	}
             else
             {
-                listView_invoice_content.setVisibility(View.GONE);
+                listView1.setVisibility(View.GONE);
             }
-
-            ArrayList<INV_LIST> type_lists = response.data.inv_type_list;
-			if (null != type_lists && type_lists.size()> 0)
+			
+			JSONArray typetArray = jo.optJSONArray("inv_type_list");
+			if (null != typetArray && typetArray.length() > 0)
             {
-				list_type.addAll(type_lists);
-
+				list2.clear();
+				for (int i = 0; i < typetArray.length(); i++)
+                {
+					JSONObject typeJsonObject = typetArray.getJSONObject(i);
+					INV_LIST type_Item = INV_LIST.fromJson(typeJsonObject);
+					list2.add(type_Item);
+				}
         	}
             else
             {
-                listView_invoice_type.setVisibility(View.GONE);
+                listView2.setVisibility(View.GONE);
             }
 		
 		} catch (JSONException e) {			
@@ -116,34 +126,35 @@ public class C4_InvoiceActivity extends BaseActivity implements OnClickListener 
 		
 		taitou.setText(inv_payee);
 		
-		invoiceContentAdapter = new C4_InvoiceAdapter(this, list_content, type_id);
-		listView_invoice_content.setAdapter(invoiceContentAdapter);
+		invoiceAdapter1 = new C4_InvoiceAdapter(this, list1, type_id);
+		listView1.setAdapter(invoiceAdapter1);
 		
-		invoiceTypeAdapter = new C4_InvoiceAdapter(this, list_type, content_id);
-		listView_invoice_type.setAdapter(invoiceTypeAdapter);
+		invoiceAdapter2 = new C4_InvoiceAdapter(this, list2, content_id);
+		listView2.setAdapter(invoiceAdapter2);
 		
-		listView_invoice_content.setOnItemClickListener(new OnItemClickListener() {
+		listView1.setOnItemClickListener(new OnItemClickListener() {
 
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                invoiceContentAdapter.flag = position;
-                invoiceContentAdapter.notifyDataSetChanged();
-                type_id = list_content.get(position).id;
-
-            }
-        });
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {								
+				invoiceAdapter1.flag = position;
+				invoiceAdapter1.notifyDataSetChanged();
+				
+				type_id = list1.get(position).id;
+				
+			}
+		});
 		
-		listView_invoice_type.setOnItemClickListener(new OnItemClickListener() {
+		listView2.setOnItemClickListener(new OnItemClickListener() {
 
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                invoiceTypeAdapter.flag = position;
-                invoiceTypeAdapter.notifyDataSetChanged();
-                content_id = list_type.get(position).id;
-            }
-        });
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {				
+				invoiceAdapter2.flag = position;
+				invoiceAdapter2.notifyDataSetChanged();
+				content_id = list2.get(position).id;
+			}
+		});
 		
 	}
 

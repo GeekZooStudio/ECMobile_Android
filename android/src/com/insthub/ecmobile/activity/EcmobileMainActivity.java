@@ -16,10 +16,6 @@ package com.insthub.ecmobile.activity;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
-import android.annotation.TargetApi;
-import android.app.FragmentManager;
-import android.os.Build;
-import com.insthub.ecmobile.fragment.D0_CategoryFragment;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,7 +38,7 @@ import com.insthub.ecmobile.R;
 import com.insthub.ecmobile.protocol.FILTER;
 import com.umeng.analytics.MobclickAgent;
 
-public class EcmobileMainActivity extends FragmentActivity
+public class EcmobileMainActivity extends FragmentActivity 
 {
 
     public static final String RESPONSE_METHOD = "method";
@@ -153,12 +149,10 @@ public class EcmobileMainActivity extends FragmentActivity
     @Override
     protected void onStart() {
         super.onStart();
-        
-         {
-        	API_KEY = EcmobileManager.getPushKey(this);
-            PushManager.activityStarted(this);
-            PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY, API_KEY);
-        }
+
+        API_KEY = EcmobileManager.getPushKey(this);
+        PushManager.activityStarted(this);
+        PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY, API_KEY);
     }
 
     @Override
@@ -172,7 +166,6 @@ public class EcmobileMainActivity extends FragmentActivity
 
     private boolean isExit = false;
     //退出操作
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {        
         if(keyCode == KeyEvent.KEYCODE_BACK){
@@ -225,5 +218,5 @@ public class EcmobileMainActivity extends FragmentActivity
         }
     }
 
-
+   
 }

@@ -21,7 +21,6 @@ import android.content.Context;
 import android.content.res.Resources;
 
 import com.insthub.ecmobile.EcmobileApp;
-import com.insthub.ecmobile.protocol.*;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umeng.analytics.MobclickAgent;
 import org.json.JSONException;
@@ -55,6 +54,10 @@ import com.insthub.ecmobile.model.ConfigModel;
 import com.insthub.ecmobile.model.GoodDetailDraft;
 import com.insthub.ecmobile.model.GoodDetailModel;
 import com.insthub.ecmobile.model.ProtocolConst;
+import com.insthub.ecmobile.protocol.PHOTO;
+import com.insthub.ecmobile.protocol.SPECIFICATION;
+import com.insthub.ecmobile.protocol.SPECIFICATION_VALUE;
+import com.insthub.ecmobile.protocol.STATUS;
 
 public class B3_ProductPhotoActivity extends BaseActivity implements BusinessResponse {
 
@@ -71,7 +74,7 @@ public class B3_ProductPhotoActivity extends BaseActivity implements BusinessRes
 
     private ImageView fullscreenShoppingCart;
     
-
+    private Dialog dialog;
     
     private SharedPreferences shared;
 	private SharedPreferences.Editor editor;
@@ -93,6 +96,7 @@ public class B3_ProductPhotoActivity extends BaseActivity implements BusinessRes
         backImageView.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v) {
+                //
                 finish();
                 overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
             }
@@ -190,7 +194,7 @@ public class B3_ProductPhotoActivity extends BaseActivity implements BusinessRes
             specIdList.add(Integer.valueOf(specification_value.id));
         }
 
-        dataModel.cartCreate(Integer.parseInt(dataModel.goodId),specIdList,GoodDetailDraft.getInstance().goodQuantity);
+        dataModel.cartCreate(dataModel.goodId,specIdList,GoodDetailDraft.getInstance().goodQuantity);
     }
 
 
@@ -234,9 +238,8 @@ public class B3_ProductPhotoActivity extends BaseActivity implements BusinessRes
 
     public void OnMessageResponse(String url, JSONObject jo, AjaxStatus status) throws JSONException
     {
-        if (url.endsWith(ApiInterface.CART_DELETE))
-        {   STATUS responseStatus =new STATUS();
-            responseStatus.fromJson(jo.optJSONObject("status"));
+        if (url.endsWith(ProtocolConst.CARTCREATE))
+        {   STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
             if (responseStatus.succeed == 1)
             {
                 ToastView toast = new ToastView(B3_ProductPhotoActivity.this,  R.string.add_to_cart_success);

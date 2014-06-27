@@ -37,45 +37,43 @@ public class GOODORDER  extends Model
 
     public ORDER_INFO order_info;
 
- public void fromJson(JSONObject jsonObject)  throws JSONException
+ public static GOODORDER fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return ;
+       return null;
       }
 
+     GOODORDER   localItem = new GOODORDER();
 
      JSONArray subItemArray;
 
-     this.order_time = jsonObject.optString("order_time");
+     localItem.order_time = jsonObject.optString("order_time");
 
-     this.total_fee = jsonObject.optString("total_fee");
+     localItem.total_fee = jsonObject.optString("total_fee");
 
      subItemArray = jsonObject.optJSONArray("goods_list");
      if(null != subItemArray)
       {
          for(int i = 0;i < subItemArray.length();i++)
           {
-              JSONObject subItemObject = subItemArray.getJSONObject(i);
-              ORDER_GOODS_LIST subItem = new ORDER_GOODS_LIST();
-              subItem.fromJson(subItemObject);
-              this.goods_list.add(subItem);
+             JSONObject subItemObject = subItemArray.getJSONObject(i);
+             ORDER_GOODS_LIST subItem = ORDER_GOODS_LIST.fromJson(subItemObject);
+             localItem.goods_list.add(subItem);
          }
      }
 
 
-     this.formated_integral_money = jsonObject.optString("formated_integral_money");
+     localItem.formated_integral_money = jsonObject.optString("formated_integral_money");
 
-     this.formated_bonus = jsonObject.optString("formated_bonus");
+     localItem.formated_bonus = jsonObject.optString("formated_bonus");
 
-     this.order_sn = jsonObject.optString("order_sn");
+     localItem.order_sn = jsonObject.optString("order_sn");
 
-     this.order_id = jsonObject.optString("order_id");
+     localItem.order_id = jsonObject.optString("order_id");
 
-     this.formated_shipping_fee = jsonObject.optString("formated_shipping_fee");
-     ORDER_INFO orderInfo=new ORDER_INFO();
-     orderInfo.fromJson(jsonObject.optJSONObject("order_info"));
-     this.order_info=orderInfo;
-     return ;
+     localItem.formated_shipping_fee = jsonObject.optString("formated_shipping_fee");
+     localItem.order_info = ORDER_INFO.fromJson(jsonObject.optJSONObject("order_info"));
+     return localItem;
  }
 
  public JSONObject  toJson() throws JSONException 
@@ -97,10 +95,7 @@ public class GOODORDER  extends Model
      localItemObject.put("order_sn", order_sn);
      localItemObject.put("order_id", order_id);
      localItemObject.put("formated_shipping_fee", formated_shipping_fee);
-     if(null != order_info)
-     {
-         localItemObject.put("order_info", order_info.toJson());
-     }
+     localItemObject.put("order_info",order_info.toJson());
      return localItemObject;
  }
 

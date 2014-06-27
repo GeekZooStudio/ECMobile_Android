@@ -48,7 +48,7 @@
                     android:layout_height="20dp"
                     android:layout_marginLeft="6.5dp"
                     android:layout_marginTop="15dp"
-                    android:background="#cce63019"
+                    android:background="@drawable/item_price_red_bg"
                     android:gravity="center"
                     android:textColor="#ffffff"
                     android:textSize="10sp" />

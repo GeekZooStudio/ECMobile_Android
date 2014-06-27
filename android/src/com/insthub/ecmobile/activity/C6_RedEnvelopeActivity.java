@@ -18,7 +18,6 @@ import android.widget.AdapterView;
 import com.external.maxwin.view.XListView;
 import com.insthub.BeeFramework.activity.BaseActivity;
 import com.insthub.ecmobile.adapter.C6_RedEnvelopeAdapter;
-import com.insthub.ecmobile.protocol.ApiInterface;
 import com.insthub.ecmobile.protocol.BONUS;
 import com.umeng.analytics.MobclickAgent;
 import org.json.JSONArray;
@@ -151,8 +150,7 @@ public class C6_RedEnvelopeActivity extends BaseActivity implements BusinessResp
                     for (int i = 0; i < dataJsonArray.length(); i++)
                     {
                         JSONObject bonusJsonObject = dataJsonArray.getJSONObject(i);
-                        BONUS bonus_list_Item =new  BONUS();
-                        bonus_list_Item.fromJson(bonusJsonObject);
+                        BONUS bonus_list_Item = BONUS.fromJson(bonusJsonObject);
                         dataList.add(bonus_list_Item);
                     }
                 }
@@ -172,7 +170,7 @@ public class C6_RedEnvelopeActivity extends BaseActivity implements BusinessResp
 	@Override
 	public void OnMessageResponse(String url, JSONObject jo, AjaxStatus status)
 			throws JSONException {		
-		if(url.endsWith(ApiInterface.VALIDATE_BONUS))
+		if(url.endsWith(ProtocolConst.VALIDATE_BONUS))
         {
 
 		}

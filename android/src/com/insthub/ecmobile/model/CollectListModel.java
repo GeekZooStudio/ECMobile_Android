@@ -18,9 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.insthub.BeeFramework.view.MyProgressDialog;
 import com.insthub.ecmobile.R;
-import com.insthub.ecmobile.protocol.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,6 +29,11 @@ import android.content.Context;
 import com.external.androidquery.callback.AjaxStatus;
 import com.insthub.BeeFramework.model.BaseModel;
 import com.insthub.BeeFramework.model.BeeCallback;
+import com.insthub.ecmobile.protocol.COLLECT_LIST;
+import com.insthub.ecmobile.protocol.PAGINATED;
+import com.insthub.ecmobile.protocol.PAGINATION;
+import com.insthub.ecmobile.protocol.SESSION;
+import com.insthub.ecmobile.protocol.STATUS;
 
 public class CollectListModel extends BaseModel {
 
@@ -43,63 +46,8 @@ public class CollectListModel extends BaseModel {
 	}
 	
 	public void getCollectList() {
-        usercollectlistRequest request = new usercollectlistRequest();
-        BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
+		String url = ProtocolConst.COLLECT_LIST;
 
-            @Override
-            public void callback(String url, JSONObject jo, AjaxStatus status) {
-
-                CollectListModel.this.callback(url, jo, status);
-
-                try {
-                    usercollectlistResponse response = new usercollectlistResponse();
-                    response.fromJson(jo);
-                    if (jo != null) {
-                        if (response.status.succeed == 1) {
-                            ArrayList<COLLECT_LIST> data = response.data;
-                            collectList.clear();
-                            if (null != data && data.size() > 0) {
-                                collectList.clear();
-                                collectList.addAll(data);
-
-                            }
-                            paginated = response.paginated;
-                            CollectListModel.this.OnMessageResponse(url, jo, status);
-                        }
-                    }
-
-                } catch (JSONException e) {
-
-                    e.printStackTrace();
-                }
-
-            }
-
-        };
-
-        SESSION session = SESSION.getInstance();
-        PAGINATION pagination = new PAGINATION();
-        pagination.page = 1;
-        pagination.count = 10;
-
-        request.session = session;
-        request.pagination = pagination;
-        request.rec_id = 0;
-
-        Map<String, String> params = new HashMap<String, String>();
-        try {
-            params.put("json", request.toJson().toString());
-        } catch (JSONException e) {
-            // TODO: handle exception
-        }
-        cb.url(ApiInterface.USER_COLLECT_LIST).type(JSONObject.class).params(params);
-        MyProgressDialog pd = new MyProgressDialog(mContext, mContext.getResources().getString(R.string.hold_on));
-        aq.progress(pd.mDialog).ajax(cb);
-    }
-	
-	
-	public void getCollectListMore() {
-        usercollectlistRequest request = new usercollectlistRequest();
 		BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
 
 			@Override
@@ -108,15 +56,20 @@ public class CollectListModel extends BaseModel {
 				CollectListModel.this.callback(url, jo, status);
 				
 				try {
-                    usercollectlistResponse response = new usercollectlistResponse();
-                    response.fromJson(jo);
-					if(response.status.succeed == 1) {
-                        ArrayList<COLLECT_LIST> data = response.data;
-                        if (null != data && data.size() > 0) {
-                                collectList.addAll(data);
-
+					STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
+					
+					if(responseStatus.succeed == 1) {
+						JSONArray dataJsonArray = jo.optJSONArray("data");
+						collectList.clear();
+                        if (null != dataJsonArray && dataJsonArray.length() > 0) {
+                        	collectList.clear();
+                            for (int i = 0; i < dataJsonArray.length(); i++) {
+                                JSONObject collectJsonObject = dataJsonArray.getJSONObject(i);
+                                COLLECT_LIST collectItem = COLLECT_LIST.fromJson(collectJsonObject);
+                                collectList.add(collectItem);
+                            }
                         }
-                        paginated = response.paginated;
+                        paginated = PAGINATED.fromJson(jo.optJSONObject("paginated"));
                         CollectListModel.this.OnMessageResponse(url, jo, status);
 					}
 					
@@ -133,18 +86,84 @@ public class CollectListModel extends BaseModel {
 		PAGINATION pagination = new PAGINATION();
 		pagination.page = 1;
 		pagination.count = 10;
-        request.session=session;
-        request.pagination=pagination;
-        request.rec_id=Integer.parseInt(collectList.get(collectList.size()-1).rec_id);
+		 
+		JSONObject requestJsonObject = new JSONObject();
 
 		Map<String, String> params = new HashMap<String, String>();
-		try
+		try 
 		{
-            params.put("json",request.toJson().toString());
+            requestJsonObject.put("session",session.toJson());
+            requestJsonObject.put("pagination",pagination.toJson());
+            requestJsonObject.put("rec_id", 0);
 		} catch (JSONException e) {
 			// TODO: handle exception
 		}
-		cb.url(ApiInterface.USER_COLLECT_LIST).type(JSONObject.class).params(params);
+
+        params.put("json",requestJsonObject.toString());
+		
+		cb.url(url).type(JSONObject.class).params(params);
+		ProgressDialog pd = new ProgressDialog(mContext);
+        pd.setMessage(mContext.getResources().getString(R.string.hold_on));
+		aq.progress(pd).ajax(cb);
+		
+	}
+	
+	
+	public void getCollectListMore() {
+		String url = ProtocolConst.COLLECT_LIST;
+
+		BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
+
+			@Override
+			public void callback(String url, JSONObject jo, AjaxStatus status) {
+
+				CollectListModel.this.callback(url, jo, status);
+				
+				try {
+					STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
+					
+					if(responseStatus.succeed == 1) {
+						JSONArray dataJsonArray = jo.optJSONArray("data");
+                        if (null != dataJsonArray && dataJsonArray.length() > 0) {
+                            for (int i = 0; i < dataJsonArray.length(); i++) {
+                                JSONObject collectJsonObject = dataJsonArray.getJSONObject(i);
+                                COLLECT_LIST collectItem = COLLECT_LIST.fromJson(collectJsonObject);
+                                collectList.add(collectItem);
+                            }
+                        }
+                        paginated = PAGINATED.fromJson(jo.optJSONObject("paginated"));
+                        CollectListModel.this.OnMessageResponse(url, jo, status);
+					}
+					
+				} catch (JSONException e) {
+					 
+					e.printStackTrace();
+				}
+				
+			}
+
+		};
+
+		SESSION session = SESSION.getInstance();
+		PAGINATION pagination = new PAGINATION();
+		pagination.page = 1;
+		pagination.count = 10;
+		 
+		JSONObject requestJsonObject = new JSONObject();
+
+		Map<String, String> params = new HashMap<String, String>();
+		try 
+		{
+            requestJsonObject.put("session",session.toJson());
+            requestJsonObject.put("pagination",pagination.toJson());
+            requestJsonObject.put("rec_id", collectList.get(collectList.size()-1).rec_id);
+		} catch (JSONException e) {
+			// TODO: handle exception
+		}
+
+        params.put("json",requestJsonObject.toString());
+		
+		cb.url(url).type(JSONObject.class).params(params);
 		aq.ajax(cb);
 		
 	}
@@ -152,40 +171,47 @@ public class CollectListModel extends BaseModel {
 	
 	// 删除收藏商品
 	public void collectDelete(String rec_id) {
-        usercollectdeleteRequest request=new usercollectdeleteRequest();
+		String url = ProtocolConst.COLLECT_DELETE;
+
 		BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
 
 			@Override
 			public void callback(String url, JSONObject jo, AjaxStatus status) {
 
-                CollectListModel.this.callback(url, jo, status);
+				CollectListModel.this.callback(url, jo, status);
+					
+				try {
+					STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
+					if(responseStatus.succeed == 1) {
+						CollectListModel.this.OnMessageResponse(url, jo, status);
+					}
+						
+				} catch (JSONException e) {
+					 
+					e.printStackTrace();
+				}
+			}
 
-                try {
-                    usercollectdeleteResponse response = new usercollectdeleteResponse();
-                    response.fromJson(jo);
-                    if (jo != null) {
-                        if (response.status.succeed == 1) {
-                            CollectListModel.this.OnMessageResponse(url, jo, status);
-                        }
-                    }
-                } catch (JSONException e) {
+		};
 
-                    e.printStackTrace();
-                }
-            }
-        };
-        request.rec_id=rec_id;
-        request.session=SESSION.getInstance();
-        Map<String, String> params = new HashMap<String, String>();
-        try
-        {
-            params.put("json",request.toJson().toString());
-        } catch (JSONException e) {
-            // TODO: handle exception
-        }
-	    cb.url(ApiInterface.USER_COLLECT_DELETE).type(JSONObject.class).params(params);
-        MyProgressDialog pd = new MyProgressDialog(mContext, mContext.getResources().getString(R.string.hold_on));
-        aq.progress(pd.mDialog).ajax(cb);
+		SESSION session = SESSION.getInstance();
+			 
+		JSONObject requestJsonObject = new JSONObject();
+
+		Map<String, String> params = new HashMap<String, String>();
+		try 
+		{
+	        requestJsonObject.put("session",session.toJson());
+	        requestJsonObject.put("rec_id",rec_id);
+		} catch (JSONException e) {
+			// TODO: handle exception
+		}
+
+	    params.put("json",requestJsonObject.toString());
+	    cb.url(url).type(JSONObject.class).params(params);
+	    ProgressDialog pd = new ProgressDialog(mContext);
+        pd.setMessage(mContext.getResources().getString(R.string.hold_on));
+		aq.progress(pd).ajax(cb);
 			
 	}
 

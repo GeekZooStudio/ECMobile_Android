@@ -27,25 +27,26 @@ public class COMMENTS  extends Model
      @Column(name = "created")
      public String create;
 
- public void fromJson(JSONObject jsonObject)  throws JSONException
+ public static COMMENTS fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return ;
+       return null;
       }
 
+     COMMENTS   localItem = new COMMENTS();
 
      JSONArray subItemArray;
 
-     this.content = jsonObject.optString("content");
+     localItem.content = jsonObject.optString("content");
 
-     this.id = jsonObject.optString("id");
+     localItem.id = jsonObject.optString("id");
 
-     this.re_content = jsonObject.optString("re_content");
+     localItem.re_content = jsonObject.optString("re_content");
 
-     this.author = jsonObject.optString("author");
+     localItem.author = jsonObject.optString("author");
 
-     this.create = jsonObject.optString("create");
-     return ;
+     localItem.create = jsonObject.optString("create");
+     return localItem;
  }
 
  public JSONObject  toJson() throws JSONException 

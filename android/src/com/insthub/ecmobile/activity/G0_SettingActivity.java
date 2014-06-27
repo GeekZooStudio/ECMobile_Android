@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.baidu.android.pushservice.PushConstants;
 import com.baidu.android.pushservice.PushManager;
 import com.external.androidquery.callback.AjaxStatus;
+import com.insthub.BeeFramework.BeeFrameworkConst;
 import com.insthub.BeeFramework.activity.BaseActivity;
 import com.insthub.BeeFramework.activity.WebViewActivity;
 import com.insthub.BeeFramework.model.BusinessResponse;
@@ -36,24 +37,26 @@ import com.insthub.ecmobile.ECMobileAppConst;
 import com.insthub.ecmobile.EcmobileManager;
 import com.insthub.ecmobile.R;
 import com.insthub.ecmobile.model.ConfigModel;
-import com.insthub.ecmobile.protocol.ApiInterface;
+import com.insthub.ecmobile.model.ProtocolConst;
 import com.insthub.ecmobile.protocol.SESSION;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class G0_SettingActivity extends BaseActivity implements OnClickListener,BusinessResponse{
+public class G0_SettingActivity extends BaseActivity implements OnClickListener,BusinessResponse {
 	
 	private TextView title;
 	private ImageView back;
 	
-	private LinearLayout picture_auto; //智能模式
-	private LinearLayout picture_high_quality; //高质量模式
-	private LinearLayout picture_low_quality; //普通模式
+	private ImageView settingPush;
 	
-	private ImageView picture_auto_arrow;
-	private ImageView picture_high_quality_arrow;
-	private ImageView picture_low_quality_arrow;
+	private LinearLayout type1; //智能模式
+	private LinearLayout type2; //高质量模式
+	private LinearLayout type3; //普通模式
+	
+	private ImageView invoice1;
+	private ImageView invoice2;
+	private ImageView invoice3;
 	
 	private TextView mobile;
 	private LinearLayout official_web;
@@ -100,13 +103,15 @@ public class G0_SettingActivity extends BaseActivity implements OnClickListener,
 		back = (ImageView) findViewById(R.id.top_view_back);
 		back.setOnClickListener(this);
 		
-		picture_auto = (LinearLayout) findViewById(R.id.setting_picture_auto);
-		picture_high_quality = (LinearLayout) findViewById(R.id.setting_picture_high_quality);
-		picture_low_quality = (LinearLayout) findViewById(R.id.setting_picture_low_quality);
+		settingPush = (ImageView) findViewById(R.id.setting_push);
 		
-		picture_auto_arrow = (ImageView) findViewById(R.id.setting_picture_auto_arrow);
-		picture_high_quality_arrow = (ImageView) findViewById(R.id.setting_picture_high_quality_arrow);
-		picture_low_quality_arrow = (ImageView) findViewById(R.id.setting_picture_low_quality_arrow);
+		type1 = (LinearLayout) findViewById(R.id.setting_type1);
+		type2 = (LinearLayout) findViewById(R.id.setting_type2);
+		type3 = (LinearLayout) findViewById(R.id.setting_type3);
+		
+		invoice1 = (ImageView) findViewById(R.id.setting_invoice1);
+		invoice2 = (ImageView) findViewById(R.id.setting_invoice2);
+		invoice3 = (ImageView) findViewById(R.id.setting_invoice3);
 
         settingMobileLayout = (LinearLayout)findViewById(R.id.setting_mobile_layout);
         settingMobileLayout.setOnClickListener(this);
@@ -127,9 +132,9 @@ public class G0_SettingActivity extends BaseActivity implements OnClickListener,
 		about = (LinearLayout) findViewById(R.id.setting_about);
 		exitLogin = (Button) findViewById(R.id.setting_exitLogin);
 		
-		picture_auto.setOnClickListener(this);
-		picture_high_quality.setOnClickListener(this);
-		picture_low_quality.setOnClickListener(this);
+		type1.setOnClickListener(this);
+		type2.setOnClickListener(this);
+		type3.setOnClickListener(this);
 		
 		official_web.setOnClickListener(this);
 		aboutApp.setOnClickListener(this);
@@ -138,17 +143,17 @@ public class G0_SettingActivity extends BaseActivity implements OnClickListener,
 		
 		String imageType = shared.getString("imageType", "mind");
 		if(imageType.equals("high")) {
-			picture_auto_arrow.setVisibility(View.GONE);
-			picture_high_quality_arrow.setVisibility(View.VISIBLE);
-			picture_low_quality_arrow.setVisibility(View.GONE);
+			invoice1.setVisibility(View.GONE);
+			invoice2.setVisibility(View.VISIBLE);
+			invoice3.setVisibility(View.GONE);
 		} else if(imageType.equals("low")) {
-			picture_auto_arrow.setVisibility(View.GONE);
-			picture_high_quality_arrow.setVisibility(View.GONE);
-			picture_low_quality_arrow.setVisibility(View.VISIBLE);
+			invoice1.setVisibility(View.GONE);
+			invoice2.setVisibility(View.GONE);
+			invoice3.setVisibility(View.VISIBLE);
 		} else {
-			picture_auto_arrow.setVisibility(View.VISIBLE);
-			picture_high_quality_arrow.setVisibility(View.GONE);
-			picture_low_quality_arrow.setVisibility(View.GONE);
+			invoice1.setVisibility(View.VISIBLE);
+			invoice2.setVisibility(View.GONE);
+			invoice3.setVisibility(View.GONE);
 		}
 		
 		String uid = shared.getString("uid", "");
@@ -157,6 +162,19 @@ public class G0_SettingActivity extends BaseActivity implements OnClickListener,
 		} else {
 			exitLogin.setVisibility(View.VISIBLE);
 		}
+
+		settingPush.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(pushSwitch) {
+                	pushSwitch = false;
+                	settingPush.setImageResource(R.drawable.off);
+                } else {
+                	pushSwitch = true;
+                	settingPush.setImageResource(R.drawable.on);
+                }
+            }
+        });
 		
 	}
 
@@ -166,24 +184,24 @@ public class G0_SettingActivity extends BaseActivity implements OnClickListener,
 		case R.id.top_view_back:
 			finish();
 			break;
-		case R.id.setting_picture_auto:
-			picture_auto_arrow.setVisibility(View.VISIBLE);
-			picture_high_quality_arrow.setVisibility(View.GONE);
-			picture_low_quality_arrow.setVisibility(View.GONE);
+		case R.id.setting_type1:
+			invoice1.setVisibility(View.VISIBLE);
+			invoice2.setVisibility(View.GONE);
+			invoice3.setVisibility(View.GONE);
 			editor.putString("imageType", "mind");
 			editor.commit();
 			break;
-		case R.id.setting_picture_high_quality:
-			picture_auto_arrow.setVisibility(View.GONE);
-			picture_high_quality_arrow.setVisibility(View.VISIBLE);
-			picture_low_quality_arrow.setVisibility(View.GONE);
+		case R.id.setting_type2:
+			invoice1.setVisibility(View.GONE);
+			invoice2.setVisibility(View.VISIBLE);
+			invoice3.setVisibility(View.GONE);
 			editor.putString("imageType", "high");
 			editor.commit();
 			break;
-		case R.id.setting_picture_low_quality:
-			picture_auto_arrow.setVisibility(View.GONE);
-			picture_high_quality_arrow.setVisibility(View.GONE);
-			picture_low_quality_arrow.setVisibility(View.VISIBLE);
+		case R.id.setting_type3:
+			invoice1.setVisibility(View.GONE);
+			invoice2.setVisibility(View.GONE);
+			invoice3.setVisibility(View.VISIBLE);
 			editor.putString("imageType", "low");
 			editor.commit();
 			break;
@@ -282,7 +300,7 @@ public class G0_SettingActivity extends BaseActivity implements OnClickListener,
 
     public void OnMessageResponse(String url, JSONObject jo, AjaxStatus status) throws JSONException
     {
-        if (url.endsWith(ApiInterface.CONFIG))
+        if (url.endsWith(ProtocolConst.CONFIG))
         {
             if (null != ConfigModel.getInstance().config &&
                     null != ConfigModel.getInstance().config.service_phone)
@@ -298,4 +316,5 @@ public class G0_SettingActivity extends BaseActivity implements OnClickListener,
         ConfigModel.getInstance().removeResponseListener(this);
         super.onDestroy();
     }
+
 }

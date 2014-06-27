@@ -19,10 +19,8 @@ import java.util.Map;
 
 import android.content.res.Resources;
 import com.insthub.BeeFramework.BeeFrameworkConst;
-import com.insthub.BeeFramework.view.MyProgressDialog;
 import com.insthub.ecmobile.ErrorCodeConst;
 import com.insthub.ecmobile.R;
-import com.insthub.ecmobile.protocol.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,65 +35,76 @@ import com.insthub.BeeFramework.model.BaseModel;
 import com.insthub.BeeFramework.model.BeeCallback;
 import com.insthub.BeeFramework.view.ToastView;
 import com.insthub.ecmobile.activity.AppOutActivity;
+import com.insthub.ecmobile.protocol.CLIENT;
+import com.insthub.ecmobile.protocol.CODEVALID;
+import com.insthub.ecmobile.protocol.SESSION;
+import com.insthub.ecmobile.protocol.STATUS;
+import com.insthub.ecmobile.protocol.USER;
 
 public class LoginModel extends BaseModel {
 
-    private SharedPreferences shared;
-    private SharedPreferences.Editor editor;
-    public STATUS responseStatus;
+	private SharedPreferences shared;
+	private SharedPreferences.Editor editor;
+	
+	public LoginModel(Context context) {
+		super(context);
+		shared = context.getSharedPreferences("userInfo", 0); 
+		editor = shared.edit();
+	}
 
-    public LoginModel(Context context) {
-        super(context);
-        shared = context.getSharedPreferences("userInfo", 0);
-        editor = shared.edit();
-    }
+	public STATUS responseStatus;
+	public void login(String name, String password) {
+		String url = ProtocolConst.SIGNIN;
 
-    public void login(String name, String password) {
-        usersigninRequest request = new usersigninRequest();
-        BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
+		BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
 
-            @Override
-            public void callback(String url, JSONObject jo, AjaxStatus status) {
+			@Override
+			public void callback(String url, JSONObject jo, AjaxStatus status) {
 
-                LoginModel.this.callback(url, jo, status);
-                try {
-                    usersigninResponse response = new usersigninResponse();
-                    response.fromJson(jo);
-                    responseStatus=response.status;
-                    if (jo != null) {
-                        if (response.status.succeed == 1) {
-                            SIGNIN_DATA data = response.data;
-                            SESSION session = data.session;
-                            SESSION.getInstance().uid=session.uid;
-                            SESSION.getInstance().sid = session.sid;
-                            USER user = data.user;
-                            user.save();
-                            editor.putString("uid", session.uid);
-                            editor.putString("sid", session.sid);
-                            editor.putString("email",user.email);
-                            editor.commit();
-                        }
-                        LoginModel.this.OnMessageResponse(url, jo, status);
+				LoginModel.this.callback(url, jo, status);
+				try {
+					
+					responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
+
+                    Resources resource = mContext.getResources();
+                    String user_not_exit = resource.getString(R.string.user_not_exist);
+                    String invalid_password = resource.getString(R.string.invalid_password);
+					
+					if(responseStatus.succeed == ErrorCodeConst.ResponseSucceed) {
+						
+						JSONObject data = jo.optJSONObject("data");
+						SESSION session = SESSION.fromJson(data.optJSONObject("session"));
+						USER user = USER.fromJson(data.optJSONObject("user"));
+						user.save();
+						
+						editor.putString("uid", session.uid);
+	                    editor.putString("sid", session.sid);
+	                    editor.commit();
+						
+					}
+                    else if (responseStatus.error_code == ErrorCodeConst.InvalidUsernameOrPassword)
+                    {
+                        ToastView toast = new ToastView(mContext, invalid_password);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
                     }
-                } catch (JSONException e) {
 
-                    e.printStackTrace();
-                }
-            }
+					LoginModel.this.OnMessageResponse(url, jo, status);
+					
+				} catch (JSONException e) {
+					 
+					e.printStackTrace();
+				}
+			}
 
-        };
-        request.name = name;
-        request.password = password;
-        Map<String, String> params = new HashMap<String, String>();
-        try {
-            params.put("json", request.toJson().toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+		};
 
-        cb.url(ApiInterface.USER_SIGNIN).type(JSONObject.class).params(params);
-        MyProgressDialog pd = new MyProgressDialog(mContext,mContext.getResources().getString(R.string.hold_on));
-        aq.progress(pd.mDialog).ajax(cb);
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("name", name);
+		params.put("password", password);
 
-    }
+		cb.url(url).type(JSONObject.class).params(params);
+		aq.ajax(cb);
+
+	}
 }

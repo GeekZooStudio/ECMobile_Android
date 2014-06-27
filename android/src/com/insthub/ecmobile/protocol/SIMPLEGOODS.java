@@ -13,7 +13,7 @@ public class SIMPLEGOODS  extends Model
 {
 
      @Column(name = "SIMPLEGOODS_id",unique = true)
-     public String id;
+     public int id;
 
      @Column(name = "shop_price")
      public String shop_price;
@@ -24,6 +24,9 @@ public class SIMPLEGOODS  extends Model
      @Column(name = "name")
      public String name;
 
+     @Column(name = "goods_id")
+     public int goods_id;
+
      @Column(name = "img")
      public PHOTO   img;
 
@@ -33,35 +36,31 @@ public class SIMPLEGOODS  extends Model
      @Column(name = "promote_price")
      public String promote_price;
 
-    @Column(name = "goods_id")
-    public String goods_id;
-
- public void  fromJson(JSONObject jsonObject)  throws JSONException
+ public static SIMPLEGOODS fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return ;
+       return null;
       }
 
+     SIMPLEGOODS   localItem = new SIMPLEGOODS();
 
      JSONArray subItemArray;
 
-     this.id = jsonObject.optString("id");
+     localItem.id = jsonObject.optInt("id");
 
-     this.shop_price = jsonObject.optString("shop_price");
+     localItem.shop_price = jsonObject.optString("shop_price");
 
-     this.market_price = jsonObject.optString("market_price");
+     localItem.market_price = jsonObject.optString("market_price");
 
-     this.name = jsonObject.optString("name");
+     localItem.name = jsonObject.optString("name");
 
+     localItem.goods_id = jsonObject.optInt("goods_id");
+     localItem.img = PHOTO.fromJson(jsonObject.optJSONObject("img"));
 
-     PHOTO  img = new PHOTO();
-     img.fromJson(jsonObject.optJSONObject("img"));
-     this.img = img;
-     this.brief = jsonObject.optString("brief");
+     localItem.brief = jsonObject.optString("brief");
 
-     this.promote_price = jsonObject.optString("promote_price");
-     this.goods_id=jsonObject.optString("goods_id");
-     return ;
+     localItem.promote_price = jsonObject.optString("promote_price");
+     return localItem;
  }
 
  public JSONObject  toJson() throws JSONException 
@@ -72,13 +71,13 @@ public class SIMPLEGOODS  extends Model
      localItemObject.put("shop_price", shop_price);
      localItemObject.put("market_price", market_price);
      localItemObject.put("name", name);
+     localItemObject.put("goods_id", goods_id);
      if(null!=img)
      {
        localItemObject.put("img", img.toJson());
      }
      localItemObject.put("brief", brief);
      localItemObject.put("promote_price", promote_price);
-     localItemObject.put("goods_id", goods_id);
      return localItemObject;
  }
 

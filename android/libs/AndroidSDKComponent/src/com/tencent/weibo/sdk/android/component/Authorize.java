@@ -72,10 +72,9 @@ public class Authorize extends Activity {
 			BackGroudSeletor.setPix(pix);
 
 			try {
-				 Bundle bundle = getIntent().getExtras();
-
-				clientId = getIntent().getStringExtra("APP_KEY");
-				redirectUri =  getIntent().getStringExtra("REDIRECT_URI");
+				// Bundle bundle = getIntent().getExtras();
+				clientId = Util.getConfig().getProperty("APP_KEY");// bundle.getString("APP_KEY");
+				redirectUri = Util.getConfig().getProperty("REDIRECT_URI");// bundle.getString("REDIRECT_URI");
 				if (clientId == null || "".equals(clientId)
 						|| redirectUri == null || "".equals(redirectUri)) {
 					Toast.makeText(Authorize.this, "请在配置文件中填写相应的信息",
@@ -91,7 +90,6 @@ public class Authorize extends Activity {
 						+ clientId
 						+ "&response_type=token&redirect_uri="
 						+ redirectUri + "&state=" + state;
-                Log.e("ss",path);
 				this.initLayout();
 			} catch (Exception e) {
 				e.printStackTrace();

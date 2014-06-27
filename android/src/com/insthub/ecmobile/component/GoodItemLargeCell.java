@@ -87,22 +87,29 @@ public class GoodItemLargeCell extends LinearLayout
 		String imageType = shared.getString("imageType", "mind");
 		
 		if(imageType.equals("high")) {
+//			item_photo.setImageWithURL(mContext,simplegoods.img.url,R.drawable.default_image);
             imageLoader.displayImage(simplegoods.img.url,item_photo, EcmobileApp.options);
 
 		} else if(imageType.equals("low")) {
+//			item_photo.setImageWithURL(mContext,simplegoods.img.thumb,R.drawable.default_image);
             imageLoader.displayImage(simplegoods.img.thumb,item_photo, EcmobileApp.options);
 		} else {
 			String netType = shared.getString("netType", "wifi");
 			if(netType.equals("wifi")) {
+//				item_photo.setImageWithURL(mContext,simplegoods.img.url,R.drawable.default_image);
                 imageLoader.displayImage(simplegoods.img.url,item_photo, EcmobileApp.options);
 
 			} else {
+//				item_photo.setImageWithURL(mContext,simplegoods.img.thumb,R.drawable.default_image);
                 imageLoader.displayImage(simplegoods.img.thumb,item_photo, EcmobileApp.options);
 			}
 		}
 
         briefTextView.setText(simplegoods.name);
 
+        //priceContent.setText(simplegoods.shop_price);
+        
+        
         if (null!= simplegoods.promote_price&& simplegoods.promote_price.length() > 0)
         {
         	priceContent.setText("促销价格："+simplegoods.promote_price);
@@ -121,7 +128,7 @@ public class GoodItemLargeCell extends LinearLayout
 			public void onClick(View v) {
 				 
 	        	Intent it = new Intent(mContext,B2_ProductDetailActivity.class);
-	        	it.putExtra("good_id", simplegoods.id);
+	        	it.putExtra("good_id", simplegoods.goods_id);
 	            mContext.startActivity(it);
 			
 			}

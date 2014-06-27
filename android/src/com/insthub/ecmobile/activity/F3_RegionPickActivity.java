@@ -2,7 +2,6 @@ package com.insthub.ecmobile.activity;
 
 import android.content.res.Resources;
 import com.insthub.BeeFramework.activity.BaseActivity;
-import com.insthub.ecmobile.protocol.ApiInterface;
 import com.umeng.analytics.MobclickAgent;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,31 +54,31 @@ public class F3_RegionPickActivity extends Activity implements BusinessResponse 
 		
 		addressModel = new AddressModel(this);
 		addressModel.addResponseListener(this);
-		addressModel.region(0);
+		addressModel.region("0", i);
 		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                // TODO Auto-generated method stub
-                if (i == 1) {
-                    country_id = addressModel.regionsList0.get(position).id;
-                    country_name = addressModel.regionsList0.get(position).name;
-                } else if (i == 2) {
-                    province_id = addressModel.regionsList0.get(position).id;
-                    province_name = addressModel.regionsList0.get(position).name;
-                } else if (i == 3) {
-                    city_id = addressModel.regionsList0.get(position).id;
-                    city_name = addressModel.regionsList0.get(position).name;
-                } else if (i == 4) {
-                    county_id = addressModel.regionsList0.get(position).id;
-                    county_name = addressModel.regionsList0.get(position).name;
-                }
-                addressModel.region(Integer.parseInt(addressModel.regionsList0.get(position).id));
-
-            }
-        });
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				// TODO Auto-generated method stub
+				if(i == 1) {
+					country_id = addressModel.regionsList0.get(position).id;
+					country_name = addressModel.regionsList0.get(position).name;
+				} else if(i == 2) {
+					province_id = addressModel.regionsList0.get(position).id;
+					province_name = addressModel.regionsList0.get(position).name;
+				} else if(i == 3) {
+					city_id = addressModel.regionsList0.get(position).id;
+					city_name = addressModel.regionsList0.get(position).name;
+				} else if(i == 4) {
+					county_id = addressModel.regionsList0.get(position).id;
+					county_name = addressModel.regionsList0.get(position).name;
+				}
+				addressModel.region(addressModel.regionsList0.get(position).id, i);
+				
+			}
+		});
 	}
     public void setCountry() {
         Resources resource = (Resources) getBaseContext().getResources();
@@ -120,7 +119,7 @@ public class F3_RegionPickActivity extends Activity implements BusinessResponse 
 	public void OnMessageResponse(String url, JSONObject jo, AjaxStatus status)
 			throws JSONException {
 		// TODO Auto-generated method stub
-		if(url.endsWith(ApiInterface.REGION)) {
+		if(url.endsWith(ProtocolConst.REGION)) {
 			//Toast.makeText(this, jo+"", 0).show();
 			
 			setCountry();

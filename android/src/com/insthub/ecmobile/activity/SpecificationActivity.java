@@ -46,11 +46,16 @@ public class SpecificationActivity extends Activity implements BusinessResponse
 {
     private ListView specificationListView;
     private SpecificationAdapter listAdapter;
+    private TextView title;
+    private ImageView back;
+
     private ImageView minusImageView;
     private ImageView addImageView;
     private Button ok;
     private EditText quantityEditText;
+
     private TextView goodTotalPriceTextView;
+
     private View addItemComponent;
     private int num;
     private boolean creat_cart;

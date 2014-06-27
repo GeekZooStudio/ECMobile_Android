@@ -14,8 +14,6 @@ package com.insthub.ecmobile.activity;
 //  Powered by BeeFramework
 //
 
-import com.insthub.ecmobile.fragment.E0_ProfileFragment;
-import com.insthub.ecmobile.protocol.ApiInterface;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -58,7 +56,7 @@ public class A0_SigninActivity extends BaseActivity implements OnClickListener, 
 	private String psd;
 	
 	private LoginModel loginModel;
-    private final static int REQUEST_SIGN_UP = 1;
+	private ProgressDialog pd = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {		
@@ -83,6 +81,7 @@ public class A0_SigninActivity extends BaseActivity implements OnClickListener, 
         Resources resource = (Resources) getBaseContext().getResources();
         String usern=resource.getString(R.string.user_name_cannot_be_empty);
         String pass=resource.getString(R.string.password_cannot_be_empty);
+        String hold=resource.getString(R.string.hold_on);
 		Intent intent;
 		switch(v.getId()) {
 		case R.id.login_back:
@@ -93,26 +92,6 @@ public class A0_SigninActivity extends BaseActivity implements OnClickListener, 
 		case R.id.login_login:
 			name = userName.getText().toString();
 			psd = password.getText().toString();
-            if(name.length()<2){
-                ToastView toast = new ToastView(this, resource.getString(R.string.username_too_short));
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
-            }
-            if(name.length()>20){
-                ToastView toast = new ToastView(this, resource.getString(R.string.username_too_long));
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
-            }
-            if(psd.length()<6){
-                ToastView toast = new ToastView(this, resource.getString(R.string.password_too_short));
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
-            }
-            if(psd.length()>20){
-                ToastView toast = new ToastView(this, resource.getString(R.string.password_too_long));
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
-            }
 			if("".equals(name)) {				
 				ToastView toast = new ToastView(this, usern);
 		        toast.setGravity(Gravity.CENTER, 0, 0);
@@ -127,11 +106,15 @@ public class A0_SigninActivity extends BaseActivity implements OnClickListener, 
 				loginModel.login(name, psd);
 				CloseKeyBoard();
 				
+				pd = new ProgressDialog(A0_SigninActivity.this);
+				pd.setMessage(hold);
+				pd.show();
+				
 			}
 			break;
 		case R.id.login_register:
 			intent = new Intent(this, A1_SignupActivity.class);
-			startActivityForResult(intent, REQUEST_SIGN_UP);
+			startActivityForResult(intent, 1);
 			break;
 		}
 		
@@ -139,9 +122,13 @@ public class A0_SigninActivity extends BaseActivity implements OnClickListener, 
 
 	@Override
 	public void OnMessageResponse(String url, JSONObject jo, AjaxStatus status)
-			throws JSONException {
+			throws JSONException {			
+		if(pd.isShowing()) {
+			pd.dismiss();
+		}
 		if(loginModel.responseStatus.succeed == 1) {
-			if(url.endsWith(ApiInterface.USER_SIGNIN)) {
+			
+			if(url.endsWith(ProtocolConst.SIGNIN)) {
 				Intent intent = new Intent();
 				intent.putExtra("login", true);
 				setResult(Activity.RESULT_OK, intent);  
@@ -157,13 +144,12 @@ public class A0_SigninActivity extends BaseActivity implements OnClickListener, 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {		
 		super.onActivityResult(requestCode, resultCode, data);
 		
-		if (requestCode == REQUEST_SIGN_UP) {
+		if (requestCode == 1) {
 			if(data!=null) {
 				Intent intent = new Intent();
 				intent.putExtra("login", true);
 				setResult(Activity.RESULT_OK, intent);  
-	            finish();
-                E0_ProfileFragment.isRefresh=true;
+	            finish(); 
 	            overridePendingTransition(R.anim.push_up_in,R.anim.push_up_out);
     		}
 		}

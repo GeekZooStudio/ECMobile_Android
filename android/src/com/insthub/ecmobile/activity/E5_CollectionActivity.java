@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import android.content.res.Resources;
 import com.insthub.BeeFramework.activity.BaseActivity;
 import com.insthub.ecmobile.EcmobileManager;
-import com.insthub.ecmobile.protocol.ApiInterface;
 import com.umeng.analytics.MobclickAgent;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,9 +52,13 @@ public class E5_CollectionActivity extends BaseActivity implements BusinessRespo
 	private Button edit;
 	private XListView xlistView;
 	private E5_CollectionAdapter collectAdapter;
+	private ArrayList<String> items = new ArrayList<String>();
 	private boolean isEdit = false;
+	
 	private CollectListModel collectListModel;
+	
 	public  Handler messageHandler;
+	
 	private int position;
 	private View null_pager;
 	
@@ -156,7 +159,7 @@ public class E5_CollectionActivity extends BaseActivity implements BusinessRespo
 	@Override
 	public void OnMessageResponse(String url, JSONObject jo, AjaxStatus status)
 			throws JSONException {		
-		if(url.endsWith(ApiInterface.USER_COLLECT_LIST)) {
+		if(url.endsWith(ProtocolConst.COLLECT_LIST)) {
 			xlistView.setRefreshTime();
 			xlistView.stopRefresh();
 			xlistView.stopLoadMore();
@@ -166,7 +169,7 @@ public class E5_CollectionActivity extends BaseActivity implements BusinessRespo
 				xlistView.setPullLoadEnable(true);
 			}
 			setCollectList();
-		} else if(url.endsWith(ApiInterface.USER_COLLECT_DELETE)) {
+		} else if(url.endsWith(ProtocolConst.COLLECT_DELETE)) {
 			collectListModel.collectList.remove(position);
 			collectAdapter.list = collectListModel.collectList;
 			collectAdapter.notifyDataSetChanged();

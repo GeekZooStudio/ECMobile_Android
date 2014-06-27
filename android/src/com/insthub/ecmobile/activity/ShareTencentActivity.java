@@ -145,8 +145,8 @@ public class ShareTencentActivity extends Activity {
 				accessToken = Util.getSharePersistent(getApplicationContext(), "ACCESS_TOKEN");
 				if(accessToken==null || "".equals(accessToken))
 		        {
-		            long appid = Long.valueOf(EcmobileManager.getTencentKey(ShareTencentActivity.this));
-		            String app_secket = EcmobileManager.getTencentSecret(ShareTencentActivity.this);;
+		            long appid = Long.valueOf(Util.getConfig().getProperty("APP_KEY"));
+		            String app_secket = Util.getConfig().getProperty("APP_KEY_SEC");
 		            tencentAuth(appid, app_secket);
 					return ;
 				}
@@ -245,21 +245,24 @@ public class ShareTencentActivity extends Activity {
 
             @Override
             public void onWeiBoNotInstalled() {
+                Toast.makeText(ShareTencentActivity.this, "onWeiBoNotInstalled", 1000)
+                        .show();
                 Intent i = new Intent(ShareTencentActivity.this, Authorize.class);
-                i.putExtra("APP_KEY", EcmobileManager.getTencentKey(ShareTencentActivity.this));
-                i.putExtra("REDIRECT_URI",EcmobileManager.getTencentCallback(ShareTencentActivity.this));
                 ShareTencentActivity.this.startActivity(i);
             }
 
             @Override
             public void onWeiboVersionMisMatch() {
+                Toast.makeText(ShareTencentActivity.this, "onWeiboVersionMisMatch",
+                        1000).show();
                 Intent i = new Intent(ShareTencentActivity.this, Authorize.class);
                 startActivity(i);
             }
 
             @Override
             public void onAuthFail(int result, String err) {
-
+                Toast.makeText(ShareTencentActivity.this, "result : " + result, 1000)
+                        .show();
             }
 
             @Override

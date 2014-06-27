@@ -58,20 +58,21 @@ public class BONUS
     @Column(name = "bonus_money_formated")
     public String bonus_money_formated;
 
-    public void fromJson(JSONObject jsonObject)  throws JSONException
+    public static BONUS fromJson(JSONObject jsonObject)  throws JSONException
     {
         if(null == jsonObject){
-            return ;
+            return null;
         }
 
+        BONUS   localItem = new BONUS();
         JSONArray subItemArray;
 
-        this.type_id = jsonObject.optInt("type_id");
-        this.type_name = jsonObject.optString("type_name");
-        this.type_money = jsonObject.optString("type_money");
-        this.bonus_id   = jsonObject.optString("bonus_id");
-        this.bonus_money_formated = jsonObject.optString("bonus_money_formated");
-        return ;
+        localItem.type_id = jsonObject.optInt("type_id");
+        localItem.type_name = jsonObject.optString("type_name");
+        localItem.type_money = jsonObject.optString("type_money");
+        localItem.bonus_id   = jsonObject.optString("bonus_id");
+        localItem.bonus_money_formated = jsonObject.optString("bonus_money_formated");
+        return localItem;
     }
 
     public JSONObject  toJson() throws JSONException

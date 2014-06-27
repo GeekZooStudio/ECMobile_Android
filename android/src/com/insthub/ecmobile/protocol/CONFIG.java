@@ -21,7 +21,7 @@ public class CONFIG  extends Model
     public String shop_desc;
 
      @Column(name = "shop_closed")
-     public String shop_closed;
+     public int shop_closed;
 
      @Column(name = "close_comment")
      public String close_comment;
@@ -32,42 +32,32 @@ public class CONFIG  extends Model
      @Column(name = "goods_url")
      public String goods_url;
 
-    @Column(name = "time_format")
-    public String time_format;
 
-    @Column(name = "currency_format")
-    public String currency_format;
-
-
- public void fromJson(JSONObject jsonObject)  throws JSONException
+ public static CONFIG fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return ;
+       return null;
       }
 
+     CONFIG   localItem = new CONFIG();
 
      JSONArray subItemArray;
 
-     this.service_phone   = jsonObject.optString("service_phone");
+     localItem.service_phone   = jsonObject.optString("service_phone");
 
-     this.site_url         = jsonObject.optString("site_url");
+     localItem.site_url         = jsonObject.optString("site_url");
 
-     this.shop_desc        = jsonObject.optString("shop_desc");
+     localItem.shop_desc        = jsonObject.optString("shop_desc");
 
-     this.shop_closed = jsonObject.optString("shop_closed");
+     localItem.shop_closed = jsonObject.optInt("shop_closed");
 
-     this.close_comment = jsonObject.optString("close_comment");
+     localItem.close_comment = jsonObject.optString("close_comment");
 
-     this.shop_reg_closed = jsonObject.optString("shop_reg_closed");
+     localItem.shop_reg_closed = jsonObject.optString("shop_reg_closed");
+     
+     localItem.goods_url = jsonObject.optString("goods_url");
 
-     this.goods_url = jsonObject.optString("goods_url");
-
-     this.time_format = jsonObject.optString("time_format");
-
-     this.currency_format = jsonObject.optString("currency_format");
-
-
-     return ;
+     return localItem;
  }
 
  public JSONObject  toJson() throws JSONException 
@@ -82,8 +72,6 @@ public class CONFIG  extends Model
      localItemObject.put("close_comment", close_comment);
      localItemObject.put("shop_reg_closed", shop_reg_closed);
      localItemObject.put("goods_url", goods_url);
-     localItemObject.put("time_format", time_format);
-     localItemObject.put("currency_format", currency_format);
      return localItemObject;
  }
 

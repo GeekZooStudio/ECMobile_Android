@@ -20,7 +20,7 @@ public class BeeQuery<T> extends AQuery {
 	
 	public static int environment() 
 	{
-		return ENVIRONMENT_PRODUCTION;
+		return ENVIROMENT_DEVELOPMENT;
 	}
 	
 	public static String serviceUrl()
@@ -35,16 +35,6 @@ public class BeeQuery<T> extends AQuery {
             return ECMobileAppConst.SERVER_DEVELOPMENT;
 		}
 	}
-    public static  String wapCallBackUrl(){
-        if (ENVIRONMENT_PRODUCTION == BeeQuery.environment())
-        {
-            return ECMobileAppConst.WAP_PAY_CALLBCK_PRODUCTION;
-        }
-        else
-        {
-            return ECMobileAppConst.WAP_PAY_CALLBCK_DEVELOPMENT;
-        }
-    }
 	public <K> AQuery ajax(AjaxCallback<K> callback){
 
 		if (BeeQuery.environment() == BeeQuery.ENVIROMENT_MOCKSERVER)

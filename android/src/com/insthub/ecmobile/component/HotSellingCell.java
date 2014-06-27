@@ -78,7 +78,7 @@ public class HotSellingCell extends LinearLayout
                 {
                     SIMPLEGOODS simplegoods = cellData.get(0);
                     Intent it = new Intent(mContext, B2_ProductDetailActivity.class);
-                    it.putExtra("good_id",simplegoods.id+"");
+                    it.putExtra("good_id",simplegoods.id);
                     mContext.startActivity(it);
                     ((EcmobileMainActivity)mContext).overridePendingTransition(R.anim.push_right_in,R.anim.push_right_out);
                 }
@@ -94,7 +94,7 @@ public class HotSellingCell extends LinearLayout
                 {
                     SIMPLEGOODS simplegoods = cellData.get(1);
                     Intent it = new Intent(mContext, B2_ProductDetailActivity.class);
-                    it.putExtra("good_id",simplegoods.id+"");
+                    it.putExtra("good_id",simplegoods.id);
                     mContext.startActivity(it);
                     ((EcmobileMainActivity)mContext).overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
                 }

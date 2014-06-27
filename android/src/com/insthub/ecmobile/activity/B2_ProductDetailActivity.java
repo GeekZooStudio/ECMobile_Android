@@ -29,7 +29,6 @@ import android.os.Handler;
 import android.os.Message;
 import com.insthub.BeeFramework.Utils.TimeUtil;
 import com.insthub.ecmobile.EcmobileManager;
-import com.insthub.ecmobile.protocol.ApiInterface;
 import com.umeng.analytics.MobclickAgent;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -104,19 +103,18 @@ public class B2_ProductDetailActivity extends BaseActivity implements BusinessRe
     private View headView;
     private XListView xlistView;
 
+    private Dialog dialog;
+    
     private SharedPreferences shared;
 	private SharedPreferences.Editor editor;
     private Timer timer;
-    private  Boolean isFresh=true;//是否选择的属性
-    private final static int REQUEST_SHOPPINGCAR = 1;
-    private final static int REQUEST_SPECIFICATION= 2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.b2_product_detail);
         
-        shared = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        shared = getSharedPreferences("userInfo", 0); 
 		editor = shared.edit();
         
         xlistView = (XListView) findViewById(R.id.good_detail_list);
@@ -131,9 +129,8 @@ public class B2_ProductDetailActivity extends BaseActivity implements BusinessRe
 
         dataModel = new GoodDetailModel(this);
         dataModel.addResponseListener(this);
-        dataModel.goodId =  getIntent().getStringExtra("good_id");
-        dataModel.fetchGoodDetail(Integer.parseInt(dataModel.goodId));
-
+        dataModel.goodId =  getIntent().getIntExtra("good_id",0);
+        
         goodDetailPhotoList = (HorizontalVariableListView)headView.findViewById(R.id.good_detail_photo_list);
         photoListAdapter = new B3_ProductPhotoAdapter(this,dataModel.goodDetail.pictures);
         goodDetailPhotoList.setAdapter(photoListAdapter);
@@ -141,6 +138,8 @@ public class B2_ProductDetailActivity extends BaseActivity implements BusinessRe
 
         goodDetailPhotoList.setOverScrollMode( HorizontalVariableListView.OVER_SCROLL_NEVER );
         goodDetailPhotoList.setEdgeGravityY( Gravity.CENTER );
+
+        dataModel.fetchGoodDetail(dataModel.goodId);
 
         final Resources resource = (Resources) getBaseContext().getResources();
 
@@ -223,7 +222,6 @@ public class B2_ProductDetailActivity extends BaseActivity implements BusinessRe
                     Intent it = new Intent(B2_ProductDetailActivity.this,SpecificationActivity.class);
                     it.putExtra("num", Integer.valueOf(dataModel.goodDetail.goods_number));
                     startActivity(it);
-                    isFresh=false;
                     overridePendingTransition(R.anim.my_scale_action,R.anim.my_alpha_action);
                     
             	} else {
@@ -251,7 +249,7 @@ public class B2_ProductDetailActivity extends BaseActivity implements BusinessRe
 			@Override
 			public void onClick(View v) {				
 				Intent intent = new Intent(B2_ProductDetailActivity.this, B6_ProductDescActivity.class);
-				intent.putExtra("id", Integer.parseInt(dataModel.goodDetail.id));
+				intent.putExtra("id", dataModel.goodDetail.id);
 				startActivity(intent);
 			}
 		});
@@ -262,7 +260,7 @@ public class B2_ProductDetailActivity extends BaseActivity implements BusinessRe
 			@Override
 			public void onClick(View v) {				
 				Intent intent = new Intent(B2_ProductDetailActivity.this, B5_ProductCommentActivity.class);
-				intent.putExtra("id", Integer.parseInt(dataModel.goodDetail.id));
+				intent.putExtra("id", dataModel.goodDetail.id);
 				startActivity(intent);
 			}
 		});
@@ -331,7 +329,7 @@ public class B2_ProductDetailActivity extends BaseActivity implements BusinessRe
                         toast.setGravity(Gravity.CENTER, 0, 0);
                         toast.show();
                     }else{
-                        dataModel.collectCreate(Integer.parseInt(dataModel.goodId));
+                        dataModel.collectCreate(dataModel.goodId);
                         collectionButton.setImageResource(R.drawable.item_info_pushed_collect_btn);
                     }
                 }
@@ -355,7 +353,7 @@ public class B2_ProductDetailActivity extends BaseActivity implements BusinessRe
         	        toast.show();
                 } else {
                 	Intent it = new Intent(B2_ProductDetailActivity.this,C0_ShoppingCartActivity.class);
-                    startActivityForResult(it, REQUEST_SHOPPINGCAR);
+                    startActivityForResult(it, 1);
                 }
                     
             }
@@ -417,8 +415,7 @@ public class B2_ProductDetailActivity extends BaseActivity implements BusinessRe
                     Intent it = new Intent(this,SpecificationActivity.class);
                     it.putExtra("num", Integer.valueOf(dataModel.goodDetail.goods_number));
                     it.putExtra("creat_cart", true);
-                    startActivityForResult(it, REQUEST_SPECIFICATION);
-                    isFresh=false;
+                    startActivityForResult(it, 2);
                     overridePendingTransition(R.anim.my_scale_action,R.anim.my_alpha_action);
             	} else {
                     Resources resource = (Resources) getBaseContext().getResources();
@@ -439,7 +436,7 @@ public class B2_ProductDetailActivity extends BaseActivity implements BusinessRe
             specIdList.add(Integer.valueOf(specification_value.id));
         }
 
-        dataModel.cartCreate(Integer.parseInt(dataModel.goodId),specIdList,GoodDetailDraft.getInstance().goodQuantity);
+        dataModel.cartCreate(dataModel.goodId,specIdList,GoodDetailDraft.getInstance().goodQuantity);
     }
 
     @Override
@@ -483,10 +480,12 @@ public class B2_ProductDetailActivity extends BaseActivity implements BusinessRe
     {
     	xlistView.stopRefresh();
         Resources resource = (Resources) getBaseContext().getResources();
-        if (url.endsWith(ApiInterface.GOODS))
+        if (url.endsWith(ProtocolConst.GOODSDETAIL))
         {
+        	//collectionButton
         	pager.setVisibility(View.GONE);
         	xlistView.setRefreshTime();
+            GoodDetailDraft.getInstance().clear();
             GoodDetailDraft.getInstance().goodDetail = dataModel.goodDetail;
             goodBriefTextView.setText(dataModel.goodDetail.goods_name );
             String brp=resource.getString(R.string.formerprice);
@@ -522,7 +521,7 @@ public class B2_ProductDetailActivity extends BaseActivity implements BusinessRe
             contentString += "<br>"+marketStr + dataModel.goodDetail.market_price+"</br>";
             
             
-            if(dataModel.goodDetail.promote_price==0){
+            if(dataModel.goodDetail.promote_price.equals("0")) {            	
             	goodPromotePriceTextView.setText( dataModel.goodDetail.shop_price+"");
             } else {
             	contentString += "<br>"+brp + dataModel.goodDetail.formated_promote_price+"</br>";
@@ -581,16 +580,15 @@ public class B2_ProductDetailActivity extends BaseActivity implements BusinessRe
             }
             
         }
-        else if (url.endsWith(ApiInterface.CART_CREATE))
-        {   STATUS responseStatus = new STATUS();
-            responseStatus.fromJson(jo.optJSONObject("status"));
+        else if (url.endsWith(ProtocolConst.CARTCREATE))
+        {   STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
         
             if (responseStatus.succeed == 1)
             {
                 if (isBuyNow)
                 {
                     Intent it = new Intent(B2_ProductDetailActivity.this, C0_ShoppingCartActivity.class);
-                    B2_ProductDetailActivity.this.startActivityForResult(it, REQUEST_SHOPPINGCAR);
+                    B2_ProductDetailActivity.this.startActivityForResult(it, 1);
                     //更新购物车数量
                     ShoppingCartModel.getInstance().goods_num += GoodDetailDraft.getInstance().goodQuantity;
                     good_detail_shopping_cart_num_bg.setVisibility(View.VISIBLE);
@@ -609,7 +607,7 @@ public class B2_ProductDetailActivity extends BaseActivity implements BusinessRe
                 }
             }
 
-        } else if(url.endsWith(ApiInterface.USER_COLLECT_CREATE)) {
+        } else if(url.endsWith(ProtocolConst.COLLECTION_CREATE)) {        	
             dataModel.goodDetail.collected=1;
         	ToastView toast = new ToastView(this, R.string.collection_success);
 	        toast.setGravity(Gravity.CENTER, 0, 0);
@@ -623,9 +621,7 @@ public class B2_ProductDetailActivity extends BaseActivity implements BusinessRe
     protected void onResume() {
         super.onResume();
         goodCategoryTextView.setText(getSpecificationDesc());
-        if(isFresh){
-            dataModel.fetchGoodDetail(Integer.parseInt(dataModel.goodId));
-        }
+        
         if(EcmobileManager.getUmengKey(this)!=null){
             MobclickAgent.onPageStart("GoodDetail");
             MobclickAgent.onResume(this, EcmobileManager.getUmengKey(this),"");
@@ -653,7 +649,7 @@ public class B2_ProductDetailActivity extends BaseActivity implements BusinessRe
             for (int k = 0; k < GoodDetailDraft.getInstance().selectedSpecification.size();k++)
             {
                 SPECIFICATION_VALUE localValue = GoodDetailDraft.getInstance().selectedSpecification.get(k);
-                 if (null != localValue.specification && 0 == specification.name.compareTo(localValue.specification.name))
+                 if (0 == specification.name.compareTo(localValue.specification.name))
                  {
                      selectedSpecificationValue += localValue.label;
                      selectedSpecificationValue +="、";
@@ -714,7 +710,7 @@ public class B2_ProductDetailActivity extends BaseActivity implements BusinessRe
 
 	@Override
 	public void onRefresh(int id) {			
-		dataModel.fetchGoodDetail(Integer.parseInt(dataModel.goodId));
+		dataModel.fetchGoodDetail(dataModel.goodId);
 	}
 
 	@Override
@@ -726,14 +722,14 @@ public class B2_ProductDetailActivity extends BaseActivity implements BusinessRe
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {		
 		super.onActivityResult(requestCode, resultCode, data);
 		
-		if(requestCode == REQUEST_SHOPPINGCAR) {
+		if(requestCode == 1) {
 			if(ShoppingCartModel.getInstance().goods_num == 0) {
 				good_detail_shopping_cart_num_bg.setVisibility(View.GONE);
             } else {
             	good_detail_shopping_cart_num_bg.setVisibility(View.VISIBLE);
             	good_detail_shopping_cart_num.setText(ShoppingCartModel.getInstance().goods_num+"");
             }
-		} else if(requestCode == REQUEST_SPECIFICATION) {
+		} else if(requestCode == 2) {
 			if (resultCode == Activity.RESULT_OK) {
 				ArrayList<Integer> specIdList = new ArrayList<Integer>();
 				for (int i = 0; i< GoodDetailDraft.getInstance().selectedSpecification.size();i++)
@@ -742,7 +738,7 @@ public class B2_ProductDetailActivity extends BaseActivity implements BusinessRe
 		            specIdList.add(Integer.valueOf(specification_value.id));
 		        }
 
-		        dataModel.cartCreate(Integer.parseInt(dataModel.goodId),specIdList,GoodDetailDraft.getInstance().goodQuantity);
+		        dataModel.cartCreate(dataModel.goodId,specIdList,GoodDetailDraft.getInstance().goodQuantity);
 			}
 		}
 	}

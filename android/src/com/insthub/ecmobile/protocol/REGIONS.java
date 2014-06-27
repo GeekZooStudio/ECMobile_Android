@@ -21,20 +21,22 @@ public class REGIONS  extends Model
      @Column(name = "parent_id")
      public String parent_id;
 
- public void  fromJson(JSONObject jsonObject)  throws JSONException
+ public static REGIONS fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return ;
+       return null;
       }
+
+     REGIONS   localItem = new REGIONS();
 
      JSONArray subItemArray;
 
-     this.id = jsonObject.optString("id");
+     localItem.id = jsonObject.optString("id");
 
-     this.name = jsonObject.optString("name");
+     localItem.name = jsonObject.optString("name");
 
-     this.parent_id = jsonObject.optString("parent_id");
-     return ;
+     localItem.parent_id = jsonObject.optString("parent_id");
+     return localItem;
  }
 
  public JSONObject  toJson() throws JSONException 

@@ -18,19 +18,20 @@ public class PROPERTY  extends Model
      @Column(name = "value")
      public String value;
 
- public void  fromJson(JSONObject jsonObject)  throws JSONException
+ public static PROPERTY fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return ;
+       return null;
       }
 
+     PROPERTY   localItem = new PROPERTY();
 
      JSONArray subItemArray;
 
-     this.name = jsonObject.optString("name");
+     localItem.name = jsonObject.optString("name");
 
-     this.value = jsonObject.optString("value");
-     return ;
+     localItem.value = jsonObject.optString("value");
+     return localItem;
  }
 
  public JSONObject  toJson() throws JSONException 

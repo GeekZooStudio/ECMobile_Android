@@ -34,14 +34,12 @@
 
             <TextView
                 android:id="@+id/shop_price"
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="20dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="1dp"
-                android:background="#cce63019"
+                android:background="@drawable/item_price_red_bg"
                 android:gravity="center"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
                 android:textColor="#ffffff"
                 android:textSize="12sp" />
 
@@ -54,7 +52,6 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:textColor="#777777"
-                android:layout_marginLeft="1dp"
                 android:textSize="12sp" />
         </LinearLayout>
     </FrameLayout>

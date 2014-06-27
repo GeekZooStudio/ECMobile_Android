@@ -13,8 +13,7 @@ package com.insthub.ecmobile.activity;
 //  Powered by BeeFramework
 //
 
-import com.insthub.BeeFramework.model.BusinessResponse;
-import com.insthub.ecmobile.protocol.ApiInterface;
+import com.umeng.analytics.MobclickAgent;
 import org.json.JSONObject;
 
 import android.os.Bundle;
@@ -30,7 +29,7 @@ import com.insthub.ecmobile.adapter.G2_InfoAdapter;
 import com.insthub.ecmobile.model.HelpModel;
 import com.insthub.ecmobile.model.ProtocolConst;
 
-public class G2_InfoActivity extends BaseActivity implements BusinessResponse
+public class G2_InfoActivity extends BaseActivity
 {
     HelpModel dataModel;
     ListView helpListView;
@@ -45,7 +44,6 @@ public class G2_InfoActivity extends BaseActivity implements BusinessResponse
 
         helpListView = (ListView)findViewById(R.id.help_listview);
         dataModel = new HelpModel(this);
-        dataModel.addResponseListener(this);
         dataModel.fetchShopHelp();
         listAdapter = new G2_InfoAdapter(this,dataModel);
         helpListView.setAdapter(listAdapter);
@@ -62,10 +60,9 @@ public class G2_InfoActivity extends BaseActivity implements BusinessResponse
         title.setText(R.string.help);
 
     }
-    @Override
     public void OnMessageResponse(String url, JSONObject jo, AjaxStatus status)
     {
-        if(url.endsWith(ApiInterface.SHOPHELP))
+        if(url.endsWith(ProtocolConst.SHOPHELP))
         {
             listAdapter.notifyDataSetChanged();
         }
