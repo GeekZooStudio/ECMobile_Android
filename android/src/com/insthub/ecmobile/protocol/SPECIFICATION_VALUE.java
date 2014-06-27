@@ -13,10 +13,10 @@ public class SPECIFICATION_VALUE  extends Model
 {
 
      @Column(name = "SPECIFICATION_VALUE_id")
-     public int id;
+     public String id;
 
      @Column(name = "price")
-     public int price;
+    public String price;
 
      @Column(name = "label")
      public String label;
@@ -26,24 +26,24 @@ public class SPECIFICATION_VALUE  extends Model
 
      public SPECIFICATION specification;
 
- public static SPECIFICATION_VALUE fromJson(JSONObject jsonObject)  throws JSONException
+ public void  fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return null;
+       return ;
       }
 
-     SPECIFICATION_VALUE   localItem = new SPECIFICATION_VALUE();
 
      JSONArray subItemArray;
 
-     localItem.id = jsonObject.optInt("id");
+     this.id = jsonObject.optString("id");
 
-     localItem.price = jsonObject.optInt("price");
+     this.price = jsonObject.optString("price");
 
-     localItem.label = jsonObject.optString("label");
+     this.label = jsonObject.optString("label");
 
-     localItem.format_price = jsonObject.optString("format_price");
-     return localItem;
+     this.format_price = jsonObject.optString("format_price");
+
+     return ;
  }
 
  public JSONObject  toJson() throws JSONException 

@@ -51,7 +51,7 @@ public class GoodDetailDraft {
         for (int i = 0;i < selectedSpecification.size();i++)
         {
             SPECIFICATION_VALUE selectedSpecificationValue = selectedSpecification.get(i);
-            if(selectedSpecificationValue.id == specId)
+            if(Integer.parseInt(selectedSpecificationValue.id) == specId)
             {
                 return true;
             }
@@ -77,7 +77,7 @@ public class GoodDetailDraft {
         for (int i = 0;i < selectedSpecification.size();i++)
         {
             SPECIFICATION_VALUE selectedSpecificationValue = selectedSpecification.get(i);
-            if(selectedSpecificationValue.id == specId)
+            if(Integer.parseInt(selectedSpecificationValue.id) == specId)
             {
                 selectedSpecification.remove(i);
                 return ;
@@ -90,7 +90,7 @@ public class GoodDetailDraft {
     {
         if (0 == specification_value.specification.attr_type.compareTo(SPECIFICATION.MULTIPLE_SELECT))
         {
-            if (!isHasSpecId(specification_value.id))
+            if (!isHasSpecId(Integer.parseInt(specification_value.id)))
             {
                 selectedSpecification.add(specification_value);
             }
@@ -115,7 +115,7 @@ public class GoodDetailDraft {
     public float getTotalPrice()
     {
 
-        if (null == goodDetail || null == goodDetail.promote_price)
+        if (null == goodDetail || 0 == goodDetail.promote_price)
         {
             return  0;
         }
@@ -124,7 +124,7 @@ public class GoodDetailDraft {
         for (int i = 0; i < selectedSpecification.size();i++)
         {
             SPECIFICATION_VALUE specification_value = selectedSpecification.get(i);
-            singlePrice += specification_value.price;
+            singlePrice += Float.valueOf(specification_value.price);
         }
 
         return singlePrice*goodQuantity;

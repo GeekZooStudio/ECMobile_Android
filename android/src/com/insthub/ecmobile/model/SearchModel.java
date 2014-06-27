@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.insthub.ecmobile.protocol.CATEGORY;
+import com.insthub.ecmobile.protocol.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,15 +38,14 @@ import android.content.Context;
 import com.external.androidquery.callback.AjaxStatus;
 import com.insthub.BeeFramework.model.BaseModel;
 import com.insthub.BeeFramework.model.BeeCallback;
-import com.insthub.ecmobile.protocol.PLAYER;
-import com.insthub.ecmobile.protocol.SIMPLEGOODS;
-import com.insthub.ecmobile.protocol.STATUS;
 
 public class SearchModel extends BaseModel {
 
 	public ArrayList<String> list = new ArrayList<String>();
     public ArrayList<CATEGORY> categoryArrayList = new ArrayList<CATEGORY>();
     String pkName;
+    // 缓存数据
+    private PrintStream ps = null;
 	
 	public SearchModel(Context context) {
 		super(context);
@@ -85,14 +84,14 @@ public class SearchModel extends BaseModel {
     	try {
 			if (result != null) {
 				JSONObject jsonObject = new JSONObject(result);
-				
-				STATUS responseStatus = STATUS.fromJson(jsonObject.optJSONObject("status"));
+				homedataResponse data=new homedataResponse();
+                data.fromJson(jsonObject);
 				list.clear();
-				if(responseStatus.succeed == 1) {
-					JSONArray playerJSONArray = jsonObject.optJSONArray("data");
-					if (null != playerJSONArray && playerJSONArray.length() > 0) {
-						for (int i = 0; i < playerJSONArray.length(); i++) {
-							list.add(playerJSONArray.getString(i));
+				if(data.status.succeed == 1) {
+					ArrayList<PLAYER> players = data.data.player;
+					if (null != players && players.size() > 0) {
+						for (int i = 0; i < players.size(); i++) {
+							list.add(players.get(i).toJson().toString());
 						}
 					}
 				}
@@ -106,7 +105,7 @@ public class SearchModel extends BaseModel {
 
     public void searchCategory()
     {
-        String url = ProtocolConst.CATEGORY;
+        categoryRequest request=new categoryRequest();
 
         BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
 
@@ -115,81 +114,32 @@ public class SearchModel extends BaseModel {
 
                 SearchModel.this.callback(url, jo, status);
                 try {
-                    STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
-                    categoryArrayList.clear();
-                    if(responseStatus.succeed == 1)
-                    {
-                        JSONArray categoryJSONArray = jo.optJSONArray("data");
+                    categoryResponse response = new categoryResponse();
+                    response.fromJson(jo);
+                    if (jo != null) {
+                        categoryArrayList.clear();
+                        if (response.status.succeed == 1) {
+                            ArrayList<CATEGORY> data = response.data;
 
-                        if (null != categoryJSONArray && categoryJSONArray.length() > 0)
-                        {
-                            for (int i = 0; i < categoryJSONArray.length(); i++)
-                            {
-                                JSONObject categoryObject = categoryJSONArray.getJSONObject(i);
-                                CATEGORY category = CATEGORY.fromJson(categoryObject);
-                                categoryArrayList.add(category);
+                            if (null != data && data.size() > 0) {
+                                categoryArrayList.addAll(data);
                             }
+
+                            SearchModel.this.OnMessageResponse(url, jo, status);
                         }
-
-                        SearchModel.this.OnMessageResponse(url, jo, status);
-
                     }
 
                 } catch (JSONException e) {
-                     
+
                     e.printStackTrace();
                 }
             }
 
         };
 
-        cb.url(url).type(JSONObject.class);
+        cb.url(ApiInterface.CATEGORY).type(JSONObject.class);
         aq.ajax(cb);
     }
-	
-	// 获取搜索推荐关键字
-	public void searchKeywords() {
-		String url = ProtocolConst.SEARCHKEYWORDS;
-		
-		BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
-
-			@Override
-			public void callback(String url, JSONObject jo, AjaxStatus status) {
-				
-				SearchModel.this.callback(url, jo, status);
-				try {
-					STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
-					list.clear();
-					if(responseStatus.succeed == 1) {
-						fileSave(jo.toString(),"searchData");
-						
-						JSONArray playerJSONArray = jo.optJSONArray("data");
-						
-						if (null != playerJSONArray && playerJSONArray.length() > 0) {
-							for (int i = 0; i < playerJSONArray.length(); i++) {
-								list.add(playerJSONArray.getString(i));
-							}
-						}
-						
-                        SearchModel.this.OnMessageResponse(url, jo, status);
-						
-					}
-					
-				} catch (JSONException e) {
-					 
-					e.printStackTrace();
-				}
-			}
-
-		};
-		
-		cb.url(url).type(JSONObject.class);
-		aq.ajax(cb);
-		
-	}
-	
-	// 缓存数据
-	private PrintStream ps = null;
 	public void fileSave(String result, String name) {
 	
 		String path = ProtocolConst.FILEPATH+"/"+pkName;

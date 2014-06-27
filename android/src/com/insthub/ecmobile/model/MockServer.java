@@ -178,7 +178,7 @@ public class MockServer
                 {
                    ARTICLE article = new ARTICLE();
                     article.short_title = "月光光照大床";
-                    article.id = j;
+                    article.id = j+"";
                     article.title = "月光光照大床";
                     shophelp.article.add(article);
                 }

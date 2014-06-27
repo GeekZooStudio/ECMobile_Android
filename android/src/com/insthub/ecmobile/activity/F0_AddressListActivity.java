@@ -18,6 +18,7 @@ import java.util.List;
 import android.content.res.Resources;
 import com.insthub.BeeFramework.activity.BaseActivity;
 import com.insthub.ecmobile.EcmobileManager;
+import com.insthub.ecmobile.protocol.ApiInterface;
 import com.umeng.analytics.MobclickAgent;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,11 +57,8 @@ public class F0_AddressListActivity extends BaseActivity implements BusinessResp
 	private ListView listView;
 	private ImageView bg;
 	private F0_AddressListAdapter addressManageAdapter;
-	
 	private AddressModel addressModel;
-	
 	public  Handler messageHandler;
-	
 	public int flag;
 	
 	@Override
@@ -142,9 +140,9 @@ public class F0_AddressListActivity extends BaseActivity implements BusinessResp
 	@Override
 	public void OnMessageResponse(String url, JSONObject jo, AjaxStatus status)
 			throws JSONException {		
-		if(url.endsWith(ProtocolConst.ADDRESS_LIST)) {
+		if(url.endsWith(ApiInterface.ADDRESS_LIST)) {
 			setAddress();
-		} else if(url.endsWith(ProtocolConst.ADDRESS_DEFAULT)) {
+		} else if(url.endsWith(ApiInterface.ADDRESS_SETDEFAULT)) {
 			Intent intent = new Intent();
 			intent.putExtra("address", "address");
 			setResult(Activity.RESULT_OK, intent); 

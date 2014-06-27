@@ -18,20 +18,19 @@ public class GOODS_ATTR  extends Model
      @Column(name = "value")
      public String value;
 
- public static GOODS_ATTR fromJson(JSONObject jsonObject)  throws JSONException
+ public void fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return null;
+       return ;
       }
 
-     GOODS_ATTR   localItem = new GOODS_ATTR();
 
      JSONArray subItemArray;
 
-     localItem.name = jsonObject.optString("name");
+     this.name = jsonObject.optString("name");
 
-     localItem.value = jsonObject.optString("value");
-     return localItem;
+     this.value = jsonObject.optString("value");
+     return ;
  }
 
  public JSONObject  toJson() throws JSONException 

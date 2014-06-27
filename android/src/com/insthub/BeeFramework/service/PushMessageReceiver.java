@@ -61,6 +61,7 @@ public class PushMessageReceiver extends FrontiaPushMessageReceiver {
 		if (errorCode == 0) {
 			editor.putString("UUID", userId);
 			editor.commit();
+			EcmobileManager.setBaiduUUID(context, userId, ECMobileAppConst.AppId, ECMobileAppConst.AppKey);
 		}
 	}
 

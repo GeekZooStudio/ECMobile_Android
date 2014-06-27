@@ -12,6 +12,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import android.app.Activity;
+import android.content.res.Resources;
+import android.view.View;
+import com.insthub.BeeFramework.view.MyDialog;
+import com.insthub.ecmobile.activity.AlixPayActivity;
+import com.insthub.ecmobile.activity.EcmobileMainActivity;
+import com.insthub.ecmobile.activity.PayWebActivity;
+import com.insthub.ecmobile.protocol.ORDER_INFO;
+import com.insthub.ecmobile.protocol.SESSION;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -41,9 +50,10 @@ public class MobileSecurePayHelper {
 
 	private ProgressDialog mProgress = null;
 	Context mContext = null;
-
-	public MobileSecurePayHelper(Context context) {
+    ORDER_INFO orderInfo;
+	public MobileSecurePayHelper(Context context,ORDER_INFO orderInfo) {
 		mContext = context;
+        this.orderInfo=orderInfo;
 	}
 
 	/**
@@ -129,35 +139,41 @@ public class MobileSecurePayHelper {
 	 */
 	public void showInstallConfirmDialog(final Context context,
 			final String cachePath) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setIcon(R.drawable.info);
-		builder.setTitle(context.getResources().getString(
-				R.string.confirm_install_hint));
-		builder.setMessage(context.getResources().getString(
-				R.string.confirm_install));
+        Resources resource = context.getResources();
+        String exit=resource.getString(R.string.confirm_install_hint);
+        String exiten=resource.getString(R.string.confirm_install);
+        final MyDialog mDialog = new MyDialog(context, exit, exiten);
+        mDialog.show();
+        mDialog.positive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+//
+                // 修改apk权限
+                BaseHelper.chmod("777", cachePath);
 
-		builder.setPositiveButton(android.R.string.ok,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						//
-						// 修改apk权限
-						BaseHelper.chmod("777", cachePath);
+                //
+                // install the apk.
+                // 安装安全支付服务APK
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setDataAndType(Uri.parse("file://" + cachePath),
+                        "application/vnd.android.package-archive");
+                context.startActivity(intent);
+            }
+        });
+        mDialog.negative.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //支付宝web支付
+                mDialog.dismiss();
+                Intent data=new Intent();
+                data.putExtra("pay_result", "fail");
+                ((Activity)mContext).setResult(Activity.RESULT_OK, data);
+                ((Activity) mContext).finish();
 
-						//
-						// install the apk.
-						// 安装安全支付服务APK
-						Intent intent = new Intent(Intent.ACTION_VIEW);
-						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-						intent.setDataAndType(Uri.parse("file://" + cachePath),
-								"application/vnd.android.package-archive");
-						context.startActivity(intent);
-					}
-				});
-
-		builder.setNegativeButton(
-				context.getResources().getString(android.R.string.cancel), null);
-
-		builder.show();
+            }
+        });
 	}
 
 	/**

@@ -21,22 +21,21 @@ public class PRICE  extends Model
      @Column(name = "rank_name")
      public String rank_name;
 
- public static PRICE fromJson(JSONObject jsonObject)  throws JSONException
+ public void fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return null;
+       return ;
       }
 
-     PRICE   localItem = new PRICE();
 
      JSONArray subItemArray;
 
-     localItem.id = jsonObject.optInt("id");
+     this.id = jsonObject.optInt("id");
 
-     localItem.price = jsonObject.optString("price");
+     this.price = jsonObject.optString("price");
 
-     localItem.rank_name = jsonObject.optString("rank_name");
-     return localItem;
+     this.rank_name = jsonObject.optString("rank_name");
+     return ;
  }
 
  public JSONObject  toJson() throws JSONException 

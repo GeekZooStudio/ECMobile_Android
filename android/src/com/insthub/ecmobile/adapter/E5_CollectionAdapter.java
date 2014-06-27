@@ -149,32 +149,24 @@ public class E5_CollectionAdapter extends BaseAdapter {
 			holder.text2.setText(collect2.name);
 			
 			if(imageType.equals("high")) {
-//				holder.image1.setImageWithURL(context, collect1.img.thumb, R.drawable.default_image);
-//				holder.image2.setImageWithURL(context, collect2.img.thumb, R.drawable.default_image);
                 imageLoader.displayImage(collect1.img.thumb,holder.image1, EcmobileApp.options);
                 imageLoader.displayImage(collect2.img.thumb,holder.image2, EcmobileApp.options);
 			} else if(imageType.equals("low")) {
-//				holder.image1.setImageWithURL(context, collect1.img.small, R.drawable.default_image);
-//				holder.image2.setImageWithURL(context, collect2.img.small, R.drawable.default_image);
                 imageLoader.displayImage(collect1.img.small,holder.image1, EcmobileApp.options);
                 imageLoader.displayImage(collect2.img.small,holder.image2, EcmobileApp.options);
 			} else {
 				String netType = shared.getString("netType", "wifi");
 				if(netType.equals("wifi")) {
-//					holder.image1.setImageWithURL(context, collect1.img.thumb, R.drawable.default_image);
-//					holder.image2.setImageWithURL(context, collect2.img.thumb, R.drawable.default_image);
                     imageLoader.displayImage(collect1.img.thumb,holder.image1, EcmobileApp.options);
                     imageLoader.displayImage(collect2.img.thumb,holder.image2, EcmobileApp.options);
 				} else {
-//					holder.image1.setImageWithURL(context, collect1.img.small, R.drawable.default_image);
-//					holder.image2.setImageWithURL(context, collect2.img.small, R.drawable.default_image);
                     imageLoader.displayImage(collect1.img.small,holder.image1, EcmobileApp.options);
                     imageLoader.displayImage(collect2.img.small,holder.image2, EcmobileApp.options);
 				}
 			}
 			
-			holder.price1.setText(collect1.market_price);
-			holder.price2.setText(collect2.market_price);
+			holder.price1.setText(collect1.shop_price);
+			holder.price2.setText(collect2.shop_price);
 			
 			holder.remove1.setOnClickListener(new OnClickListener() {
 				
@@ -241,23 +233,19 @@ public class E5_CollectionAdapter extends BaseAdapter {
 			holder.text1.setText(collect1.name);
 			
 			if(imageType.equals("high")) {
-//				holder.image1.setImageWithURL(context, collect1.img.thumb, R.drawable.default_image);
                 imageLoader.displayImage(collect1.img.thumb,holder.image1, EcmobileApp.options);
 			} else if(imageType.equals("low")) {
-//				holder.image1.setImageWithURL(context, collect1.img.small, R.drawable.default_image);
                 imageLoader.displayImage(collect1.img.small,holder.image1, EcmobileApp.options);
 			} else {
 				String netType = shared.getString("netType", "wifi");
 				if(netType.equals("wifi")) {
-//					holder.image1.setImageWithURL(context, collect1.img.thumb, R.drawable.default_image);
                     imageLoader.displayImage(collect1.img.thumb,holder.image1, EcmobileApp.options);
 				} else {
-//					holder.image1.setImageWithURL(context, collect1.img.small, R.drawable.default_image);
                     imageLoader.displayImage(collect1.img.small,holder.image1, EcmobileApp.options);
 				}
 			}
 			
-			holder.price1.setText(collect1.market_price);
+			holder.price1.setText(collect1.shop_price);
 			
 			holder.remove1.setOnClickListener(new OnClickListener() {
 				@Override

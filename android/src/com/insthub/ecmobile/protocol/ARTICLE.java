@@ -16,27 +16,25 @@ public class ARTICLE  extends Model
      public String short_title;
 
      @Column(name = "ARTICLE_id")
-     public int id;
+     public String id;
 
      @Column(name = "title")
      public String title;
 
- public static ARTICLE fromJson(JSONObject jsonObject)  throws JSONException
+ public void fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return null;
+       return ;
       }
-
-     ARTICLE   localItem = new ARTICLE();
 
      JSONArray subItemArray;
 
-     localItem.short_title = jsonObject.optString("short_title");
+     this.short_title = jsonObject.optString("short_title");
 
-     localItem.id = jsonObject.optInt("id");
+     this.id = jsonObject.optString("id");
 
-     localItem.title = jsonObject.optString("title");
-     return localItem;
+     this.title = jsonObject.optString("title");
+     return ;
  }
 
  public JSONObject  toJson() throws JSONException 

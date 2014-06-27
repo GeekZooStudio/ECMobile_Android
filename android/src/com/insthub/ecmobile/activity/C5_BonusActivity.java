@@ -15,6 +15,8 @@ package com.insthub.ecmobile.activity;
 
 import android.content.res.Resources;
 import com.insthub.BeeFramework.activity.BaseActivity;
+import com.insthub.ecmobile.protocol.ApiInterface;
+import com.insthub.ecmobile.protocol.flowcheckOrderResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -58,9 +60,10 @@ public class C5_BonusActivity extends BaseActivity implements BusinessResponse {
 		
 		try{
 			JSONObject jo = new JSONObject(s);
-			
-			score = jo.get("your_integral").toString();
-			max_score = jo.get("order_max_integral").toString();
+            flowcheckOrderResponse response = new flowcheckOrderResponse();
+            response.fromJson(jo);
+			score = response.data.your_integral;
+			max_score = response.data.order_max_integral+"";
 		
 		} catch (JSONException e) {			
 			e.printStackTrace();
@@ -124,7 +127,7 @@ public class C5_BonusActivity extends BaseActivity implements BusinessResponse {
 	public void OnMessageResponse(String url, JSONObject jo, AjaxStatus status)
 			throws JSONException
     {		
-		if(url.endsWith(ProtocolConst.VALIDATE_INTEGRAL))
+		if(url.endsWith(ApiInterface.VALIDATE_INTEGRAL))
         {
             JSONObject data = jo.getJSONObject("data");
             String bonus = data.getString("bonus").toString();

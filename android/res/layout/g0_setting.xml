@@ -13,9 +13,9 @@
         android:background="@drawable/body" >
 
         <LinearLayout
+            android:padding="10dp"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_margin="12dp"
             android:orientation="vertical" >
 
             <TextView
@@ -33,7 +33,7 @@
                 android:orientation="vertical" >
 
                 <LinearLayout
-                    android:id="@+id/setting_type1"
+                    android:id="@+id/setting_picture_auto"
                     android:layout_width="fill_parent"
                     android:layout_height="50dp"
                     android:gravity="center_vertical"
@@ -49,7 +49,7 @@
                         android:textSize="16dp" />
 
                     <ImageView
-                        android:id="@+id/setting_invoice1"
+                        android:id="@+id/setting_picture_auto_arrow"
                         android:layout_width="12dp"
                         android:layout_height="12dp"
                         android:layout_marginRight="10dp"
@@ -62,7 +62,7 @@
                     android:background="#c4c4c4" />
 
                 <LinearLayout
-                    android:id="@+id/setting_type2"
+                    android:id="@+id/setting_picture_high_quality"
                     android:layout_width="fill_parent"
                     android:layout_height="50dp"
                     android:gravity="center_vertical"
@@ -78,7 +78,7 @@
                         android:textSize="16dp" />
 
                     <ImageView
-                        android:id="@+id/setting_invoice2"
+                        android:id="@+id/setting_picture_high_quality_arrow"
                         android:layout_width="12dp"
                         android:layout_height="12dp"
                         android:layout_marginRight="10dp"
@@ -92,7 +92,7 @@
                     android:background="#c4c4c4" />
 
                 <LinearLayout
-                    android:id="@+id/setting_type3"
+                    android:id="@+id/setting_picture_low_quality"
                     android:layout_width="fill_parent"
                     android:layout_height="50dp"
                     android:gravity="center_vertical"
@@ -108,54 +108,12 @@
                         android:textSize="16dp" />
 
                     <ImageView
-                        android:id="@+id/setting_invoice3"
+                        android:id="@+id/setting_picture_low_quality_arrow"
                         android:layout_width="12dp"
                         android:layout_height="12dp"
                         android:layout_marginRight="10dp"
                         android:src="@drawable/accsessory_check"
                         android:visibility="gone" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/setting_push"
-                android:textColor="#0f85ba"
-                android:textSize="17dp" />
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/body_cont"
-                android:gravity="center"
-                android:orientation="vertical" >
-
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal" >
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_weight="1"
-                        android:text="@string/setting_push_accept"
-                        android:textColor="#000000"
-                        android:textSize="16dp" />
-
-                    <ImageView
-                        android:id="@+id/setting_push"
-                        android:layout_width="65dp"
-                        android:layout_height="30dp"
-                        android:layout_marginRight="10dp"
-                        android:src="@drawable/on" />
                 </LinearLayout>
             </LinearLayout>
 

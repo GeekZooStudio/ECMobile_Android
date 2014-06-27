@@ -173,20 +173,7 @@ public class TabsFragment extends Fragment
         }
         else if (tabName == "tab_three")
         {
-//            String uid = shared.getString("uid", "");
-//            if(uid.equals(""))
-//            {
-//                Intent intent = new Intent(getActivity(), LoginActivity.class);
-//                startActivityForResult(intent, 2);
-//                getActivity().overridePendingTransition(R.anim.push_buttom_in,R.anim.push_buttom_out);
-//            }
-//            else
-//            {
-
-                
-                    shoppingCartFragment = new C0_ShoppingCartFragment();
-                
-
+                shoppingCartFragment = new C0_ShoppingCartFragment();
                 FragmentTransaction localFragmentTransaction = getFragmentManager().beginTransaction();
                 localFragmentTransaction.replace(R.id.fragment_container, shoppingCartFragment, "tab_three");
                 localFragmentTransaction.commit();
@@ -200,23 +187,11 @@ public class TabsFragment extends Fragment
                 this.tab_twobg.setVisibility(View.INVISIBLE);
                 this.tab_threebg.setVisibility(View.VISIBLE);
                 this.tab_fourbg.setVisibility(View.INVISIBLE);
-//           }
         }
         else if (tabName == "tab_four")
         {
-//        	//判断是否已登录，如果登录跳到个人主页，否则跳到登录页面，
-//        	String uid = shared.getString("uid", "");
-//        	if(uid.equals("")) {
-//        		Intent intent = new Intent(getActivity(), LoginActivity.class);
-//            	startActivityForResult(intent, 1);
-//            	getActivity().overridePendingTransition(R.anim.push_buttom_in,R.anim.push_buttom_out);
-//        	} else {
 
-                
-                    profileFragment = new E0_ProfileFragment();
-                
-
-
+                profileFragment = new E0_ProfileFragment();
             	FragmentTransaction localFragmentTransaction = getFragmentManager().beginTransaction();
             	localFragmentTransaction.replace(R.id.fragment_container, profileFragment, "tab_four");
             	localFragmentTransaction.commit();
@@ -230,7 +205,6 @@ public class TabsFragment extends Fragment
             	this.tab_twobg.setVisibility(View.INVISIBLE);
             	this.tab_threebg.setVisibility(View.INVISIBLE);
             	this.tab_fourbg.setVisibility(View.VISIBLE);
-//        	}
         	
         }
     }
@@ -298,7 +272,6 @@ public class TabsFragment extends Fragment
     }
     
     public static void setShoppingcartNum() {
-    	//shopping_cart_num.setText("12");
     	if(ShoppingCartModel.getInstance().goods_num == 0) {
     		shopping_cart_num_bg.setVisibility(View.GONE);
         } else {

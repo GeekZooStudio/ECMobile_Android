@@ -78,6 +78,7 @@
                     android:paddingRight="10dp"
                     android:singleLine="true"
                     android:textColor="#000000"
+                    android:maxLength="20"
                     android:textSize="16dp" />
 
                 <View
@@ -118,6 +119,7 @@
                     android:password="true"
                     android:singleLine="true"
                     android:textColor="#000000"
+                    android:maxLength="20"
                     android:textSize="16dp" />
 
                 <View
@@ -138,6 +140,7 @@
                     android:password="true"
                     android:singleLine="true"
                     android:textColor="#000000"
+                    android:maxLength="20"
                     android:textSize="16dp" />
             </LinearLayout>
 

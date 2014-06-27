@@ -15,6 +15,7 @@ package com.insthub.ecmobile.activity;
 
 import android.content.res.Resources;
 import com.insthub.BeeFramework.activity.BaseActivity;
+import com.insthub.ecmobile.protocol.ApiInterface;
 import com.umeng.analytics.MobclickAgent;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,9 +47,7 @@ public class F2_EditAddressActivity extends BaseActivity implements BusinessResp
 	
 	private ImageView back;
 	private Button change;
-	
 	private AddressModel addressModel;
-	
 	private EditText name;
 	private EditText tel;
 	private EditText email;
@@ -58,13 +57,12 @@ public class F2_EditAddressActivity extends BaseActivity implements BusinessResp
 	private EditText detail;
 	private Button setDefault;
 	private Button del;
-	
 	private String country_id;
 	private String province_id;
 	private String city_id;
 	private String county_id;
-	
 	private String address_id;
+    private static  final int REQUEST_REGION_PICK=1;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {		
@@ -111,7 +109,7 @@ public class F2_EditAddressActivity extends BaseActivity implements BusinessResp
 			@Override
 			public void onClick(View v) {				
 				Intent intent = new Intent(F2_EditAddressActivity.this, F3_RegionPickActivity.class);
-				startActivityForResult(intent, 1);
+				startActivityForResult(intent, REQUEST_REGION_PICK);
 				overridePendingTransition(R.anim.my_scale_action,R.anim.my_alpha_action);
 			}
 		});
@@ -206,14 +204,14 @@ public class F2_EditAddressActivity extends BaseActivity implements BusinessResp
 	@Override
 	public void OnMessageResponse(String url, JSONObject jo, AjaxStatus status)
 			throws JSONException {		
-		if(url.endsWith(ProtocolConst.ADDRESS_INFO)) {
+		if(url.endsWith(ApiInterface.ADDRESS_INFO)) {
 			setAddressInfo();
-		} else if(url.endsWith(ProtocolConst.ADDRESS_DEFAULT)) {
+		} else if(url.endsWith(ApiInterface.ADDRESS_SETDEFAULT)) {
             finish();
-		} else if(url.endsWith(ProtocolConst.ADDRESS_DELETE)) {
+		} else if(url.endsWith(ApiInterface.ADDRESS_DELETE)) {
 			delete();
 			finish();
-		} else if(url.endsWith(ProtocolConst.ADDRESS_UPDATE)) {
+		} else if(url.endsWith(ApiInterface.ADDRESS_UPDATE)) {
 			if(addressModel.address.default_address == 1) {
 				addressModel.addressDefault(address_id);
 			} else {
@@ -233,7 +231,7 @@ public class F2_EditAddressActivity extends BaseActivity implements BusinessResp
     public void onActivityResult(int requestCode, int resultCode, Intent data) {    	
     	super.onActivityResult(requestCode, resultCode, data);
 
-		if (requestCode == 1) {
+		if (requestCode == REQUEST_REGION_PICK) {
 			if (data != null) {
 				country_id = data.getStringExtra("country_id");
 				province_id = data.getStringExtra("province_id");

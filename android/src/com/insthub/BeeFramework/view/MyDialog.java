@@ -1,5 +1,7 @@
 package com.insthub.BeeFramework.view;
 
+import android.content.DialogInterface;
+import android.view.KeyEvent;
 import com.insthub.ecmobile.R;
 
 import android.app.Dialog;
@@ -24,7 +26,15 @@ public class MyDialog {
 		mDialog = new Dialog(context, R.style.dialog);
 		mDialog.setContentView(view);
 		mDialog.setCanceledOnTouchOutside(false);
-		
+        mDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if(keyCode==KeyEvent.KEYCODE_BACK){
+                    return true;
+                }
+                return false;
+            }
+        });
 		dialog_title = (TextView) view.findViewById(R.id.dialog_title);
 		dialog_message = (TextView) view.findViewById(R.id.dialog_message);
 		dialog_title.setText(title);

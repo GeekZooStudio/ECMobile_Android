@@ -17,6 +17,9 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
+import android.util.Log;
+import android.view.Gravity;
+import com.insthub.BeeFramework.view.ToastView;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.NameValuePair;
@@ -81,7 +84,6 @@ import com.tencent.weibo.sdk.android.network.HttpCallback;
 
 public class ShareActivity extends Activity implements IWeiboHandler.Response
 {
-    LayoutInflater mInflater ;
     String shareContent;
     String goods_url;
     String photoUrl;
@@ -107,7 +109,7 @@ public class ShareActivity extends Activity implements IWeiboHandler.Response
         setContentView(R.layout.share_dialog);
         imageLoader.init(ImageLoaderConfiguration.createDefault(this));
         sinaWeibo = (LinearLayout)findViewById(R.id.sina_weibo);
-        
+
         if(EcmobileManager.getSinaKey(this) == null || EcmobileManager.getSinaSecret(this) == null
         		|| EcmobileManager.getSinaCallback(this) == null) {
         	sinaWeibo.setVisibility(View.GONE);
@@ -155,25 +157,37 @@ public class ShareActivity extends Activity implements IWeiboHandler.Response
             @Override
             public void onClick(View v)
             {
-            	
-            	WXWebpageObject webpage = new WXWebpageObject();
-				webpage.webpageUrl = goods_url;
-				WXMediaMessage msg = new WXMediaMessage(webpage);
-				msg.description = shareContent;
+
+                WXWebpageObject webpage = new WXWebpageObject();
+                webpage.webpageUrl = goods_url;
+                WXMediaMessage msg = new WXMediaMessage(webpage);
+                msg.description = shareContent;
 
                 if (null != shareImage)
                 {
                     Bitmap thumbBmp = Bitmap.createScaledBitmap(shareImage, 150, 150, true);
                     msg.thumbData = WeixinUtil.bmpToByteArray(thumbBmp, true);
                 }
-				
-				SendMessageToWX.Req req = new SendMessageToWX.Req();
-				req.transaction = buildTransaction("img");
-				req.message = msg;
-				req.scene = isTimelineCb.isChecked() ? SendMessageToWX.Req.WXSceneTimeline : SendMessageToWX.Req.WXSceneSession;
-				if(weixinAPI != null) {
-					weixinAPI.sendReq(req);
-				}				
+
+                SendMessageToWX.Req req = new SendMessageToWX.Req();
+                req.transaction = buildTransaction("img");
+                req.message = msg;
+                req.scene = isTimelineCb.isChecked() ? SendMessageToWX.Req.WXSceneTimeline : SendMessageToWX.Req.WXSceneSession;
+                if (req.scene == SendMessageToWX.Req.WXSceneTimeline)
+                {
+                    msg.title = shareContent;
+                }
+                else
+                {
+                    msg.title = "分享商品";
+                }
+              if(weixinAPI.isWXAppInstalled()){
+                  if(weixinAPI != null) {
+                      weixinAPI.sendReq(req);
+                  }
+              }else{
+                    Toast.makeText(ShareActivity.this, "未安装微信客户端", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -499,16 +513,12 @@ public class ShareActivity extends Activity implements IWeiboHandler.Response
 
             @Override
             public void onWeiBoNotInstalled() {
-                Toast.makeText(ShareActivity.this, "onWeiBoNotInstalled", 1000)
-                        .show();
                 Intent i = new Intent(ShareActivity.this, Authorize.class);
                 ShareActivity.this.startActivity(i);
             }
 
             @Override
             public void onWeiboVersionMisMatch() {
-                Toast.makeText(ShareActivity.this, "onWeiboVersionMisMatch",
-                        1000).show();
                 Intent i = new Intent(ShareActivity.this, Authorize.class);
                 startActivity(i);
             }
@@ -549,15 +559,21 @@ public class ShareActivity extends Activity implements IWeiboHandler.Response
     public void onResponse( BaseResponse baseResp ) {
         switch (baseResp.errCode) {
             case com.sina.weibo.sdk.constant.WBConstants.ErrorCode.ERR_OK:
-                Toast.makeText(this, R.string.success_share, Toast.LENGTH_LONG).show();
+                ToastView toastOk = new ToastView(ShareActivity.this,R.string.success_share);
+                toastOk.setGravity(Gravity.CENTER, 0, 0);
+                toastOk.show();
                 this.finish();
                 break;
             case  com.sina.weibo.sdk.constant.WBConstants.ErrorCode.ERR_CANCEL:
-                Toast.makeText(this, R.string.user_cancel, Toast.LENGTH_LONG).show();
+                ToastView toastCancel = new ToastView(ShareActivity.this,R.string.user_cancel);
+                toastCancel.setGravity(Gravity.CENTER, 0, 0);
+                toastCancel.show();
                 this.finish();
                 break;
             case com.sina.weibo.sdk.constant.WBConstants.ErrorCode.ERR_FAIL:
-                Toast.makeText(this, R.string.fail_share, Toast.LENGTH_LONG).show();
+                ToastView toastErr = new ToastView(ShareActivity.this,R.string.fail_share);
+                toastErr.setGravity(Gravity.CENTER, 0, 0);
+                toastErr.show();
                 break;
         }
 

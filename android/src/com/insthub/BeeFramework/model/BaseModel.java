@@ -35,6 +35,7 @@ import java.util.ArrayList;
 
 import android.content.res.Resources;
 import com.insthub.ecmobile.ErrorCodeConst;
+import com.insthub.ecmobile.fragment.E0_ProfileFragment;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -96,9 +97,17 @@ public class BaseModel implements BusinessResponse{
     //公共的错误处理
     public void callback(String url, JSONObject jo, AjaxStatus status)
     {
+        if (null == jo)
+        {
+            ToastView toast = new ToastView(mContext,"网络错误，请检查网络设置");
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+            return;
+        }
         try
         {
-            STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
+            STATUS responseStatus = new STATUS();
+            responseStatus.fromJson(jo.optJSONObject("status"));
             if (responseStatus.succeed != ErrorCodeConst.ResponseSucceed)
             {
                 if (responseStatus.error_code == ErrorCodeConst.InvalidSession)
@@ -106,6 +115,7 @@ public class BaseModel implements BusinessResponse{
                     ToastView toast = new ToastView(mContext, mContext.getString(R.string.session_expires_tips));
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
+                    E0_ProfileFragment.isRefresh=true;
                     Intent intent = new Intent(mContext, A0_SigninActivity.class);
                     mContext.startActivity(intent);
                     
@@ -130,8 +140,9 @@ public class BaseModel implements BusinessResponse{
             String been=resource.getString(R.string.been_used);
             String sub=resource.getString(R.string.submit_the_parameter_error);
             String fai=resource.getString(R.string.failed);
-            String pur=resource.getString(R.string.purchase_failed);
+            String pur=resource.getString(R.string.error_10008);
             String noi=resource.getString(R.string.no_shipping_information);
+            String error=resource.getString(R.string.username_or_password_error);
             if(responseStatus.error_code == ErrorCodeConst.SelectedDeliverMethod) {
             	ToastView toast = new ToastView(mContext, way);
             	toast.setGravity(Gravity.CENTER, 0, 0);
@@ -178,6 +189,16 @@ public class BaseModel implements BusinessResponse{
             if(responseStatus.error_code == ErrorCodeConst.NoShippingInformation) {
             	ToastView toast = new ToastView(mContext, noi);
             	toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+            }
+            if(responseStatus.error_code==ErrorCodeConst.InvalidUsernameOrPassword){
+                ToastView toast = new ToastView(mContext, error);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+            }
+            if(responseStatus.error_code==ErrorCodeConst.UserOrEmailExist){
+                ToastView toast = new ToastView(mContext, resource.getString(R.string.been_used));
+                toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
             }
         }

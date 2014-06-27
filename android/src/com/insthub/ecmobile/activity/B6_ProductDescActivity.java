@@ -15,6 +15,7 @@ package com.insthub.ecmobile.activity;
 
 import android.content.res.Resources;
 import com.insthub.BeeFramework.activity.BaseActivity;
+import com.insthub.ecmobile.protocol.ApiInterface;
 import com.umeng.analytics.MobclickAgent;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,10 +47,6 @@ public class B6_ProductDescActivity extends BaseActivity implements BusinessResp
 	private ImageView back;
 	private GoodDetailModel goodsModel;
 	private WebView webView;
-	
-	private ImageView web_back;
-    private ImageView goForward;
-    private ImageView reload;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {		
@@ -97,46 +94,12 @@ public class B6_ProductDescActivity extends BaseActivity implements BusinessResp
 		webView.getSettings().setUseWideViewPort(true);
 		webView.getSettings().setLoadWithOverviewMode(true);
 		
-		web_back = (ImageView) findViewById(R.id.web_back);
-        web_back.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {                
-                if(webView.canGoBack()) {
-                    webView.goBack();
-                } else {
-
-                }
-            }
-        });
-
-
-        goForward = (ImageView) findViewById(R.id.goForward);
-        goForward.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {                
-                webView.goForward();
-
-            }
-        });
-
-        reload = (ImageView) findViewById(R.id.reload);
-        reload.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {                
-            	webView.loadDataWithBaseURL(null,goodsModel.goodsWeb,"text/html","utf-8",null);
-            }
-        });
-		
-		
 	} 
 
 	@Override
 	public void OnMessageResponse(String url, JSONObject jo, AjaxStatus status)
 			throws JSONException {				
-		if(url.endsWith(ProtocolConst.GOODSDESC)) {
+		if(url.endsWith(ApiInterface.GOODS_DESC)) {
 			
 			webView.loadDataWithBaseURL(null,goodsModel.goodsWeb,"text/html","utf-8",null);
 			

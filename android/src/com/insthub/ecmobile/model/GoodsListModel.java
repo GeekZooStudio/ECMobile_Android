@@ -19,7 +19,9 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.content.res.Resources;
+import com.insthub.BeeFramework.view.MyProgressDialog;
 import com.insthub.ecmobile.R;
+import com.insthub.ecmobile.protocol.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,155 +32,122 @@ import android.content.Context;
 import com.external.androidquery.callback.AjaxStatus;
 import com.insthub.BeeFramework.model.BaseModel;
 import com.insthub.BeeFramework.model.BeeCallback;
-import com.insthub.ecmobile.protocol.FILTER;
-import com.insthub.ecmobile.protocol.PAGINATED;
-import com.insthub.ecmobile.protocol.PAGINATION;
-import com.insthub.ecmobile.protocol.SIMPLEGOODS;
-import com.insthub.ecmobile.protocol.STATUS;
 
 public class GoodsListModel extends BaseModel {
 
-	public ArrayList<SIMPLEGOODS> simplegoodsList = new ArrayList<SIMPLEGOODS>();
+    public ArrayList<SIMPLEGOODS> simplegoodsList = new ArrayList<SIMPLEGOODS>();
 
     public static String PRICE_DESC = "price_desc";
-    public static String PRICE_ASC  = "price_asc";
-    public static String IS_HOT  = "is_hot";
+    public static String PRICE_ASC = "price_asc";
+    public static String IS_HOT = "is_hot";
 
     public static final int PAGE_COUNT = 6;
 
-	public GoodsListModel(Context context) 
-	{
-		super(context);	
-	}
-		
-    public void fetchPreSearch(FILTER filter)
-    {
-		String url = ProtocolConst.SEARCH;
-        
-		BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>(){
-			
-			@Override
-			public void callback(String url, JSONObject jo, AjaxStatus status) {
-				GoodsListModel.this.callback(url, jo, status);
-				try 
-				{
-					STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
-                    PAGINATED paginated = PAGINATED.fromJson(jo.optJSONObject("paginated"));
-					
-					if (responseStatus.succeed == 1) 
-					{												
-						JSONArray simpleGoodsJsonArray = jo.optJSONArray("data");
-							
-						simplegoodsList.clear();
-						if (null != simpleGoodsJsonArray && simpleGoodsJsonArray.length() > 0) 
-						{
-							simplegoodsList.clear();
-							for (int i = 0; i < simpleGoodsJsonArray.length(); i++) 
-							{
-								JSONObject simpleGoodsJsonObject = simpleGoodsJsonArray.getJSONObject(i);
-								SIMPLEGOODS simplegoods = SIMPLEGOODS.fromJson(simpleGoodsJsonObject);
-								simplegoodsList.add(simplegoods);
-							}
-						}
-						
-						GoodsListModel.this.OnMessageResponse(url, jo, status);
-						
-					}
-					
-				} catch (JSONException e) {
-					// TODO: handle exception
-				}
-				
-			}
-			
-		};
+    public GoodsListModel(Context context) {
+        super(context);
+    }
 
-		PAGINATION pagination = new PAGINATION();
-		pagination.page = 1;
-		pagination.count = PAGE_COUNT;
-		
-		JSONObject requestJsonObject = new JSONObject();
+    public void fetchPreSearch(FILTER filter) {
+        searchRequest request = new searchRequest();
+        BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
 
-		Map<String, String> params = new HashMap<String, String>();
-		try 
-		{
-            requestJsonObject.put("filter",filter.toJson());
-            requestJsonObject.put("pagination",pagination.toJson());
-		} catch (JSONException e) {
-			// TODO: handle exception
-		}
+            @Override
+            public void callback(String url, JSONObject jo, AjaxStatus status) {
+                GoodsListModel.this.callback(url, jo, status);
+                try {
+                    searchResponse response = new searchResponse();
+                    response.fromJson(jo);
+                    if (jo != null) {
+                        PAGINATED paginated = response.paginated;
+                        if (response.status.succeed == 1) {
+                            ArrayList<SIMPLEGOODS> data = response.data;
 
-        params.put("json",requestJsonObject.toString());
-		
-		cb.url(url).type(JSONObject.class).params(params);
-		ProgressDialog pd = new ProgressDialog(mContext);
+                            simplegoodsList.clear();
+                            if (null != data && data.size() > 0) {
+                                simplegoodsList.clear();
+                                simplegoodsList.addAll(data);
 
-        Resources resource = mContext.getResources();
-        String wait=resource.getString(R.string.hold_on);
-        pd.setMessage(wait);
-	    aq.progress(pd).ajax(cb);
+                            }
+
+                            GoodsListModel.this.OnMessageResponse(url, jo, status);
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    // TODO: handle exception
+                }
+
+            }
+
+        };
+
+        PAGINATION pagination = new PAGINATION();
+        pagination.page = 1;
+        pagination.count = PAGE_COUNT;
+
+        request.filter = filter;
+        request.pagination = pagination;
+        Map<String, String> params = new HashMap<String, String>();
+        try {
+            params.put("json", request.toJson().toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        cb.url(ApiInterface.SEARCH).type(JSONObject.class).params(params);
+        MyProgressDialog pd = new MyProgressDialog(mContext, mContext.getResources().getString(R.string.hold_on));
+        aq.progress(pd.mDialog).ajax(cb);
 
     }
-    
-    public void fetchPreSearchMore(FILTER filter)
-    {
-		String url = ProtocolConst.SEARCH;
-        
-		BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>(){
-			
-			@Override
-			public void callback(String url, JSONObject jo, AjaxStatus status) {
-				GoodsListModel.this.callback(url, jo, status);
-				try 
-				{
-					STATUS responseStatus = STATUS.fromJson(jo.optJSONObject("status"));
-                    PAGINATED paginated = PAGINATED.fromJson(jo.optJSONObject("paginated"));
-					
-					if (responseStatus.succeed == 1) 
-					{												
-						JSONArray simpleGoodsJsonArray = jo.optJSONArray("data");
-							
-						if (null != simpleGoodsJsonArray && simpleGoodsJsonArray.length() > 0) 
-						{
-							for (int i = 0; i < simpleGoodsJsonArray.length(); i++) 
-							{
-								JSONObject simpleGoodsJsonObject = simpleGoodsJsonArray.getJSONObject(i);
-								SIMPLEGOODS simplegoods = SIMPLEGOODS.fromJson(simpleGoodsJsonObject);
-								simplegoodsList.add(simplegoods);
-							}
-						}
-						
-						GoodsListModel.this.OnMessageResponse(url, jo, status);
-						
-					}
-					
-				} catch (JSONException e) {
-					// TODO: handle exception
-				}
-				
-			}
-			
-		};
 
-		PAGINATION pagination = new PAGINATION();
-		pagination.page = (int)Math.ceil((double)simplegoodsList.size()*1.0/PAGE_COUNT)+1;
-		pagination.count = PAGE_COUNT;
-		
-		JSONObject requestJsonObject = new JSONObject();
+    public void fetchPreSearchMore(FILTER filter) {
+        searchRequest request = new searchRequest();
+        ;
 
-		Map<String, String> params = new HashMap<String, String>();
-		try 
-		{
-            requestJsonObject.put("filter",filter.toJson());
-            requestJsonObject.put("pagination",pagination.toJson());
-		} catch (JSONException e) {
-			// TODO: handle exception
-		}
+        BeeCallback<JSONObject> cb = new BeeCallback<JSONObject>() {
 
-        params.put("json",requestJsonObject.toString());
-		
-		cb.url(url).type(JSONObject.class).params(params);
-        aq.ajax(cb);
+            @Override
+            public void callback(String url, JSONObject jo, AjaxStatus status) {
+                GoodsListModel.this.callback(url, jo, status);
+                try {
+                    searchResponse response = new searchResponse();
+                    response.fromJson(jo);
+                    if (jo != null) {
+                        PAGINATED paginated = response.paginated;
+                        if (response.status.succeed == 1) {
+                            ArrayList<SIMPLEGOODS> data = response.data;
+
+                            if (null != data && data.size() > 0) {
+                                simplegoodsList.addAll(data);
+                            }
+
+                            GoodsListModel.this.OnMessageResponse(url, jo, status);
+
+                        }
+                    }
+                } catch (JSONException e) {
+                    // TODO: handle exception
+                }
+
+            }
+
+        };
+
+        PAGINATION pagination = new PAGINATION();
+        pagination.page = (int) Math.ceil((double) simplegoodsList.size() * 1.0 / PAGE_COUNT) + 1;
+        pagination.count = PAGE_COUNT;
+
+        request.filter = filter;
+        request.pagination = pagination;
+        Map<String, String> params = new HashMap<String, String>();
+        try {
+            params.put("json", request.toJson().toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        cb.url(ApiInterface.SEARCH).type(JSONObject.class).params(params);
+        MyProgressDialog pd = new MyProgressDialog(mContext, mContext.getResources().getString(R.string.hold_on));
+        aq.progress(pd.mDialog).ajax(cb);
 
     }
 

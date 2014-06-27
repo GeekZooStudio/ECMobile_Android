@@ -30,28 +30,27 @@ public class PAYMENT  extends Model
      @Column(name = "pay_name")
      public String pay_name;
 
- public static PAYMENT fromJson(JSONObject jsonObject)  throws JSONException
+ public void fromJson(JSONObject jsonObject)  throws JSONException
  {
      if(null == jsonObject){
-       return null;
+       return ;
       }
 
-     PAYMENT   localItem = new PAYMENT();
 
      JSONArray subItemArray;
 
-     localItem.is_cod = jsonObject.optString("is_cod");
+     this.is_cod = jsonObject.optString("is_cod");
 
-     localItem.pay_code = jsonObject.optString("pay_code");
+     this.pay_code = jsonObject.optString("pay_code");
 
-     localItem.pay_fee = jsonObject.optString("pay_fee");
+     this.pay_fee = jsonObject.optString("pay_fee");
 
-     localItem.pay_id = jsonObject.optString("pay_id");
+     this.pay_id = jsonObject.optString("pay_id");
 
-     localItem.formated_pay_fee = jsonObject.optString("formated_pay_fee");
+     this.formated_pay_fee = jsonObject.optString("formated_pay_fee");
 
-     localItem.pay_name = jsonObject.optString("pay_name");
-     return localItem;
+     this.pay_name = jsonObject.optString("pay_name");
+     return ;
  }
 
  public JSONObject  toJson() throws JSONException 
