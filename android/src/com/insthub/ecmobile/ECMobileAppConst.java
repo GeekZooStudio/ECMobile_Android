@@ -18,6 +18,6 @@ import com.insthub.BeeFramework.model.BeeQuery;
 
 public class ECMobileAppConst
 {
-    public static final String SERVER_PRODUCTION = "http://shop.ecmobile.me/ecmobile/?url=";
-    public static final String SERVER_DEVELOPMENT = "http://shop.ecmobile.me/ecmobile/?url=";
+    public static final String SERVER_PRODUCTION = "http://shop.ecmobile.cn/ecmobile/?url=";
+    public static final String SERVER_DEVELOPMENT = "http://shop.ecmobile.cn/ecmobile/?url=";
 }
