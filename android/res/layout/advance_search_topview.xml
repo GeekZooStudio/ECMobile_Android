@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+    <View
+            android:layout_width="fill_parent"
+            android:layout_height="20dp"
+            android:background="#000000"/>
+
+    <View
+            android:layout_width="fill_parent"
+            android:layout_height="28dp"
+            android:id="@+id/bottom_line"
+            android:layout_marginTop="20dp"
+            android:background="#000000"/>
+
+    <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/nav_bg"/>
+
+
+    <LinearLayout android:layout_height="wrap_content"
+                  android:layout_width="match_parent"
+                  android:orientation="horizontal" android:layout_gravity="center_vertical">
+        <ImageView
+                android:id="@+id/nav_back_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:padding="10dp"
+                android:layout_weight="1"
+                android:src="@drawable/item_grid_header_arrow_icon"/>
+        <FrameLayout android:layout_height="wrap_content"
+                     android:layout_width="match_parent"
+                     android:layout_weight="8"
+                >
+            <EditText
+                    android:cursorVisible="false"
+                    android:id="@+id/search_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:imeOptions="actionSearch"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/searcher_new_search_box"
+                    android:hint="@string/search_input"
+                    android:paddingLeft="35dp"
+                    android:paddingRight="10dp"
+                    android:singleLine="true"
+                    android:textSize="16dp"/>
+            <ImageView
+                    android:id="@+id/search_search"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical"
+                    android:padding="10dp"
+                    android:src="@drawable/searcher_new_search_icon"/>
+        </FrameLayout>
+        <Button
+                android:id="@+id/search_filter"
+                android:layout_width="55dp"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical|right"
+                android:layout_marginRight="10dp"
+                android:text="@string/filter"
+                android:visibility="visible"
+                android:background="@drawable/filter_blue_btn"
+                android:gravity="center" android:textSize="16dp" android:textColor="#FFFFFF"/>
+    </LinearLayout>
+
+
+</FrameLayout>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/lifecycle_title"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        layout="@layout/navigationbar" />
+
+    <LinearLayout
+        android:id="@+id/tabbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lifecycle_title"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/activity_all"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text=""
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/activity_visible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/lifecycle_all"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/activity_foreground"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/lifecycle_frontdeskoperation"
+            android:textColor="#000000" />
+    </LinearLayout>
+
+    <com.external.maxwin.view.XListView
+        android:id="@+id/activitylist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tabbar"
+        android:divider="#c4c4c4"
+        android:dividerHeight="1dp" />
+
+</RelativeLayout>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/body"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:id="@+id/collect_item_layout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <FrameLayout
+                android:id="@+id/collect_item_frame1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:layout_marginTop="@dimen/recomment_margin"
+                    android:background="@drawable/body_cont_bg"
+                    android:gravity="center" >
+
+                    <ImageView
+                        android:id="@+id/collect_item_image1"
+                        android:layout_width="fill_parent"
+                        android:layout_height="150dp"
+                        android:src="@drawable/default_image" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/collect_item_price1"
+                    android:layout_width="60dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="6.5dp"
+                    android:layout_marginTop="15dp"
+                    android:background="#cce63019"
+                    android:gravity="center"
+                    android:textColor="#ffffff"
+                    android:textSize="10sp" />
+
+                <ImageView
+                    android:id="@+id/collect_item_remove1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_margin="2dp"
+                    android:src="@drawable/item_faverites_edit_close_btn" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/collect_item_text1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:singleLine="true"
+                android:textColor="#000000"
+                android:textSize="16dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/collect_item_layout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <FrameLayout
+                android:id="@+id/collect_item_frame2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:layout_marginTop="@dimen/recomment_margin"
+                    android:background="@drawable/body_cont_bg"
+                    android:gravity="center" >
+
+                    <ImageView
+                        android:id="@+id/collect_item_image2"
+                        android:layout_width="fill_parent"
+                        android:layout_height="150dp"
+                        android:src="@drawable/default_image" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/collect_item_price2"
+                    android:layout_width="60dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="6.5dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/item_price_red_bg"
+                    android:gravity="center"
+                    android:textColor="#ffffff"
+                    android:textSize="10sp" />
+
+                <ImageView
+                    android:id="@+id/collect_item_remove2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_margin="2dp"
+                    android:src="@drawable/item_faverites_edit_close_btn" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/collect_item_text2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:singleLine="true"
+                android:textColor="#000000"
+                android:textSize="16dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.insthub.ecmobile.component.AdvanceSearchValueCell xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal" >
+
+    <FrameLayout
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="0.5" >
+
+        <TextView
+            android:id="@+id/specification_value_text_one"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/item_info_buy_kinds_btn_bg_grey"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="red"
+            android:textColor="@color/spec_text_color"
+            android:textColorHighlight="#ff0000"
+            android:textSize="14dp" />
+
+        <ImageView
+            android:id="@+id/specification_value_img_one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|top"
+            android:src="@drawable/item_info_buy_kinds_active_icon"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/specification_layout_two"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="0.5" >
+
+        <TextView
+            android:id="@+id/specification_value_text_two"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/item_info_buy_kinds_btn_bg_grey"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="blue"
+            android:textColor="@color/spec_text_color"
+            android:textColorHighlight="#ff0000"
+            android:textSize="14dp" />
+
+        <ImageView
+            android:id="@+id/specification_value_img_two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|top"
+            android:src="@drawable/item_info_buy_kinds_active_icon"
+            android:visibility="gone" />
+    </FrameLayout>
+
+</com.insthub.ecmobile.component.AdvanceSearchValueCell>

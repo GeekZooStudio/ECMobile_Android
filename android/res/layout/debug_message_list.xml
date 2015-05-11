@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/crashlog_title"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        layout="@layout/navigationbar" />
+
+    <ListView
+        android:id="@+id/debugMessageList"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:divider="#c4c4c4"
+        android:dividerHeight="1dp" >
+    </ListView>
+
+</LinearLayout>

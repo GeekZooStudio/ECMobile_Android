@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/body"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/goodslist_navbar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        layout="@layout/top_view" />
+
+    <com.external.maxwin.view.XListView
+        android:id="@+id/good_detail_list"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="#00000000"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false" >
+    </com.external.maxwin.view.XListView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/foot_bg"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/collection_button"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_weight="0.2"
+            android:src="@drawable/item_info_collection_disabled_btn" />
+
+        <TextView
+            android:id="@+id/buy_now"
+            android:layout_width="83dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="5dp"
+            android:layout_weight="0.3"
+            android:background="@drawable/button_orange"
+            android:gravity="center"
+            android:text="@string/gooddetail_buy"
+            android:textColor="#ffffff"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/add_to_cart"
+            android:layout_width="83dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="0.3"
+            android:background="@drawable/button_red"
+            android:gravity="center"
+            android:text="@string/gooddetail_shoppingcart"
+            android:textColor="#ffffff"
+            android:textSize="16dp" />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2" >
+
+            <ImageView
+                android:id="@+id/good_detail_shopping_cart"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:src="@drawable/footer_shopping_cart_icon" />
+
+            <LinearLayout
+                android:id="@+id/good_detail_shopping_cart_num_bg"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/search_new_shopping_cart_num_bg"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/good_detail_shopping_cart_num"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginBottom="2dp"
+                    android:gravity="center"
+                    android:text="0"
+                    android:textColor="#ffffff"
+                    android:textSize="10dp" />
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+</LinearLayout>

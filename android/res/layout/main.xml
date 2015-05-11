@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#000000"
+    android:orientation="vertical" >
+
+    <fragment
+        android:id="@+id/tabs_fragment"
+        android:name="com.insthub.ecmobile.fragment.TabsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true" />
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/tabs_fragment"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/good_list_bg" >
+    </FrameLayout>
+
+</RelativeLayout>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.insthub.ecmobile"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/goodslist_navbar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="0dp"
+        layout="@layout/navigationbar" />
+
+    <FrameLayout
+        android:id="@+id/full_screen_view_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/goodslist_navbar"
+        android:background="#ffffff" >
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/fullscreen_viewpager"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/index_carsouel_bg"
+                    android:gravity="center"
+                    android:layout_marginBottom="10dp" >
+
+                    <com.external.viewpagerindicator.CirclePageIndicator
+                        android:id="@+id/indicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        app:centered="true" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/foot_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_below="@id/full_screen_view_layout"
+                    android:layout_gravity="center"
+                    android:background="@drawable/foot_bg"
+                    android:gravity="center" 
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:layout_weight="0.1"
+                        android:src="@drawable/footer_shopping_cart_icon"
+                        android:visibility="invisible" />
+
+                    <TextView
+                        android:id="@+id/full_screen_add_to_cart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:background="@drawable/button_red"
+                        android:gravity="center"
+                        android:text="@string/add_to_cart"
+                        android:textAlignment="center"
+                        android:textColor="#ffffff"
+                        android:textSize="16dp" />
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.1" >
+
+                        <ImageView
+                            android:id="@+id/fullscreen_shoping_cart"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_gravity="center"
+                            android:padding="5dp"
+                            android:src="@drawable/footer_shopping_cart_icon" />
+
+                        <TextView
+                            android:id="@+id/fullscreen_shopping_cart_num"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginLeft="13dp"
+                            android:background="@drawable/search_new_shopping_cart_num_bg"
+                            android:gravity="center"
+                            android:paddingBottom="3dp"
+                            android:text="0"
+                            android:textColor="#ffffff"
+                            android:textSize="10dp" />
+                    </FrameLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </FrameLayout>
+    </FrameLayout>
+
+</RelativeLayout>

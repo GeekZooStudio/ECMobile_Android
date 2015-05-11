@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:src="@drawable/trade_info_stream_cont_bg_a"
+    android:tileMode="repeat">
+</bitmap>

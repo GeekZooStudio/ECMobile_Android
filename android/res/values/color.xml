@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+	<color name="filter_text_color">#666666</color>
+    <color name="spec_text_color">#999999</color>
+    <color name="spec_select_text_color">#ff0000</color>
+    
+    <drawable name="color_b">#44aaaaaa</drawable>
+	<drawable name="color_a">#00000000</drawable>
+	
+</resources>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/back_ground_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <com.insthub.BeeFramework.view.TouchableImageView
+        android:id="@+id/img"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:src="@drawable/default_image"
+        android:visibility="visible" />
+
+    <ProgressBar
+        android:id="@+id/activity_img_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateBehavior="repeat"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/ll_btns"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:background="@drawable/nav_bg"
+        android:gravity="center"
+        android:paddingBottom="@dimen/datu_btns_paddingBottom"
+        android:paddingLeft="@dimen/datu_btns_paddingLeft"
+        android:paddingRight="@dimen/datu_btns_paddingRight"
+        android:paddingTop="@dimen/datu_btns_paddingTop" >
+
+        <!-- 返回 -->
+
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:focusable="true"
+            android:src="@drawable/item_grid_header_arrow_icon" >
+        </ImageView>
+
+        <!-- 图片左旋 -->
+
+        <ImageView
+            android:id="@+id/btn_rotate_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/datu_btn_marginLeft"
+            android:layout_weight="1.0"
+            android:focusable="true"
+            android:src="@drawable/weibo_datu_left_selector" >
+        </ImageView>
+
+        <!-- 图片右旋 -->
+
+        <ImageView
+            android:id="@+id/btn_rotate_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/datu_btn_marginLeft"
+            android:layout_weight="1.0"
+            android:focusable="true"
+            android:src="@drawable/weibo_datu_right_selector" >
+        </ImageView>
+
+        <!-- 保存图片 -->
+
+        <ImageView
+            android:id="@+id/btn_save_pic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/datu_btn_marginLeft"
+            android:layout_weight="1.0"
+            android:focusable="true"
+            android:src="@drawable/weibo_datu_save_selector" >
+        </ImageView>
+    </LinearLayout>
+
+</FrameLayout>

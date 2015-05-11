@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/good_list_bg"
+    android:orientation="vertical"
+    android:id="@+id/keyboardLayout1">
+
+    <include
+       android:id="@+id/search_topview"
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        layout="@layout/advance_search_topview" />
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+
+            <include
+                android:id="@+id/goodslist_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                layout="@layout/filter_toolbar" />
+
+            <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent" >
+                <com.external.maxwin.view.XListView
+                    android:id="@+id/goods_listview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/goodslist_toolbar"
+                    android:layout_marginTop="10dp"
+                    android:divider="#00000000"
+                    android:dividerHeight="0dp" />
+
+            </FrameLayout>
+        </LinearLayout>
+
+        <include
+            android:id="@+id/null_pager"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            layout="@layout/null_pager"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/goodslist_bg"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#ffffff" />
+        <View
+                android:id="@+id/top_view"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="#7f000000"
+                android:visibility="invisible" />
+
+        <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_marginBottom="30dp"
+                android:layout_marginRight="10dp" >
+
+            <ImageView
+                    android:id="@+id/good_list_shopping_cart"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:background="@drawable/shape_bg"
+                    android:padding="5dp"
+                    android:src="@drawable/item_grid_float_shopping_cart_icon" />
+
+            <LinearLayout
+                    android:id="@+id/good_list_shopping_cart_num_bg"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/search_new_shopping_cart_num_bg"
+                    android:gravity="center"
+                    android:orientation="vertical" >
+
+                <TextView
+                        android:id="@+id/good_list_shopping_cart_num"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginBottom="2dp"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="#ffffff"
+                        android:textSize="10dp" />
+            </LinearLayout>
+        </FrameLayout>
+    </FrameLayout>
+
+</LinearLayout>

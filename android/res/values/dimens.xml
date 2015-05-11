@@ -1,0 +1,28 @@
+<resources>
+
+    <dimen name="private_bar_to_border">25.0dp</dimen>
+    
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="smaller_txtsize">13px</dimen>
+    <!-- zxf end -->
+
+
+    <dimen name="recomment_margin">2dp</dimen>
+    <dimen name="recomment_textsize">10sp</dimen>
+    <dimen name="recomment_width">26dp</dimen>
+    <dimen name="recomment_height">30dp</dimen>
+
+    <dimen name="price_textsize">11sp</dimen>
+    <dimen name="price_margin">18dp</dimen>
+    <dimen name="price_width">60dp</dimen>
+    <dimen name="price_height">20dp</dimen>
+
+    <!-- 查看大图页面 -->
+    <dimen name="datu_btns_paddingLeft">41px</dimen>
+    <dimen name="datu_btns_paddingRight">41px</dimen>
+    <dimen name="datu_btns_paddingTop">12px</dimen>
+    <dimen name="datu_btns_paddingBottom">2px</dimen>
+    <dimen name="datu_btn_marginLeft">64px</dimen>
+</resources>

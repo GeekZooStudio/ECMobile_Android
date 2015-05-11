@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/body"
+    android:orientation="vertical" >
+
+    <include layout="@layout/top_view" />
+
+    <ListView
+        android:id="@+id/payment_list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/body_cont"
+        android:divider="#c4c4c4"
+        android:dividerHeight="0.1dp"
+        android:footerDividersEnabled="true"
+        android:headerDividersEnabled="false"
+        android:padding="5dp" >
+    </ListView>
+
+</LinearLayout>

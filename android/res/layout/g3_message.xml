@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/body"
+    android:orientation="vertical" >
+
+    <include layout="@layout/top_view" />
+    <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+    <com.external.maxwin.view.XListView
+        android:id="@+id/shop_notify_list"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:background="@drawable/body_cont"
+        android:divider="#00000000"
+        android:dividerHeight="0.1dp"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false"
+        android:visibility="gone" >
+    </com.external.maxwin.view.XListView>
+
+        <include
+                layout="@layout/null_pager"
+                android:id="@+id/null_pager"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:visibility="gone"/>
+
+    </FrameLayout>
+</LinearLayout>

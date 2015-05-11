@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.insthub.ecmobile.component.SpecificationCell xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:gravity="center"
+    android:minWidth="45dp"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/specification_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="0.5"
+        android:gravity="center_vertical|left"
+        android:text=""
+        android:textColor="#000000"
+        android:textSize="13sp" />
+
+    <LinearLayout
+        android:id="@+id/specification_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#999999" />
+
+</com.insthub.ecmobile.component.SpecificationCell>

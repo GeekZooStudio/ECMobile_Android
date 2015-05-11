@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/tuitional_bg"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:layout_width="128dp"
+        android:layout_height="190dp"
+        android:layout_marginLeft="144dp"
+        android:layout_marginTop="165dp"
+        android:src="@drawable/tuitional_img_4_2"
+        android:visibility="visible" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:shadowColor="#000000"
+        android:shadowDy="1"
+        android:shadowRadius="5"
+        android:text="@string/smooth_operation_experience"
+        android:textColor="#ffffff"
+        android:textSize="28dp" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="60dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:shadowColor="#000000"
+        android:shadowDy="1"
+        android:shadowRadius="5"
+        android:text="@string/ecmobile_design_introduction"
+        android:textColor="#ffffff"
+        android:textSize="14dp" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_margin="4dp"
+            android:src="@drawable/tuitional_carousel_btn" />
+
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_margin="4dp"
+            android:src="@drawable/tuitional_carousel_btn" />
+
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_margin="4dp"
+            android:src="@drawable/tuitional_carousel_btn" />
+
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_margin="4dp"
+            android:src="@drawable/tuitional_carousel_active_btn" />
+
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_margin="4dp"
+            android:src="@drawable/tuitional_carousel_btn" />
+    </LinearLayout>
+
+</FrameLayout>
