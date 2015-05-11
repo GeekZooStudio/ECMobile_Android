@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/register_item_edit"
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:layout_margin="5dp"
+        android:background="#ffffff"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:singleLine="true"
+        android:textColor="#000000"
+        android:textSize="16dp" />
+
+    <View
+        android:id="@+id/register_item_line"
+        android:layout_width="fill_parent"
+        android:layout_height="0.1dp"
+        android:background="#c4c4c4" />
+
+</LinearLayout>

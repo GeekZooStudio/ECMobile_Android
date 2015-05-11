@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="48dp" >
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="20dp"
+        android:background="#000000" />
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/nav_bg" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="70dp"
+        android:background="@drawable/searcher_new_search_box"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/back_button"
+            android:layout_width="32dp"
+            android:layout_height="34dp"
+            android:layout_gravity="center_vertical"
+            android:background="#00000000"
+            android:src="@drawable/item_grid_header_arrow_icon"
+            android:visibility="gone" />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp" >
+
+            <EditText
+                android:id="@+id/search_input"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="70dp"
+                android:background="@drawable/searcher_new_search_box"
+                android:gravity="center_vertical"
+                android:hint="@string/search_input"
+                android:paddingLeft="35dp"
+                android:paddingRight="10dp"
+                android:singleLine="true"
+                android:textSize="16dp"
+                android:imeActionId="@+id/search_input_actionid"
+                android:inputType="text"
+                android:imeOptions="actionSearch"/>
+
+            <ImageView
+                android:id="@+id/search_search"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:padding="10dp"
+                android:src="@drawable/searcher_new_search_icon" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/search_voice"
+        android:layout_width="55dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center_vertical|right"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/filter_blue_btn"
+        android:src="@drawable/searcher_new_voice_icon" />
+
+</FrameLayout>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/good_list_bg"
+    android:orientation="vertical" >
+
+    <include layout="@layout/top_view" />
+    <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+    <ListView
+        android:id="@+id/property_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/background"
+        android:divider="#cccccc"
+        android:dividerHeight="0.1dp"
+        android:headerDividersEnabled="false"
+        android:overScrollFooter="#00000000"
+        android:padding="5dp" />
+        <include
+                android:id="@+id/null_pager"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                layout="@layout/null_pager"
+                android:visibility="gone" />
+    </FrameLayout>
+</LinearLayout>
