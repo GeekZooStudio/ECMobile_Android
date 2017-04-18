@@ -1,4 +1,4 @@
-#修改工程
+# 修改工程
 
 1. 打开工程
 2. 找到ECMobileAppConst.java，修改代码 SERVER_PRODUCTION
@@ -124,7 +124,7 @@ public static String getPushSecKey(Context context)
 }		
 </pre>
 
-#联系方式
+# 联系方式
 
 官方论坛：http://bbs.ecmobile.cn/    
 
